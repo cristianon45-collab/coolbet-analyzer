@@ -747,3 +747,56 @@ body {
   /* ── FOOTER ── */
   .cb-footer { font-size: 9px; padding: 10px 12px; }
 }
+
+/* ── HORIZONTAL (landscape) en celular ──────────────────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Header ultra compacto */
+  .cb-header-inner { padding: 4px 12px; gap: 4px; }
+  .saori-svg  { width: 28px; height: 38px; }
+  .cb-logo-text { font-size: 16px; }
+  .cb-nav { padding-bottom: 0; }
+  .nav-btn { font-size: 11px; padding: 3px 10px; }
+
+  /* Layout: 2 columnas lado a lado */
+  .cb-layout {
+    grid-template-columns: 1fr 340px;
+    padding: 6px;
+    gap: 6px;
+    height: calc(100dvh - 52px);
+    overflow: hidden;
+  }
+
+  /* Columna de partidos con scroll */
+  .cb-matches {
+    overflow-y: auto;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ticket fijo a la derecha */
+  .cb-slip {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: sticky;
+    top: 0;
+  }
+
+  /* Cards más compactas */
+  .mc-top { padding: 5px 10px 4px; }
+  .mc-teams { padding: 4px 10px; }
+  .team-name { font-size: 12px; }
+  .forma-dot { width: 13px; height: 13px; font-size: 7px; }
+  .cat-tabs { padding: 3px 8px; }
+  .mc-markets { gap: 4px; padding: 4px 8px 8px; }
+  .mkt-btn { padding: 5px 5px; min-height: 60px; }
+  .mkt-odds { font-size: 14px; }
+
+  /* Modal en landscape */
+  .modal { align-items: center; }
+  .modal-box {
+    width: 90%; height: 90dvh;
+    border-radius: 10px;
+    margin: auto;
+  }
+}
