@@ -256,7 +256,6 @@ function updateSlip() {
       </div>`;
     sm.classList.add('hidden');
     document.getElementById('hdr-cuota').textContent = '—';
-    updateHdrPreview([]);
     updateMobBar(0, 0);
     return;
   }
@@ -298,7 +297,6 @@ function updateSlip() {
 
   document.getElementById('hdr-cuota').textContent = fmt.odds(cuotaTotal);
   document.getElementById('m-cuota').textContent   = fmt.odds(cuotaTotal);
-  updateHdrPreview(legs);
 
   const probPct = Math.round(probCombinada * 100);
   const probEl  = document.getElementById('m-prob');
