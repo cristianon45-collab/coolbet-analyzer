@@ -913,16 +913,16 @@ const SKINS = {
 
     <!-- PELO LARGO NEGRO (fluye hasta abajo) -->
     <!-- Mechones laterales largos -->
-    <path d="M24 20 Q12 35 10 65 Q11 80 16 85 Q18 70 20 55 Q22 40 26 28 Z" fill="#0d0208"/>
-    <path d="M56 20 Q68 35 70 65 Q69 80 64 85 Q62 70 60 55 Q58 40 54 28 Z" fill="#0d0208"/>
+    <path d="M24 20 Q12 35 10 65 Q11 80 16 85 Q18 70 20 55 Q22 40 26 28 Z" fill="#3a0060"/>
+    <path d="M56 20 Q68 35 70 65 Q69 80 64 85 Q62 70 60 55 Q58 40 54 28 Z" fill="#3a0060"/>
     <!-- Cuerpo del pelo detrás -->
-    <ellipse cx="40" cy="22" rx="17" ry="19" fill="#0d0208"/>
+    <ellipse cx="40" cy="22" rx="17" ry="19" fill="#3a0060"/>
     <!-- Flequillo con ondas suaves -->
-    <path d="M25 16 Q28 10 35 12 Q40 10 45 12 Q52 10 55 16 Q50 13 40 14 Q30 13 25 16Z" fill="#0d0208"/>
+    <path d="M25 16 Q28 10 35 12 Q40 10 45 12 Q52 10 55 16 Q50 13 40 14 Q30 13 25 16Z" fill="#3a0060"/>
     <!-- Mechón lateral derecho cayendo por el pecho -->
-    <path d="M55 25 Q62 40 60 70 Q58 80 56 85 Q54 72 55 58 Q56 42 54 30 Z" fill="#1a0510"/>
+    <path d="M55 25 Q62 40 60 70 Q58 80 56 85 Q54 72 55 58 Q56 42 54 30 Z" fill="#5a0090"/>
     <!-- Mechón lateral izquierdo -->
-    <path d="M25 25 Q18 40 20 70 Q22 80 24 85 Q26 72 25 58 Q24 42 26 30 Z" fill="#1a0510"/>
+    <path d="M25 25 Q18 40 20 70 Q22 80 24 85 Q26 72 25 58 Q24 42 26 30 Z" fill="#5a0090"/>
 
     <!-- CARA -->
     <ellipse cx="40" cy="25" rx="13" ry="14" fill="url(#sskin)"/>
@@ -954,10 +954,10 @@ const SKINS = {
     <circle cx="33" cy="25" r="0.6" fill="white" opacity="0.7"/>
     <circle cx="45" cy="25" r="0.6" fill="white" opacity="0.7"/>
     <!-- Pestañas -->
-    <path d="M30 20 Q32 18 34 19" stroke="#0d0208" stroke-width="1" fill="none"/>
-    <path d="M34 19 Q36 18 38 19.5" stroke="#0d0208" stroke-width="1" fill="none"/>
-    <path d="M42 19.5 Q44 18 46 19" stroke="#0d0208" stroke-width="1" fill="none"/>
-    <path d="M46 19 Q48 18 50 20" stroke="#0d0208" stroke-width="1" fill="none"/>
+    <path d="M30 20 Q32 18 34 19" stroke="#3a0060" stroke-width="1" fill="none"/>
+    <path d="M34 19 Q36 18 38 19.5" stroke="#3a0060" stroke-width="1" fill="none"/>
+    <path d="M42 19.5 Q44 18 46 19" stroke="#3a0060" stroke-width="1" fill="none"/>
+    <path d="M46 19 Q48 18 50 20" stroke="#3a0060" stroke-width="1" fill="none"/>
 
     <!-- Nariz pequeña delicada -->
     <path d="M38.5 28 Q40 29.5 41.5 28" stroke="#d4a070" stroke-width="0.8" fill="none" stroke-linecap="round"/>
