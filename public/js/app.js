@@ -6,13 +6,50 @@ let currentMatch = null; // para el modal
 
 // ── Tooltip global de ayuda ──────────────────────────────────────────────────
 const TIPS = {
-  ve:        { titulo:'VE — Valor Esperado', texto:'Mide si la cuota paga más o menos de lo que el riesgo justifica.\n\nFórmula: (Prob. real × Cuota) − 1\n\n✅ VE positivo → hay valor, la casa paga de más.\n❌ VE negativo → la casa tiene ventaja en ese mercado.\n\nEjemplo: VE −8.8% significa que por cada $10.000 apostados, el modelo espera perder ~$880 en promedio.' },
-  probReal:  { titulo:'Prob. Real', texto:'Probabilidad que el modelo estima que tiene ese resultado de ocurrir, calculada con estadísticas reales de los equipos (goles promedio, forma, H2H, altitud, etc.).\n\nNo incluye el margen de ganancia de la casa.' },
-  probCasa:  { titulo:'Prob. Casa', texto:'Probabilidad que la casa de apuestas asigna al resultado, calculada como 1 ÷ cuota.\n\nSiempre es mayor que la Prob. Real porque incluye el margen de la casa (vigorish). Esa diferencia es su ganancia garantizada.' },
-  confianza: { titulo:'Nivel de Confianza', texto:'Alta → múltiples factores alineados, VE >6%, probabilidad real >55%.\nMedia → tendencia presente con incertidumbre o datos parciales. VE >2%.\nBaja → datos insuficientes, mercado corregido por señal activa.\nSin valor → VE negativo o dead rubber confirmado.' },
-  kelly:      { titulo:'Criterio de Kelly (25%)', texto:'Fórmula matemática que calcula el tamaño óptimo de apuesta en función de tu ventaja estadística y bankroll.\n\nUsamos Kelly al 25% (fraccionado) para reducir la varianza y proteger el bankroll ante rachas negativas.\n\nFórmula: Kelly = (p×b − q) / b × 0.25\np = prob. real · b = cuota−1 · q = 1−p' },
-  selecciones:{ titulo:'Selecciones', texto:'Cantidad de apuestas que llevas en tu ticket actual.\n\nCada selección es un mercado de un partido (ej: "Gana México", "Más de 2.5 goles").\n\nRecomendado: máximo 4 selecciones. A más selecciones, la probabilidad combinada cae y el riesgo sube.' },
-  cuotaTotal: { titulo:'Cuota total', texto:'Multiplicación de todas las cuotas de tus selecciones.\n\nEjemplo: 1.85 × 2.10 × 1.70 = 6.60\n\nSi apuestas $10.000 y ganas todas, recibes $66.000.\n\n⚠️ Cuota alta no significa apuesta buena — lo importante es el VE (Valor Esperado) de la combinación.' },
+  ve: {
+    titulo: '¿Qué es el VE?',
+    texto:  '🟢 Verde (+) = la cuota paga MÁS de lo que el riesgo justifica. Vale apostar.\n🔴 Rojo (−) = la casa cobra MÁS de lo justo. Tienen ventaja sobre ti.\n\nEjemplo práctico:\nVE −11.6% con cuota 2.40 → si apuestas $10.000 muchas veces, en promedio perderías $1.160 por apuesta.\n\nBusca siempre VE positivo o lo más cerca de 0.'
+  },
+  probReal: {
+    titulo: '¿Qué es la Prob. Real?',
+    texto:  'Es lo que NUESTRO MODELO calcula que va a pasar, usando estadísticas reales: goles promedio, forma reciente, historial, altitud, clima, etc.\n\nNo incluye el margen de ganancia de la casa.\n\nEjemplo: 38% real = el modelo cree que ese resultado ocurre unas 4 de cada 10 veces.'
+  },
+  probCasa: {
+    titulo: '¿Qué es la Prob. Casa?',
+    texto:  'Es lo que la casa de apuestas asigna al resultado según su cuota.\n\nFórmula: 1 ÷ cuota. Ejemplo: cuota 2.40 → 1÷2.40 = 42%\n\nSiempre es MAYOR que la Prob. Real porque incluye su margen de ganancia (5–10%).\n\nSi Prob. real > Prob. casa → hay valor en esa apuesta ✅'
+  },
+  confianza: {
+    titulo: 'Nivel de Confianza',
+    texto:  '🟢 Alta → el modelo está muy convencido. Muchos factores alineados.\n🟡 Media → hay señales pero también dudas.\n🔴 Baja → poca certeza o alguna alerta activa.\n⛔ Sin valor → el modelo dice que no conviene apostar ahí.'
+  },
+  kelly: {
+    titulo: 'Kelly — ¿Cuánto apostar?',
+    texto:  'Fórmula que calcula cuánto de tu plata apostar según tu ventaja real.\n\nUsamos Kelly al 25% para ser conservadores y proteger tu bankroll en rachas malas.\n\nEjemplo: Kelly 2% con $200.000 → apuesta ~$4.000 en ese partido.\n\n⚠️ Nunca apostar más de lo que Kelly sugiere.'
+  },
+  selecciones: {
+    titulo: '¿Qué son las Selecciones?',
+    texto:  'Son las apuestas que elegiste para tu ticket combinado.\n\nEjemplo: "Gana México" + "Más de 2.5 goles Brasil" = 2 selecciones.\n\n⚠️ Máximo recomendado: 4 selecciones.\nMás selecciones = más difícil ganar todas = más riesgo.'
+  },
+  cuotaTotal: {
+    titulo: 'Cuota Total — ¿Cuánto ganas?',
+    texto:  'Es la multiplicación de todas tus cuotas.\n\nEjemplo: 1.85 × 2.10 = 3.89\nSi apuestas $10.000 y ganas todo → recibes $38.900.\n\n⚠️ Cuota alta NO significa buena apuesta. Lo que importa es que el VE sea positivo.'
+  },
+  betbuilder: {
+    titulo: '¿Qué es un BetBuilder?',
+    texto:  'Combina 2 o más mercados del MISMO partido en una sola apuesta.\n\nEjemplo: "Gana México" + "Ambos anotan Sí" en México vs Sudáfrica.\n\nLa cuota se multiplica (más ganancia posible), pero también es más difícil.\n\n🔶 Mínimo 2 mercados del mismo partido.'
+  },
+  forma: {
+    titulo: 'Forma reciente del equipo',
+    texto:  'Últimos 5 partidos del equipo:\n\n🟢 V = Ganó\n🟡 E = Empató\n🔴 D = Perdió\n\nEl partido más reciente está a la derecha.\nEjemplo: V V V V V = equipo en racha perfecta.'
+  },
+  gfprom: {
+    titulo: 'GF/p — ¿Cuánto mete?',
+    texto:  'Goles a favor por partido en promedio.\n\nEjemplo: 1.9 GF/p = mete casi 2 goles por partido.\n\nAlto GF/p = equipo goleador → favorece apostar a Over goles y a que gane.'
+  },
+  gcprom: {
+    titulo: 'GC/p — ¿Cuánto recibe?',
+    texto:  'Goles en contra por partido en promedio.\n\nEjemplo: 0.9 GC/p = recibe menos de 1 gol por partido. Defensa sólida.\n\nAlto GC/p = defensa débil → favorece Over goles y que el rival también anote.'
+  },
 };
 
 let tipTimeout = null;
@@ -78,12 +115,30 @@ async function loadMatches(comp = 'all') {
   }
 }
 
+// ── Leyenda fija de indicadores ──────────────────────────────────────────────
+const LEGEND_HTML = `
+<div class="indicators-legend">
+  <span class="legend-title">Cómo leer los mercados:</span>
+  <span class="legend-item" onclick="showTip('probCasa',event)">
+    <span class="legend-dot casa"></span>Prob. casa = lo que la casa cree que va a pasar
+  </span>
+  <span class="legend-item" onclick="showTip('probReal',event)">
+    <span class="legend-dot real"></span>Prob. real = lo que el modelo calcula que va a pasar
+  </span>
+  <span class="legend-item" onclick="showTip('ve',event)">
+    <span class="legend-dot ve"></span>VE = si la apuesta vale o no (verde = vale, rojo = no vale)
+  </span>
+  <span class="legend-item" onclick="showTip('confianza',event)">
+    <span class="legend-dot conf"></span>Alta / Media / Baja = qué tan seguros estamos
+  </span>
+</div>`;
+
 // ── Render partidos ──────────────────────────────────────────────────────────
 function renderMatches() {
   const container = document.getElementById('matches-list');
   if (!allMatches.length) { container.innerHTML = '<div class="loading">Sin partidos disponibles.</div>'; return; }
 
-  container.innerHTML = allMatches.map(m => renderMatchCard(m)).join('');
+  container.innerHTML = LEGEND_HTML + allMatches.map(m => renderMatchCard(m)).join('');
 }
 
 // Track active category tab per match card
@@ -145,8 +200,8 @@ function renderMatchCard(m, cat) {
         <div class="team-name">${m.local}</div>
         <div class="team-forma">${forma(m.statsLocal)}</div>
         <div class="team-stats-row">
-          <span class="stat-badge good">${m.statsLocal.gfProm.toFixed(1)} GF/p</span>
-          <span class="stat-badge">${m.statsLocal.gcProm.toFixed(1)} GC/p</span>
+          <span class="stat-badge good" onclick="showTip('gfprom',event)">${m.statsLocal.gfProm.toFixed(1)} GF/p</span>
+          <span class="stat-badge" onclick="showTip('gcprom',event)">${m.statsLocal.gcProm.toFixed(1)} GC/p</span>
           <span class="stat-badge">#${m.statsLocal.posLiga} FIFA</span>
         </div>
       </div>
@@ -155,8 +210,8 @@ function renderMatchCard(m, cat) {
         <div class="team-name">${m.visit}</div>
         <div class="team-forma" style="justify-content:flex-end">${forma(m.statsVisit)}</div>
         <div class="team-stats-row" style="justify-content:flex-end">
-          <span class="stat-badge good">${m.statsVisit.gfProm.toFixed(1)} GF/p</span>
-          <span class="stat-badge">${m.statsVisit.gcProm.toFixed(1)} GC/p</span>
+          <span class="stat-badge good" onclick="showTip('gfprom',event)">${m.statsVisit.gfProm.toFixed(1)} GF/p</span>
+          <span class="stat-badge" onclick="showTip('gcprom',event)">${m.statsVisit.gcProm.toFixed(1)} GC/p</span>
           <span class="stat-badge">#${m.statsVisit.posLiga} FIFA</span>
         </div>
       </div>

@@ -707,6 +707,35 @@ body {
   .mc-markets { grid-template-columns: repeat(3, 1fr); }
 }
 
+/* ── LEYENDA DE INDICADORES ──────────────────────────────────────────── */
+.indicators-legend {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  display: flex; flex-wrap: wrap; gap: 8px 16px;
+  align-items: center;
+}
+.legend-title {
+  font-size: 10px; font-weight: 700; color: var(--gold);
+  text-transform: uppercase; letter-spacing: .5px;
+  width: 100%; margin-bottom: 2px;
+}
+.legend-item {
+  font-size: 11px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 5px;
+  cursor: pointer; transition: color .15s;
+}
+.legend-item:hover { color: var(--text); }
+.legend-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.legend-dot.casa { background: #7a90a4; }
+.legend-dot.real { background: #378add; }
+.legend-dot.ve   { background: linear-gradient(90deg, #1db954 50%, #e24b4a 50%); }
+.legend-dot.conf { background: var(--gold); }
+
 /* ── BARRA FLOTANTE MÓVIL ────────────────────────────────────────────── */
 .mob-bar {
   display: none; /* oculto en desktop */
