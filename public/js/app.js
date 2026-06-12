@@ -148,17 +148,19 @@ function renderMatchCard(m, cat) {
   const forma = (stats) => stats.forma.map(f => `<span class="forma-dot ${f}" title="${f}">${formaChar(f)}</span>`).join('');
 
   // Build category list
-  const cats = ['Todos', ...new Set(m.mercados.map(mk => mk.categoria))];
+  const cats = ['Todos', ...new Set(m.mercados.map(mk => mk.categoria)), 'Jugada ⚡'];
   if (!activeCat[m.id]) activeCat[m.id] = 'Resultado';
   const currentCat = cat ?? activeCat[m.id];
   activeCat[m.id] = currentCat;
 
   const filtered = currentCat === 'Todos'
     ? m.mercados
-    : m.mercados.filter(mk => mk.categoria === currentCat);
+    : currentCat === 'Jugada ⚡'
+      ? m.mercados
+      : m.mercados.filter(mk => mk.categoria === currentCat);
 
   const catTabs = cats.map(c => `
-    <button class="cat-tab${c === currentCat ? ' active' : ''}"
+    <button class="cat-tab${c === currentCat ? ' active' : ''}${c === 'Jugada ⚡' ? ' cat-tab-jugada' : ''}"
             onclick="switchCat(${m.id},'${c}')">${c}</button>`).join('');
 
   const mkts = filtered.map((mk, _i) => {
@@ -259,10 +261,91 @@ function renderMatchCard(m, cat) {
       </div>
     </div>
     <div class="cat-tabs">${catTabs}</div>
-    <div class="mc-markets">${mkts}</div>
+    ${currentCat === 'Jugada ⚡' ? renderJugada(m) : `<div class="mc-markets">${mkts}</div>`}
     <button class="mc-info-btn" onclick="openMatchModal(${m.id})">
       📊 Ver estadísticas H2H y análisis de mercados
     </button>
+  </div>`;
+}
+
+// ── Jugada ⚡ — A cagarr + Al seco ──────────────────────────────────────────
+function renderJugada(m) {
+  const sorted = [...m.mercados]
+    .map((mk, i) => ({ ...mk, idx: i }))
+    .sort((a, b) => b.probReal - a.probReal);
+
+  // ── ⚽ A CAGARR: top 5 por prob. real + 2 alternativas cada uno ──────────
+  const top5 = sorted.slice(0, 5);
+  const acagarrHtml = top5.map((mk, rank) => {
+    const pct    = Math.round(mk.probReal * 100);
+    const isSel  = !!selected[`${m.id}-${mk.idx}`];
+    const vc     = veClass(mk.ve);
+    // Alternativas: las 2 siguientes del mismo bloque de mercado (por categoría)
+    const alts = sorted
+      .filter(a => a.idx !== mk.idx && a.categoria === mk.categoria)
+      .slice(0, 2);
+    const altsHtml = alts.length
+      ? `<div class="jug-alts">${alts.map(a => {
+          const asel = !!selected[`${m.id}-${a.idx}`];
+          return `<span class="jug-alt${asel ? ' jug-alt-sel' : ''}" onclick="toggleSel(${m.id},${a.idx})">
+            ${a.label} <em>${fmt.odds(a.odds)}</em> <span class="jug-alt-pct">${Math.round(a.probReal*100)}%</span>
+          </span>`;
+        }).join('')}</div>`
+      : '';
+    return `
+    <div class="jug-row${isSel ? ' jug-sel' : ''}" onclick="toggleSel(${m.id},${mk.idx})">
+      <div class="jug-rank">#${rank+1}</div>
+      <div class="jug-info">
+        <div class="jug-label">${mk.label}</div>
+        <div class="jug-meta">
+          <span class="jug-odds">${fmt.odds(mk.odds)}</span>
+          <span class="jug-pct-bar-wrap"><span class="jug-pct-bar" style="width:${pct}%"></span></span>
+          <span class="jug-pct-num">${pct}%</span>
+          <span class="ve-badge ${vc}" style="font-size:9px">${veLabel(mk.ve)}</span>
+        </div>
+        ${altsHtml}
+      </div>
+    </div>`;
+  }).join('');
+
+  // ── 🥤 AL SECO: combinación soñada — mejores por VE positivo o más prob. real ──
+  const dream = sorted
+    .filter(mk => mk.ve > 0)
+    .slice(0, 3);
+  const dreamFallback = dream.length < 2 ? sorted.slice(0, 3) : dream;
+  const dreamOdds = dreamFallback.reduce((acc, mk) => acc * mk.odds, 1);
+  const dreamProb  = dreamFallback.reduce((acc, mk) => acc * mk.probReal, 1);
+  const dreamVE    = (dreamProb * dreamOdds - 1) * 100;
+
+  const alSecoHtml = `
+  <div class="jug-alseco">
+    <div class="jug-alseco-title">🥤 Al seco — combinación soñada</div>
+    <div class="jug-alseco-items">
+      ${dreamFallback.map((mk, i) => {
+        const isSel = !!selected[`${m.id}-${mk.idx}`];
+        return `<div class="jug-alseco-item${isSel ? ' jug-sel' : ''}" onclick="toggleSel(${m.id},${mk.idx})">
+          <span class="jug-alseco-num">${i+1}</span>
+          <span class="jug-alseco-label">${mk.label}</span>
+          <span class="jug-alseco-odds">${fmt.odds(mk.odds)}</span>
+          <span class="jug-alseco-pct">${Math.round(mk.probReal*100)}%</span>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="jug-alseco-total">
+      <span>Cuota combinada</span>
+      <span class="jug-alseco-totalodds">${fmt.odds(dreamOdds)}</span>
+      <span class="jug-alseco-totalve ${dreamVE >= 0 ? 'pos' : 'neg'}">VE ${dreamVE >= 0 ? '+' : ''}${dreamVE.toFixed(1)}%</span>
+    </div>
+  </div>`;
+
+  return `
+  <div class="jug-wrap">
+    <div class="jug-acagarr-header">
+      <span class="jug-ball">⚽</span>
+      <span class="jug-acagarr-title">A cagarr — top 5 por probabilidad real</span>
+    </div>
+    <div class="jug-acagarr">${acagarrHtml}</div>
+    ${alSecoHtml}
   </div>`;
 }
 

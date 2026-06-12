@@ -333,6 +333,78 @@ body {
   font-weight: 600;
 }
 
+/* Tab Jugada especial */
+.cat-tab-jugada { border-color: rgba(255,100,50,.4); color: #ff8050; }
+.cat-tab-jugada:hover { border-color: #ff8050; color: #ff8050; }
+.cat-tab-jugada.active { background: rgba(255,100,50,.15); border-color: #ff8050; color: #ff8050; }
+
+/* ── JUGADA ⚡ ──────────────────────────────────────────────────── */
+.jug-wrap { padding: 10px 12px; display: flex; flex-direction: column; gap: 12px; }
+
+.jug-acagarr-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.jug-ball { font-size: 22px; }
+.jug-acagarr-title { font-size: 12px; font-weight: 700; color: #ff8050; }
+
+.jug-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px; padding: 8px 10px;
+  cursor: pointer; transition: border-color .15s, background .15s;
+  margin-bottom: 6px;
+}
+.jug-row:hover { border-color: rgba(255,128,80,.4); background: rgba(255,128,80,.06); }
+.jug-row.jug-sel { border-color: var(--gold); background: rgba(244,196,48,.08); }
+
+.jug-rank { font-size: 18px; font-weight: 900; color: #ff8050; min-width: 24px; line-height: 1.2; }
+.jug-info { flex: 1; min-width: 0; }
+.jug-label { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.jug-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.jug-odds { font-size: 13px; font-weight: 800; color: var(--gold); }
+.jug-pct-bar-wrap { flex: 1; min-width: 40px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+.jug-pct-bar { height: 100%; background: linear-gradient(90deg, #3a8, #5dca9b); border-radius: 3px; transition: width .4s; }
+.jug-pct-num { font-size: 11px; font-weight: 700; color: #5dca9b; }
+
+.jug-alts { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.jug-alt {
+  font-size: 10px; color: var(--text-muted);
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  border-radius: 6px; padding: 2px 7px; cursor: pointer; transition: all .12s;
+}
+.jug-alt:hover { border-color: var(--gold-dim); color: var(--text); }
+.jug-alt.jug-alt-sel { border-color: var(--gold); color: var(--gold); background: rgba(244,196,48,.1); }
+.jug-alt em { color: var(--gold); font-style: normal; font-weight: 700; }
+.jug-alt-pct { color: #5dca9b; font-weight: 600; }
+
+/* Al seco */
+.jug-alseco {
+  background: rgba(100,150,255,0.06);
+  border: 1px solid rgba(100,150,255,0.25);
+  border-radius: 10px; padding: 10px 12px;
+}
+.jug-alseco-title { font-size: 12px; font-weight: 700; color: #80aaff; margin-bottom: 8px; }
+.jug-alseco-items { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
+.jug-alseco-item {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 7px; padding: 6px 9px; cursor: pointer; transition: all .12s;
+}
+.jug-alseco-item:hover { border-color: rgba(100,150,255,.4); }
+.jug-alseco-item.jug-sel { border-color: var(--gold); background: rgba(244,196,48,.08); }
+.jug-alseco-num { width: 18px; height: 18px; border-radius: 50%; background: #80aaff; color: #0f1923; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.jug-alseco-label { flex: 1; font-size: 11px; color: var(--text); font-weight: 600; }
+.jug-alseco-odds { font-size: 12px; font-weight: 800; color: var(--gold); }
+.jug-alseco-pct { font-size: 10px; color: #5dca9b; font-weight: 600; }
+.jug-alseco-total {
+  display: flex; align-items: center; gap: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08); padding-top: 7px;
+  font-size: 11px; color: var(--text-muted);
+}
+.jug-alseco-totalodds { font-size: 16px; font-weight: 900; color: var(--gold); margin-left: auto; }
+.jug-alseco-totalve { font-size: 11px; font-weight: 700; }
+.jug-alseco-totalve.pos { color: #5dca9b; }
+.jug-alseco-totalve.neg { color: var(--red); }
+
 /* Mercados */
 .mc-markets {
   display: grid; grid-template-columns: repeat(3, 1fr);
