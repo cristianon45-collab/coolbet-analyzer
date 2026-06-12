@@ -1271,33 +1271,81 @@ const SKINS = {
         <stop offset="0%" stop-color="#ffe066"/><stop offset="100%" stop-color="#d4a000"/>
       </radialGradient>
     </defs>
-    <!-- Cabeza rapada / pelo corto muy oscuro -->
-    <ellipse cx="40" cy="24" rx="15" ry="16" fill="#1a0a00"/>
-    <ellipse cx="40" cy="25" rx="13" ry="14" fill="url(#vidalSkin)"/>
+    <!-- Cabeza rapada -->
+    <ellipse cx="40" cy="25" rx="14" ry="15" fill="#1a0800"/>
+    <ellipse cx="40" cy="26" rx="12.5" ry="13.5" fill="url(#vidalSkin)"/>
     <!-- Orejas -->
-    <ellipse cx="27" cy="26" rx="3" ry="3.5" fill="#b8743a"/>
-    <ellipse cx="53" cy="26" rx="3" ry="3.5" fill="#b8743a"/>
-    <!-- Barba corta / tupida - estilo Vidal -->
-    <path d="M28 32 Q30 38 40 40 Q50 38 52 32 Q48 36 40 37 Q32 36 28 32Z" fill="#1a0800" opacity="0.85"/>
-    <path d="M30 28 Q28 32 29 35" stroke="#1a0800" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <path d="M50 28 Q52 32 51 35" stroke="#1a0800" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <!-- Cejas fuertes / gruesas estilo Vidal -->
-    <path d="M29 18 Q33 15 38 17" stroke="#1a0800" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-    <path d="M42 17 Q47 15 51 18" stroke="#1a0800" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-    <!-- Ojos intensos oscuros -->
-    <ellipse cx="34" cy="23" rx="3.5" ry="3.2" fill="#111"/>
-    <ellipse cx="46" cy="23" rx="3.5" ry="3.2" fill="#111"/>
-    <ellipse cx="34" cy="23" rx="2" ry="2.2" fill="#3a1500"/>
-    <ellipse cx="46" cy="23" rx="2" ry="2.2" fill="#3a1500"/>
-    <circle cx="35.2" cy="21.8" r="1" fill="white" opacity="0.7"/>
-    <circle cx="47.2" cy="21.8" r="1" fill="white" opacity="0.7"/>
+    <ellipse cx="27.5" cy="27" rx="2.8" ry="3.2" fill="#b8743a"/>
+    <ellipse cx="52.5" cy="27" rx="2.8" ry="3.2" fill="#b8743a"/>
+
+    <!-- CORONA DE REY — dorada encima de la cabeza -->
+    <g transform="translate(40,10)">
+      <!-- Base de la corona -->
+      <rect x="-11" y="3" width="22" height="6" rx="1.5" fill="#f4c430" stroke="#c8900a" stroke-width="0.4"/>
+      <!-- Puntas de la corona -->
+      <!-- Punta central (la más alta) -->
+      <polygon points="0,-5 -3,3 3,3" fill="#f4c430" stroke="#c8900a" stroke-width="0.4"/>
+      <!-- Punta izquierda -->
+      <polygon points="-7,-2 -10,3 -4,3" fill="#f4c430" stroke="#c8900a" stroke-width="0.4"/>
+      <!-- Punta derecha -->
+      <polygon points="7,-2 4,3 10,3" fill="#f4c430" stroke="#c8900a" stroke-width="0.4"/>
+      <!-- Gemas en las puntas -->
+      <circle cx="0" cy="-3.5" r="1.5" fill="#cc0000" stroke="#fff" stroke-width="0.3"/>
+      <circle cx="-7" cy="-0.5" r="1.2" fill="#3366cc" stroke="#fff" stroke-width="0.3"/>
+      <circle cx="7" cy="-0.5" r="1.2" fill="#3366cc" stroke="#fff" stroke-width="0.3"/>
+      <!-- Detalles base -->
+      <circle cx="-7" cy="6" r="1" fill="#cc0000"/>
+      <circle cx="0" cy="6" r="1" fill="#cc0000"/>
+      <circle cx="7" cy="6" r="1" fill="#cc0000"/>
+      <!-- Brillo corona -->
+      <line x1="-9" y1="4" x2="-9" y2="8" stroke="#ffe88a" stroke-width="0.8" opacity="0.7"/>
+      <line x1="9" y1="4" x2="9" y2="8" stroke="#ffe88a" stroke-width="0.8" opacity="0.7"/>
+    </g>
+
+    <!-- TATUAJES en cara / cuello estilo Vidal -->
+    <!-- Tatuaje cuello izquierdo: líneas tribales -->
+    <path d="M28 34 Q26 37 27 40 Q28 42 29 41" stroke="#3a1a00" stroke-width="1.2" fill="none" opacity="0.7"/>
+    <path d="M29 35 Q27 38 28 41" stroke="#3a1a00" stroke-width="0.8" fill="none" opacity="0.5"/>
+    <!-- Tatuaje cuello derecho: cruz/símbolo -->
+    <path d="M52 35 Q54 37 53 40 Q52 42 51 41" stroke="#3a1a00" stroke-width="1.2" fill="none" opacity="0.7"/>
+    <line x1="51" y1="37" x2="54" y2="37" stroke="#3a1a00" stroke-width="0.8" opacity="0.5"/>
+    <!-- Tatuaje mejilla izq: pequeña estrella -->
+    <polygon points="30,30 30.8,32.5 33.5,32.5 31.3,34 32.1,36.5 30,35 27.9,36.5 28.7,34 26.5,32.5 29.2,32.5"
+             fill="#3a1a00" opacity="0.35" transform="scale(0.4) translate(48,48)"/>
+    <!-- Línea de tatuaje sien derecha -->
+    <path d="M52 22 Q54 24 53 26" stroke="#3a1a00" stroke-width="0.8" fill="none" opacity="0.4"/>
+
+    <!-- Barba corta tupida estilo Vidal -->
+    <path d="M28 33 Q30 39 40 41 Q50 39 52 33 Q48 37 40 38 Q32 37 28 33Z" fill="#1a0800" opacity="0.88"/>
+    <!-- Bigote -->
+    <path d="M34 31 Q40 33 46 31" stroke="#1a0800" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <!-- Pelos barba laterales -->
+    <path d="M30 29 Q28 33 29 36" stroke="#1a0800" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M50 29 Q52 33 51 36" stroke="#1a0800" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+    <!-- Cejas gruesas intensas -->
+    <path d="M29 19 Q33 16 38 18" stroke="#1a0800" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M42 18 Q47 16 51 19" stroke="#1a0800" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- Ojos intensos -->
+    <ellipse cx="34" cy="24" rx="3.5" ry="3.2" fill="#111"/>
+    <ellipse cx="46" cy="24" rx="3.5" ry="3.2" fill="#111"/>
+    <ellipse cx="34" cy="24" rx="2" ry="2.2" fill="#3a1500"/>
+    <ellipse cx="46" cy="24" rx="2" ry="2.2" fill="#3a1500"/>
+    <circle cx="35.2" cy="22.8" r="1" fill="white" opacity="0.7"/>
+    <circle cx="47.2" cy="22.8" r="1" fill="white" opacity="0.7"/>
+
     <!-- Nariz ancha -->
-    <ellipse cx="40" cy="28" rx="2.5" ry="1.8" fill="#9a5a22"/>
-    <!-- Boca seria / sonrisa pícara -->
-    <path d="M33 33 Q40 37 47 33" stroke="#7a3010" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    <path d="M34 33 Q40 36 46 33" fill="#cc6040" opacity="0.35"/>
-    <!-- Cuello fuerte -->
-    <rect x="35" y="39" width="10" height="8" rx="2" fill="#b8743a"/>
+    <ellipse cx="40" cy="29" rx="2.5" ry="1.8" fill="#9a5a22"/>
+    <!-- Boca pícara -->
+    <path d="M33 34 Q40 38 47 34" stroke="#7a3010" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <path d="M34 34 Q40 37 46 34" fill="#cc6040" opacity="0.35"/>
+
+    <!-- Cuello fuerte con tatuaje -->
+    <rect x="35" y="40" width="10" height="8" rx="2" fill="#b8743a"/>
+    <!-- Tatuaje cuello (cruz pequeña) -->
+    <line x1="40" y1="41" x2="40" y2="46" stroke="#3a1a00" stroke-width="1" opacity="0.5"/>
+    <line x1="38" y1="43" x2="42" y2="43" stroke="#3a1a00" stroke-width="1" opacity="0.5"/>
     <!-- Camiseta COLO-COLO blanca con franja negra -->
     <path d="M16 47 L22 42 Q30 39 37 40 L40 44 L43 40 Q50 39 58 42 L64 47 L62 80 L18 80 Z" fill="url(#vidalShirt)"/>
     <!-- Franja negra central Colo-Colo -->
@@ -1312,6 +1360,13 @@ const SKINS = {
     <!-- Brazos fuertes musculosos -->
     <path d="M18 50 L6 66 Q4 72 8 73 L13 71 L20 54 Z" fill="url(#vidalShirt)"/>
     <path d="M62 50 L70 66 Q72 72 68 73 L64 71 L60 54 Z" fill="url(#vidalShirt)"/>
+    <!-- Tatuajes brazos: tribales en brazo izquierdo -->
+    <path d="M14 55 Q11 58 9 62" stroke="#b8743a" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M13 58 Q10 61 9 64" stroke="#b8743a" stroke-width="1" fill="none" opacity="0.4"/>
+    <path d="M15 57 Q13 60 11 63" stroke="#1a0800" stroke-width="0.8" fill="none" opacity="0.5"/>
+    <!-- Tatuaje brazo derecho: tribal/flecha -->
+    <path d="M64 56 Q67 60 67 63" stroke="#1a0800" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M63 59 Q66 62 66 65" stroke="#1a0800" stroke-width="1" fill="none" opacity="0.4"/>
     <!-- Mano izq sosteniendo cerveza -->
     <ellipse cx="8" cy="73" rx="4.5" ry="3.5" fill="#b8743a"/>
     <!-- Vaso de cerveza ENORME -->
