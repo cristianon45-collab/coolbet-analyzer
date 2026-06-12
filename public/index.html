@@ -169,13 +169,21 @@
   </div>
 </header>
 
-<!-- ── BARRA MARCADORES EN VIVO ───────────────────────────────────────── -->
-<div class="livescore-bar" id="ls-bar" style="display:none">
-  <div class="livescore-bar-inner">
+<!-- ── WIDGET MARCADORES EN VIVO ──────────────────────────────────────── -->
+<div class="live-widget-bar">
+  <div class="live-widget-header">
     <span class="ls-title">🔴 EN VIVO · Mundial 2026</span>
-    <div class="ls-matches" id="ls-matches"></div>
+    <a href="https://www.google.com/search?q=Mundial+2026+en+vivo+resultado" target="_blank" class="ls-ext-btn">Ver todos →</a>
   </div>
+  <!-- Widget Scoreaxis — gratuito, sin key, permite iframe -->
+  <iframe
+    src="https://www.scoreaxis.com/widget/live-scores/82?autoHeight=0&inst=0&removeBetsLink=1&textColor=%23e8edf2&bodyBgColor=%231a2332&headBgColor=%230f1923&lineBgColor=%231f2d3d&altLineBgColor=%231a2332&fontSize=12&showLeagueFilter=0"
+    frameborder="0" scrolling="no" allowtransparency="true"
+    style="width:100%;height:160px;border:none;display:block"
+    title="Marcadores en vivo Mundial 2026">
+  </iframe>
 </div>
+<div id="ls-bar" style="display:none"><div id="ls-matches"></div></div>
 
 <!-- ── MAIN LAYOUT ────────────────────────────────────────────────────── -->
 <main class="cb-layout">

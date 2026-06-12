@@ -29,6 +29,23 @@
 .ls-score { color: var(--gold); font-weight: 800; font-size: 13px; padding: 0 4px; }
 .ls-badge { font-size: 9px; color: var(--text-muted); margin-left: 2px; }
 .ls-live-dot { color: #e34; animation: livePulse 1s infinite; }
+.live-widget-bar {
+  background: #0a1520;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 6px 16px 0;
+}
+.live-widget-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 4px;
+}
+.ls-ext-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #e34; color: #fff; font-size: 11px; font-weight: 700;
+  padding: 5px 12px; border-radius: 8px; text-decoration: none;
+  white-space: nowrap; animation: livePulse 1.5s ease-in-out infinite;
+  margin-left: auto;
+}
+.ls-ext-btn:hover { background: #c02; }
 
 /* ── RESET & BASE ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
