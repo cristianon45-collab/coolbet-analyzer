@@ -10,7 +10,9 @@ const TIPS = {
   probReal:  { titulo:'Prob. Real', texto:'Probabilidad que el modelo estima que tiene ese resultado de ocurrir, calculada con estadísticas reales de los equipos (goles promedio, forma, H2H, altitud, etc.).\n\nNo incluye el margen de ganancia de la casa.' },
   probCasa:  { titulo:'Prob. Casa', texto:'Probabilidad que la casa de apuestas asigna al resultado, calculada como 1 ÷ cuota.\n\nSiempre es mayor que la Prob. Real porque incluye el margen de la casa (vigorish). Esa diferencia es su ganancia garantizada.' },
   confianza: { titulo:'Nivel de Confianza', texto:'Alta → múltiples factores alineados, VE >6%, probabilidad real >55%.\nMedia → tendencia presente con incertidumbre o datos parciales. VE >2%.\nBaja → datos insuficientes, mercado corregido por señal activa.\nSin valor → VE negativo o dead rubber confirmado.' },
-  kelly:     { titulo:'Criterio de Kelly (25%)', texto:'Fórmula matemática que calcula el tamaño óptimo de apuesta en función de tu ventaja estadística y bankroll.\n\nUsamos Kelly al 25% (fraccionado) para reducir la varianza y proteger el bankroll ante rachas negativas.\n\nFórmula: Kelly = (p×b − q) / b × 0.25\np = prob. real · b = cuota−1 · q = 1−p' },
+  kelly:      { titulo:'Criterio de Kelly (25%)', texto:'Fórmula matemática que calcula el tamaño óptimo de apuesta en función de tu ventaja estadística y bankroll.\n\nUsamos Kelly al 25% (fraccionado) para reducir la varianza y proteger el bankroll ante rachas negativas.\n\nFórmula: Kelly = (p×b − q) / b × 0.25\np = prob. real · b = cuota−1 · q = 1−p' },
+  selecciones:{ titulo:'Selecciones', texto:'Cantidad de apuestas que llevas en tu ticket actual.\n\nCada selección es un mercado de un partido (ej: "Gana México", "Más de 2.5 goles").\n\nRecomendado: máximo 4 selecciones. A más selecciones, la probabilidad combinada cae y el riesgo sube.' },
+  cuotaTotal: { titulo:'Cuota total', texto:'Multiplicación de todas las cuotas de tus selecciones.\n\nEjemplo: 1.85 × 2.10 × 1.70 = 6.60\n\nSi apuestas $10.000 y ganas todas, recibes $66.000.\n\n⚠️ Cuota alta no significa apuesta buena — lo importante es el VE (Valor Esperado) de la combinación.' },
 };
 
 let tipTimeout = null;
@@ -254,6 +256,7 @@ function updateSlip() {
       </div>`;
     sm.classList.add('hidden');
     document.getElementById('hdr-cuota').textContent = '—';
+    updateHdrPreview([]);
     updateMobBar(0, 0);
     return;
   }
@@ -295,6 +298,7 @@ function updateSlip() {
 
   document.getElementById('hdr-cuota').textContent = fmt.odds(cuotaTotal);
   document.getElementById('m-cuota').textContent   = fmt.odds(cuotaTotal);
+  updateHdrPreview(legs);
 
   const probPct = Math.round(probCombinada * 100);
   const probEl  = document.getElementById('m-prob');

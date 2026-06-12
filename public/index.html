@@ -143,13 +143,15 @@
       <button class="nav-btn active" data-comp="mundial">🌍 Mundial 2026</button>
     </nav>
     <div class="cb-header-right">
-      <div class="header-stat">
-        <span class="hs-label">Selecciones</span>
-        <span class="hs-val" id="sel-count">0</span>
-      </div>
-      <div class="header-stat">
-        <span class="hs-label">Cuota total</span>
-        <span class="hs-val gold" id="hdr-cuota">—</span>
+      <div class="header-stats-row">
+        <div class="header-stat" onclick="showTip('selecciones',event)" style="cursor:pointer">
+          <span class="hs-label">Selecciones <span class="tip-icon">ⓘ</span></span>
+          <span class="hs-val" id="sel-count">0</span>
+        </div>
+        <div class="header-stat" onclick="showTip('cuotaTotal',event)" style="cursor:pointer">
+          <span class="hs-label">Cuota total <span class="tip-icon">ⓘ</span></span>
+          <span class="hs-val gold" id="hdr-cuota">—</span>
+        </div>
       </div>
     </div>
   </div>
