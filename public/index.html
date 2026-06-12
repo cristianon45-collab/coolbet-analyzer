@@ -144,12 +144,12 @@
     </nav>
     <div class="cb-header-right">
       <div class="header-stats-row">
-        <div class="header-stat" onclick="showTip('selecciones',event)" style="cursor:pointer">
-          <span class="hs-label">Selecciones <span class="tip-icon">ⓘ</span></span>
+        <div class="header-stat">
+          <span class="hs-label">Selecciones <span class="tip-icon" id="tip-sel">ⓘ</span></span>
           <span class="hs-val" id="sel-count">0</span>
         </div>
-        <div class="header-stat" onclick="showTip('cuotaTotal',event)" style="cursor:pointer">
-          <span class="hs-label">Cuota total <span class="tip-icon">ⓘ</span></span>
+        <div class="header-stat">
+          <span class="hs-label">Cuota total <span class="tip-icon" id="tip-cuota">ⓘ</span></span>
           <span class="hs-val gold" id="hdr-cuota">—</span>
         </div>
       </div>
@@ -214,7 +214,7 @@
       <!-- Kelly Criterion -->
       <div id="kelly-row" class="kelly-row hidden">
         <div class="kelly-header">
-          <span class="kelly-title">📐 Criterio de Kelly <span class="kelly-badge">25% fraccionado</span> <span class="tip-icon" onclick="showTip('kelly',event)">ⓘ</span></span>
+          <span class="kelly-title">📐 Criterio de Kelly <span class="kelly-badge">25% fraccionado</span> <span class="tip-icon" id="tip-kelly">ⓘ</span></span>
           <span class="kelly-tooltip" title="Kelly = (p·b − q) / b  aplicado al 25% para reducir varianza. Ingresa tu bankroll total arriba.">?</span>
         </div>
         <div class="kelly-body">

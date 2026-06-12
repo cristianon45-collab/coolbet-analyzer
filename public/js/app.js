@@ -784,5 +784,10 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
 // ── Keyboard: ESC cierra modal ───────────────────────────────────────────────
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+// ── Bind tooltips del header ──────────────────────────────────────────────────
+document.getElementById('tip-sel')?.addEventListener('click', e => { e.stopPropagation(); showTip('selecciones', e); });
+document.getElementById('tip-cuota')?.addEventListener('click', e => { e.stopPropagation(); showTip('cuotaTotal', e); });
+document.getElementById('tip-kelly')?.addEventListener('click', e => { e.stopPropagation(); showTip('kelly', e); });
+
 // ── Init ─────────────────────────────────────────────────────────────────────
 loadMatches('mundial');
