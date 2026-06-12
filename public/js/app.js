@@ -1028,17 +1028,9 @@ async function pollLive() {
   } catch(e) { /* silencioso */ }
 }
 
-// Arrancar poller: inmediato + cada 30 seg
-pollLive();
-setInterval(pollLive, 30000);
-
-// ── Ticker de minuto en vivo — avanza 1' cada 60 seg en pantalla ─────────────
-setInterval(() => {
-  document.querySelectorAll('.live-min').forEach(el => {
-    const cur = parseInt(el.textContent) || 0;
-    if (cur < 120) el.textContent = cur + 1;
-  });
-}, 60000);
+// Live poller desactivado — resultados finales en data/matches.js
+// pollLive();
+// setInterval(pollLive, 30000);
 
 // ── Nav filtros ──────────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn => {

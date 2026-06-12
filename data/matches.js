@@ -126,10 +126,13 @@ const MATCHES = [
       { label:"Ambos anotan — Sí",      odds:1.90, probCasa:0.526, probReal:0.52 }
     ],
     resultado: {
-      status: "LIVE",
-      scoreLocal: 1, scoreVisit: 1,
-      minuto: 90,
-      goles: [],
+      status: "FT",
+      scoreLocal: 2, scoreVisit: 1,
+      goles: [
+        { min: 59, jugador: "L. Krejčí",     equipo: "visit" },
+        { min: 67, jugador: "Hwang In-Beom",  equipo: "local" },
+        { min: 80, jugador: "Oh Hyeon-Gyu",   equipo: "local" }
+      ],
       amarillas: { local: [], visit: [] },
       rojas: []
     },
