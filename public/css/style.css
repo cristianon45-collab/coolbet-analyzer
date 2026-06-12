@@ -1103,100 +1103,60 @@ body {
    SKIN THEMES — tema completo de página por personaje
    ─────────────────────────────────────────────────────────────────── */
 
-/* ── SAORI ATENEA — blanco con lila oscuro ───────────────────────── */
+/* ── SAORI ATENEA — lila oscuro con blanco ───────────────────────── */
 body[data-skin="saoriii"] {
-  --bg-dark:    #f5f0ff;
-  --bg-panel:   #ffffff;
-  --bg-card:    #ede6ff;
-  --bg-hover:   #e0d6ff;
-  --bg-input:   #f0eaff;
-  --gold:       #5500aa;
-  --gold-dim:   #3d007a;
-  --green:      #1a7a5e;
-  --green-dim:  #126045;
-  --red:        #c0284a;
-  --blue:       #7040c0;
-  --text:       #1a0040;
-  --text-muted: #6040a0;
-  --text-dim:   #b0a0d0;
-  --border:     rgba(100,0,180,0.14);
-  --border-hover: rgba(85,0,170,0.5);
-  --shadow:     0 4px 24px rgba(80,0,160,0.15);
+  --bg-dark:    #1a0d2e;
+  --bg-panel:   #231040;
+  --bg-card:    #2a1450;
+  --bg-hover:   #321860;
+  --bg-input:   #180a28;
+  --gold:       #c0a0ff;
+  --gold-dim:   #9070cc;
+  --green:      #4ab4b4;
+  --green-dim:  #358a8a;
+  --red:        #e06080;
+  --blue:       #9070e0;
+  --text:       #f0eaff;
+  --text-muted: #a090cc;
+  --text-dim:   #6050a0;
+  --border:     rgba(180,140,255,0.14);
+  --border-hover: rgba(192,160,255,0.5);
+  --shadow:     0 4px 24px rgba(80,0,160,0.4);
   --radius:     10px; --radius-sm: 6px;
   background: var(--bg-dark);
   color: var(--text);
 }
 body[data-skin="saoriii"] .cb-header {
-  background: linear-gradient(135deg, #ffffff 0%, #f0e6ff 100%);
-  border-bottom: 2px solid rgba(85,0,170,0.25);
-  box-shadow: 0 2px 16px rgba(80,0,160,0.12);
+  background: linear-gradient(135deg, #231040 0%, #1a0d2e 100%);
+  border-bottom: 2px solid rgba(192,160,255,0.25);
+  box-shadow: 0 2px 20px rgba(80,0,160,0.5);
 }
-body[data-skin="saoriii"] .cb-logo-text { color: #1a0040; }
-body[data-skin="saoriii"] .cb-logo-text span { color: var(--gold); }
-body[data-skin="saoriii"] .cb-tagline { color: var(--text-muted); }
-body[data-skin="saoriii"] .nav-btn { color: #6040a0; border-color: rgba(100,0,180,0.2); }
+body[data-skin="saoriii"] .cb-logo-text span { color: var(--gold); text-shadow: 0 0 12px rgba(192,160,255,0.5); }
+body[data-skin="saoriii"] .nav-btn { color: #a090cc; border-color: rgba(180,140,255,0.2); }
 body[data-skin="saoriii"] .nav-btn:hover { border-color: var(--gold); color: var(--gold); }
-body[data-skin="saoriii"] .nav-btn.active { background: var(--gold); color: #fff; border-color: var(--gold); }
-body[data-skin="saoriii"] .match-card { background: #fff; border: 1px solid rgba(100,0,180,0.12); box-shadow: 0 2px 8px rgba(80,0,160,0.06); }
-body[data-skin="saoriii"] .match-card:hover { border-color: rgba(85,0,170,0.3); }
-body[data-skin="saoriii"] .mc-top { border-bottom-color: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .mc-comp { background: rgba(85,0,170,0.1); color: var(--gold); }
-body[data-skin="saoriii"] .mc-fase, .mc-time { color: var(--text-muted); }
-body[data-skin="saoriii"] .mkt-btn { background: #f5f0ff; border-color: rgba(100,0,180,0.14); color: #1a0040; }
-body[data-skin="saoriii"] .mkt-btn:hover { background: #e0d6ff; border-color: var(--gold); }
-body[data-skin="saoriii"] .mkt-btn.selected { background: rgba(85,0,170,0.08); border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
-body[data-skin="saoriii"] .mkt-name { color: var(--text-muted); }
-body[data-skin="saoriii"] .mkt-odds { color: #1a0040; }
-body[data-skin="saoriii"] .mkt-btn.selected .mkt-odds { color: var(--gold); }
-body[data-skin="saoriii"] .cat-tabs { border-bottom-color: rgba(100,0,180,0.12); }
-body[data-skin="saoriii"] .cat-tab { color: var(--text-muted); border-color: rgba(100,0,180,0.15); }
-body[data-skin="saoriii"] .cat-tab.active { background: rgba(85,0,170,0.1); border-color: var(--gold); color: var(--gold); }
-body[data-skin="saoriii"] .cb-slip { background: #fff; border: 1px solid rgba(100,0,180,0.14); }
-body[data-skin="saoriii"] .slip-header { background: #f5f0ff; color: #1a0040; border-bottom-color: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .slip-empty { color: var(--text-muted); }
-body[data-skin="saoriii"] .slip-leg { border-bottom-color: rgba(100,0,180,0.08); }
-body[data-skin="saoriii"] .sl-leg-match { color: var(--text-muted); }
-body[data-skin="saoriii"] .si-mkt-label { color: #1a0040; }
-body[data-skin="saoriii"] .si-mkt-odds { color: var(--gold); }
-body[data-skin="saoriii"] .metric-card { background: #f5f0ff; border-color: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .mc-label { color: var(--text-muted); }
-body[data-skin="saoriii"] .mc-val { color: #1a0040; }
-body[data-skin="saoriii"] .mc-val.gold { color: var(--gold); }
-body[data-skin="saoriii"] .btn-analyze { background: var(--gold); color: #fff; }
+body[data-skin="saoriii"] .nav-btn.active { background: var(--gold); color: #1a0d2e; border-color: var(--gold); }
+body[data-skin="saoriii"] .match-card { background: var(--bg-card); border-color: rgba(180,140,255,0.14); }
+body[data-skin="saoriii"] .match-card:hover { border-color: rgba(192,160,255,0.35); }
+body[data-skin="saoriii"] .mc-comp { background: rgba(192,160,255,0.12); color: var(--gold); border-color: rgba(192,160,255,0.25); }
+body[data-skin="saoriii"] .mkt-btn { background: #231040; border-color: rgba(180,140,255,0.14); }
+body[data-skin="saoriii"] .mkt-btn:hover { background: #321860; border-color: var(--gold); }
+body[data-skin="saoriii"] .mkt-btn.selected { background: rgba(192,160,255,0.1); border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 0 10px rgba(192,160,255,0.2); }
+body[data-skin="saoriii"] .cat-tab.active { background: rgba(192,160,255,0.15); border-color: var(--gold); color: var(--gold); }
+body[data-skin="saoriii"] .cb-slip { background: #231040; border-color: rgba(180,140,255,0.16); }
+body[data-skin="saoriii"] .slip-header { background: #1a0d2e; }
+body[data-skin="saoriii"] .metric-card { background: #1a0d2e; }
+body[data-skin="saoriii"] .btn-analyze { background: var(--gold); color: #1a0d2e; font-weight: 800; }
 body[data-skin="saoriii"] .btn-analyze:hover { background: var(--gold-dim); }
-body[data-skin="saoriii"] .btn-clear { border-color: rgba(100,0,180,0.2); color: var(--text-muted); }
-body[data-skin="saoriii"] .res-box { background: rgba(85,0,170,0.05); border-bottom-color: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .res-team-name { color: #1a0040; }
-body[data-skin="saoriii"] .ls-strip { background: #f0e8ff; border-bottom: 1px solid rgba(85,0,170,0.2); }
-body[data-skin="saoriii"] .ls-title { color: #8800cc; }
-body[data-skin="saoriii"] .ls-match { background: rgba(85,0,170,0.07); border-color: rgba(85,0,170,0.15); }
-body[data-skin="saoriii"] .ls-team { color: #1a0040; }
-body[data-skin="saoriii"] .modal-box { background: #fff; border-color: rgba(85,0,170,0.2); }
-body[data-skin="saoriii"] .modal-header { background: #f5f0ff; color: #1a0040; border-bottom-color: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .stats-card { background: #f5f0ff; border-color: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .stats-card-title { color: var(--gold); }
-body[data-skin="saoriii"] .stat-row { border-bottom-color: rgba(100,0,180,0.08); }
-body[data-skin="saoriii"] .stat-row-label { color: var(--text-muted); }
-body[data-skin="saoriii"] .stat-row-val { color: #1a0040; }
-body[data-skin="saoriii"] .h2h-table td { border-top-color: rgba(100,0,180,0.08); }
-body[data-skin="saoriii"] .indicators-legend { background: rgba(85,0,170,0.05); border-color: rgba(100,0,180,0.12); }
-body[data-skin="saoriii"] .legend-title { color: var(--gold); }
-body[data-skin="saoriii"] .legend-item { color: var(--text-muted); }
-body[data-skin="saoriii"] .prob-bar { background: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .jug-row { background: rgba(85,0,170,0.05); border-color: rgba(100,0,180,0.12); }
-body[data-skin="saoriii"] .jug-row:hover { background: rgba(85,0,170,0.1); border-color: rgba(85,0,170,0.35); }
-body[data-skin="saoriii"] .jug-acagarr-title { color: var(--gold); }
-body[data-skin="saoriii"] .jug-rank { color: var(--gold); }
-body[data-skin="saoriii"] .jug-alseco { background: rgba(85,0,170,0.06); border-color: rgba(85,0,170,0.2); }
-body[data-skin="saoriii"] .jug-alseco-title { color: var(--gold); }
-body[data-skin="saoriii"] .jug-alseco-item { background: rgba(85,0,170,0.05); border-color: rgba(100,0,180,0.1); }
-body[data-skin="saoriii"] .jug-alseco-num { background: var(--gold); color: #fff; }
-body[data-skin="saoriii"] .mc-info-btn { color: var(--text-muted); border-color: rgba(100,0,180,0.15); }
-body[data-skin="saoriii"] .mc-info-btn:hover { color: var(--gold); border-color: var(--gold); }
-body[data-skin="saoriii"] .ve-verdict.pos { background: rgba(26,122,94,0.1); color: #1a7a5e; border-color: rgba(26,122,94,0.3); }
-body[data-skin="saoriii"] .ve-verdict.neg { background: rgba(192,40,74,0.1); color: var(--red); border-color: rgba(192,40,74,0.3); }
-body[data-skin="saoriii"] .ve-verdict.warn { background: rgba(85,0,170,0.08); color: var(--gold); border-color: rgba(85,0,170,0.25); }
-body[data-skin="saoriii"] .cb-footer { background: #f5f0ff; border-top-color: rgba(100,0,180,0.1); color: #9080c0; }
+body[data-skin="saoriii"] .res-box { background: rgba(192,160,255,0.06); }
+body[data-skin="saoriii"] .ls-strip { background: #1a0d2e; border-bottom: 1px solid rgba(192,160,255,0.2); }
+body[data-skin="saoriii"] .modal-box { background: #231040; border-color: rgba(180,140,255,0.2); }
+body[data-skin="saoriii"] .modal-header { background: #1a0d2e; }
+body[data-skin="saoriii"] .stats-card { background: #1a0d2e; }
+body[data-skin="saoriii"] .jug-row { background: rgba(192,160,255,0.05); border-color: rgba(180,140,255,0.14); }
+body[data-skin="saoriii"] .jug-row:hover { background: rgba(192,160,255,0.1); border-color: rgba(192,160,255,0.4); }
+body[data-skin="saoriii"] .jug-alseco { background: rgba(192,160,255,0.07); border-color: rgba(180,140,255,0.22); }
+body[data-skin="saoriii"] .jug-alseco-num { background: var(--gold); color: #1a0d2e; }
+body[data-skin="saoriii"] .cb-footer { background: #1a0d2e; border-top-color: rgba(180,140,255,0.12); color: #7060a0; }
 
 /* ── DARTH MAUL — rojo con negro ─────────────────────────────────── */
 body[data-skin="maul"] {
@@ -1257,151 +1217,69 @@ body[data-skin="maul"] .b0-section { background: rgba(200,0,0,0.06); border-colo
 
 /* ── ARTURO VIDAL / COLO-COLO — blanco con negro ─────────────────── */
 body[data-skin="vidal"] {
-  --bg-dark:    #f7f7f7;
-  --bg-panel:   #ffffff;
-  --bg-card:    #eeeeee;
-  --bg-hover:   #e4e4e4;
-  --bg-input:   #f2f2f2;
-  --gold:       #111111;
-  --gold-dim:   #333333;
-  --green:      #1a7a1a;
-  --green-dim:  #105010;
+  --bg-dark:    #0a0a0a;
+  --bg-panel:   #141414;
+  --bg-card:    #1c1c1c;
+  --bg-hover:   #242424;
+  --bg-input:   #0e0e0e;
+  --gold:       #f5f5f5;
+  --gold-dim:   #cccccc;
+  --green:      #1db954;
+  --green-dim:  #16913f;
   --red:        #cc0000;
-  --blue:       #333333;
-  --text:       #111111;
-  --text-muted: #666666;
-  --text-dim:   #bbbbbb;
-  --border:     rgba(0,0,0,0.12);
-  --border-hover: rgba(0,0,0,0.4);
+  --blue:       #f5f5f5;
+  --text:       #f5f5f5;
+  --text-muted: #888888;
+  --text-dim:   #444444;
+  --border:     rgba(255,255,255,0.1);
+  --border-hover: rgba(255,255,255,0.3);
   background: var(--bg-dark);
   color: var(--text);
 }
 body[data-skin="vidal"] .cb-header {
-  background: #ffffff;
-  border-bottom: 4px solid #111111;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  background: linear-gradient(180deg, #1c1c1c 0%, #0a0a0a 100%);
+  border-bottom: 4px solid #fff;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.8);
+  position: relative;
 }
-body[data-skin="vidal"] .cb-logo-text { color: #111; }
-body[data-skin="vidal"] .cb-logo-text span { color: #cc0000; }
-body[data-skin="vidal"] .cb-tagline { color: #666; }
-body[data-skin="vidal"] .nav-btn { color: #666; border-color: rgba(0,0,0,0.18); }
-body[data-skin="vidal"] .nav-btn:hover { border-color: #111; color: #111; }
-body[data-skin="vidal"] .nav-btn.active { background: #111; color: #fff; border-color: #111; }
-body[data-skin="vidal"] .match-card { background: #fff; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
-body[data-skin="vidal"] .match-card:hover { border-color: rgba(0,0,0,0.25); }
-body[data-skin="vidal"] .mc-top { border-bottom-color: rgba(0,0,0,0.08); }
-body[data-skin="vidal"] .mc-comp { background: rgba(0,0,0,0.07); color: #cc0000; border-color: rgba(0,0,0,0.12); }
-body[data-skin="vidal"] .mc-fase, body[data-skin="vidal"] .mc-time { color: #666; }
-body[data-skin="vidal"] .team-name { color: #111; }
-body[data-skin="vidal"] .mkt-btn { background: #f2f2f2; border-color: rgba(0,0,0,0.12); color: #111; }
-body[data-skin="vidal"] .mkt-btn:hover { background: #e4e4e4; border-color: #111; }
-body[data-skin="vidal"] .mkt-btn.selected { background: #e8e8e8; border-color: #111; box-shadow: 0 0 0 1px #111; }
-body[data-skin="vidal"] .mkt-name { color: #666; }
-body[data-skin="vidal"] .mkt-odds { color: #111; }
-body[data-skin="vidal"] .mkt-btn.selected .mkt-odds { color: #111; font-weight: 800; }
-body[data-skin="vidal"] .cat-tabs { border-bottom: 2px solid #111; }
-body[data-skin="vidal"] .cat-tab { color: #666; border-color: rgba(0,0,0,0.15); }
-body[data-skin="vidal"] .cat-tab:hover { border-color: #111; color: #111; }
-body[data-skin="vidal"] .cat-tab.active { background: #111; border-color: #111; color: #fff; }
-body[data-skin="vidal"] .cat-tab-jugada { border-color: rgba(204,0,0,0.4); color: #cc0000; }
-body[data-skin="vidal"] .cat-tab-jugada.active { background: #cc0000; border-color: #cc0000; color: #fff; }
-body[data-skin="vidal"] .ve-badge.pos { background: rgba(26,122,26,0.12); color: #1a7a1a; border-color: rgba(26,122,26,0.35); }
-body[data-skin="vidal"] .ve-badge.neg { background: rgba(204,0,0,0.1); color: #cc0000; border-color: rgba(204,0,0,0.3); }
-body[data-skin="vidal"] .ve-badge.neu { background: rgba(0,0,0,0.07); color: #555; border-color: rgba(0,0,0,0.18); }
-body[data-skin="vidal"] .prob-bar { background: rgba(0,0,0,0.08); }
-body[data-skin="vidal"] .prob-fill.pos { background: #1a7a1a; }
-body[data-skin="vidal"] .prob-fill.neg { background: #cc0000; }
-body[data-skin="vidal"] .prob-fill.neu { background: #555; }
-body[data-skin="vidal"] .cb-slip { background: #fff; border: 1px solid rgba(0,0,0,0.12); }
-body[data-skin="vidal"] .slip-header { background: #111; color: #fff; }
-body[data-skin="vidal"] .slip-empty { color: #999; }
-body[data-skin="vidal"] .slip-leg { border-bottom-color: rgba(0,0,0,0.08); }
-body[data-skin="vidal"] .sl-leg-match { color: #666; }
-body[data-skin="vidal"] .si-mkt-label { color: #111; }
-body[data-skin="vidal"] .si-mkt-odds { color: #cc0000; }
-body[data-skin="vidal"] .si-remove { color: #999; }
-body[data-skin="vidal"] .metric-card { background: #f2f2f2; border-color: rgba(0,0,0,0.1); }
-body[data-skin="vidal"] .mc-label { color: #666; }
-body[data-skin="vidal"] .mc-val { color: #111; }
-body[data-skin="vidal"] .mc-val.gold { color: #cc0000; }
-body[data-skin="vidal"] .mc-val.green { color: #1a7a1a; }
-body[data-skin="vidal"] .mc-val.red { color: #cc0000; }
-body[data-skin="vidal"] .btn-analyze { background: #111; color: #fff; }
-body[data-skin="vidal"] .btn-analyze:hover { background: #333; }
-body[data-skin="vidal"] .btn-clear { border-color: rgba(0,0,0,0.18); color: #666; }
-body[data-skin="vidal"] .btn-clear:hover { border-color: #cc0000; color: #cc0000; }
-body[data-skin="vidal"] .res-box { background: rgba(0,0,0,0.04); border-bottom-color: rgba(0,0,0,0.08); }
-body[data-skin="vidal"] .res-team-name { color: #111; }
-body[data-skin="vidal"] .res-num { color: #111; }
-body[data-skin="vidal"] .res-num.winner { color: #cc0000; }
-body[data-skin="vidal"] .ls-strip { background: #111; border-bottom: none; }
-body[data-skin="vidal"] .ls-title { color: #fff; }
-body[data-skin="vidal"] .ls-match { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
-body[data-skin="vidal"] .ls-team { color: #fff; }
-body[data-skin="vidal"] .ls-score { color: #f4c430; }
-body[data-skin="vidal"] .modal-box { background: #fff; border-color: rgba(0,0,0,0.15); }
-body[data-skin="vidal"] .modal-header { background: #111; color: #fff; border-bottom-color: rgba(255,255,255,0.1); }
-body[data-skin="vidal"] .modal-close { color: #aaa; }
-body[data-skin="vidal"] .stats-card { background: #f2f2f2; border-color: rgba(0,0,0,0.1); }
-body[data-skin="vidal"] .stats-card-title { color: #111; }
-body[data-skin="vidal"] .stat-row { border-bottom-color: rgba(0,0,0,0.07); }
-body[data-skin="vidal"] .stat-row-label { color: #666; }
-body[data-skin="vidal"] .stat-row-val { color: #111; }
-body[data-skin="vidal"] .h2h-table th { color: #666; }
-body[data-skin="vidal"] .h2h-table td { border-top-color: rgba(0,0,0,0.07); color: #111; }
-body[data-skin="vidal"] .indicators-legend { background: #f2f2f2; border-color: rgba(0,0,0,0.1); }
-body[data-skin="vidal"] .legend-title { color: #cc0000; }
-body[data-skin="vidal"] .legend-item { color: #666; }
-body[data-skin="vidal"] .jug-row { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
-body[data-skin="vidal"] .jug-row:hover { background: rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.25); }
-body[data-skin="vidal"] .jug-row.jug-sel { background: rgba(0,0,0,0.08); border-color: #111; }
-body[data-skin="vidal"] .jug-rank { color: #cc0000; }
-body[data-skin="vidal"] .jug-acagarr-title { color: #cc0000; }
-body[data-skin="vidal"] .jug-label { color: #111; }
-body[data-skin="vidal"] .jug-odds { color: #111; }
-body[data-skin="vidal"] .jug-pct-bar { background: linear-gradient(90deg, #1a7a1a, #2aaa2a); }
-body[data-skin="vidal"] .jug-pct-num { color: #1a7a1a; }
-body[data-skin="vidal"] .jug-alt { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.12); color: #666; }
-body[data-skin="vidal"] .jug-alt:hover { border-color: #111; color: #111; }
-body[data-skin="vidal"] .jug-alt.jug-alt-sel { border-color: #111; color: #111; background: rgba(0,0,0,0.1); }
-body[data-skin="vidal"] .jug-alseco { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.14); }
-body[data-skin="vidal"] .jug-alseco-title { color: #333; }
-body[data-skin="vidal"] .jug-alseco-item { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); }
-body[data-skin="vidal"] .jug-alseco-num { background: #111; color: #fff; }
-body[data-skin="vidal"] .jug-alseco-label { color: #111; }
-body[data-skin="vidal"] .jug-alseco-odds { color: #cc0000; }
-body[data-skin="vidal"] .jug-alseco-total { border-top-color: rgba(0,0,0,0.1); color: #666; }
-body[data-skin="vidal"] .jug-alseco-totalodds { color: #cc0000; }
-body[data-skin="vidal"] .mc-info-btn { color: #666; border-color: rgba(0,0,0,0.14); }
-body[data-skin="vidal"] .mc-info-btn:hover { color: #111; border-color: #111; }
-body[data-skin="vidal"] .ve-verdict.pos { background: rgba(26,122,26,0.1); color: #1a7a1a; border-color: rgba(26,122,26,0.3); }
-body[data-skin="vidal"] .ve-verdict.neg { background: rgba(204,0,0,0.08); color: #cc0000; border-color: rgba(204,0,0,0.25); }
-body[data-skin="vidal"] .ve-verdict.warn { background: rgba(0,0,0,0.06); color: #555; border-color: rgba(0,0,0,0.18); }
-body[data-skin="vidal"] .kelly-row { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); }
-body[data-skin="vidal"] .kelly-title { color: #666; }
-body[data-skin="vidal"] .kelly-pct.ok { color: #1a7a1a; }
-body[data-skin="vidal"] .kelly-amount { color: #111; }
-body[data-skin="vidal"] .section-label { color: #666; }
-body[data-skin="vidal"] .loading { color: #666; }
-body[data-skin="vidal"] .modal-section-title { color: #666; }
-body[data-skin="vidal"] .b0-section { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); }
-body[data-skin="vidal"] .b0-lbl { color: #666; }
-body[data-skin="vidal"] .b0-val { color: #111; }
-body[data-skin="vidal"] .cb-footer { background: #eeeeee; border-top-color: rgba(0,0,0,0.1); color: #888; }
-body[data-skin="vidal"] .tip-box { background: #fff; border-color: rgba(0,0,0,0.2); }
-body[data-skin="vidal"] .tip-titulo { color: #cc0000; }
-body[data-skin="vidal"] .tip-texto { color: #555; }
-body[data-skin="vidal"] .stat-badge { background: rgba(0,0,0,0.06); color: #666; border-color: rgba(0,0,0,0.12); }
-body[data-skin="vidal"] .stat-badge.good { background: rgba(26,122,26,0.1); color: #1a7a1a; border-color: rgba(26,122,26,0.3); }
-body[data-skin="vidal"] .forma-dot.V { background: #1a7a1a; }
-body[data-skin="vidal"] .alerta-chip { background: rgba(204,0,0,0.1); color: #cc0000; border-color: rgba(204,0,0,0.3); }
 /* Franja roja Colo-Colo arriba del header */
 body[data-skin="vidal"] .cb-header::before {
-  content: ''; display: block;
-  height: 4px; background: #cc0000;
-  position: absolute; top: 0; left: 0; right: 0;
+  content: ''; display: block; position: absolute;
+  top: 0; left: 0; right: 0; height: 4px; background: #cc0000;
 }
-body[data-skin="vidal"] .cb-header { position: relative; padding-top: 4px; }
+body[data-skin="vidal"] .cb-logo-text span { color: #cc0000; }
+body[data-skin="vidal"] .nav-btn.active { background: #fff; color: #0a0a0a; border-color: #fff; }
+body[data-skin="vidal"] .match-card { background: #1c1c1c; border-color: rgba(255,255,255,0.1); }
+body[data-skin="vidal"] .match-card:hover { border-color: rgba(255,255,255,0.22); }
+body[data-skin="vidal"] .mc-comp { background: rgba(204,0,0,0.15); color: #cc0000; border-color: rgba(204,0,0,0.3); }
+body[data-skin="vidal"] .mkt-btn { background: #141414; }
+body[data-skin="vidal"] .mkt-btn.selected { border-color: #fff; box-shadow: 0 0 0 1px #fff; }
+body[data-skin="vidal"] .mkt-btn.selected .mkt-odds { color: #fff; }
+body[data-skin="vidal"] .cat-tabs { border-bottom: 2px solid rgba(255,255,255,0.15); }
+body[data-skin="vidal"] .cat-tab.active { background: #fff; border-color: #fff; color: #0a0a0a; }
+body[data-skin="vidal"] .cat-tab-jugada { border-color: rgba(204,0,0,0.4); color: #cc0000; }
+body[data-skin="vidal"] .cat-tab-jugada.active { background: #cc0000; border-color: #cc0000; color: #fff; }
+body[data-skin="vidal"] .cb-slip { background: #141414; border-color: rgba(255,255,255,0.12); }
+body[data-skin="vidal"] .slip-header { background: #0a0a0a; border-bottom: 2px solid #fff; }
+body[data-skin="vidal"] .metric-card { background: #0a0a0a; }
+body[data-skin="vidal"] .btn-analyze { background: #fff; color: #0a0a0a; font-weight: 800; }
+body[data-skin="vidal"] .btn-analyze:hover { background: #ccc; }
+body[data-skin="vidal"] .btn-clear:hover { border-color: #cc0000; color: #cc0000; }
+body[data-skin="vidal"] .si-mkt-odds { color: #cc0000; }
+body[data-skin="vidal"] .mc-val.gold { color: #cc0000; }
+body[data-skin="vidal"] .mc-val.green { color: #1db954; }
+body[data-skin="vidal"] .res-num.winner { color: #cc0000; }
+body[data-skin="vidal"] .ls-strip { background: #000; border-bottom: 2px solid #fff; }
+body[data-skin="vidal"] .ls-score { color: #cc0000; }
+body[data-skin="vidal"] .modal-box { background: #1c1c1c; border-color: rgba(255,255,255,0.14); }
+body[data-skin="vidal"] .modal-header { background: #0a0a0a; border-bottom: 2px solid #fff; }
+body[data-skin="vidal"] .stats-card { background: #0a0a0a; }
+body[data-skin="vidal"] .jug-rank { color: #cc0000; }
+body[data-skin="vidal"] .jug-acagarr-title { color: #cc0000; }
+body[data-skin="vidal"] .jug-alseco-odds { color: #cc0000; }
+body[data-skin="vidal"] .jug-alseco-totalodds { color: #cc0000; }
+body[data-skin="vidal"] .jug-alseco-num { background: #fff; color: #0a0a0a; }
+body[data-skin="vidal"] .cb-footer { background: #000; border-top: 2px solid #fff; }
 
 /* ── MÓVIL LANDSCAPE ─────────────────────────────────────────────────── */
 @media (max-height: 520px) and (orientation: landscape) {

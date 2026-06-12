@@ -1334,7 +1334,53 @@ const SKINS = {
     <rect x="16" y="95" width="20" height="9" rx="3" fill="#111"/>
     <rect x="44" y="95" width="20" height="9" rx="3" fill="#111"/>
     <rect x="17" y="96" width="18" height="3" rx="2" fill="#333"/>
-    <rect x="45" y="96" width="18" height="3" rx="2" fill="#333"/>`
+    <rect x="45" y="96" width="18" height="3" rx="2" fill="#333"/>
+
+    <!-- FERRARI rojo al lado (pequeño, icónico) -->
+    <!-- Carrocería -->
+    <path d="M-18 85 Q-16 80 -12 79 L2 79 Q5 79 6 81 L7 85 Z" fill="#cc0000"/>
+    <path d="M-10 79 Q-8 74 -5 73 L0 73 Q3 73 4 75 L4 79 Z" fill="#dd1111"/>
+    <!-- Ventana -->
+    <path d="M-9 79 Q-7 75 -4 74 L0 74 Q2 74 3 76 L3 79 Z" fill="#88ccff" opacity="0.7"/>
+    <!-- Ruedas -->
+    <circle cx="-14" cy="86" r="4" fill="#111"/>
+    <circle cx="-14" cy="86" r="2.2" fill="#555"/>
+    <circle cx="3" cy="86" r="4" fill="#111"/>
+    <circle cx="3" cy="86" r="2.2" fill="#555"/>
+    <!-- Rin -->
+    <circle cx="-14" cy="86" r="1" fill="#aaa"/>
+    <circle cx="3" cy="86" r="1" fill="#aaa"/>
+    <!-- Spoiler trasero -->
+    <rect x="-19" y="82" width="3" height="1.5" rx="0.5" fill="#cc0000"/>
+    <!-- Escudo Ferrari -->
+    <rect x="-6" y="80" width="4" height="5" rx="0.5" fill="#f4c430"/>
+    <path d="M-5.5 81 L-4 80.5 L-2.5 81 L-2.5 83.5 L-4 84.5 L-5.5 83.5 Z" fill="#cc0000"/>
+    <!-- Logo Prancing Horse simplificado -->
+    <text x="-4" y="83.5" text-anchor="middle" font-size="2.5" fill="#fff">🐎</text>
+
+    <!-- COPAS al costado derecho -->
+    <!-- Copa Libertadores -->
+    <g transform="translate(68,20)">
+      <path d="M0 0 L2 0 L3 8 Q4 12 2 14 L1 15 L-1 15 Q-3 14 -2 12 L-1 8 Z" fill="none" stroke="#f4c430" stroke-width="1.2"/>
+      <rect x="-2" y="15" width="6" height="1.5" rx="0.5" fill="#f4c430"/>
+      <rect x="-1" y="16.5" width="4" height="3" rx="0.5" fill="#f4c430"/>
+      <text x="1" y="11" text-anchor="middle" font-size="3.5" fill="#f4c430" font-weight="bold">L</text>
+      <text x="1" y="-2" text-anchor="middle" font-size="3" fill="#f4c430" opacity="0.7">★</text>
+    </g>
+    <!-- Copa Chile -->
+    <g transform="translate(68,42)">
+      <path d="M0 0 L1.5 0 L2.5 6 Q3 9 1.5 11 L0.5 12 L-0.5 12 Q-2 11 -1.5 9 L-0.5 6 Z" fill="none" stroke="#f4c430" stroke-width="1"/>
+      <rect x="-1.5" y="12" width="5" height="1.2" rx="0.4" fill="#f4c430"/>
+      <rect x="-0.5" y="13" width="3" height="2.5" rx="0.4" fill="#f4c430"/>
+      <text x="0.5" y="8.5" text-anchor="middle" font-size="3" fill="#f4c430" font-weight="bold">C</text>
+    </g>
+    <!-- Scudetto Serie A -->
+    <g transform="translate(68,62)">
+      <path d="M0 0 L1.5 0 L2.5 5 Q3 8 1.5 10 L0.5 11 L-0.5 11 Q-2 10 -1.5 8 L-0.5 5 Z" fill="none" stroke="#c0c0c0" stroke-width="1"/>
+      <rect x="-1.5" y="11" width="5" height="1.2" rx="0.4" fill="#c0c0c0"/>
+      <rect x="-0.5" y="12" width="3" height="2" rx="0.4" fill="#c0c0c0"/>
+      <text x="0.5" y="7.5" text-anchor="middle" font-size="3" fill="#c0c0c0" font-weight="bold">S</text>
+    </g>`
   }
 };
 
