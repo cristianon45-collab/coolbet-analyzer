@@ -369,6 +369,13 @@ function setBookie(bookie) {
   // Update button states
   document.getElementById('bookie-cb').classList.toggle('active', bookie === 'coolbet');
   document.getElementById('bookie-bt').classList.toggle('active', bookie === 'betano');
+  // Update logo text
+  const logo = document.getElementById('cb-logo-text');
+  if (logo) {
+    logo.innerHTML = bookie === 'betano'
+      ? 'beta<span>no</span>'
+      : 'cool<span>bet</span>';
+  }
   // Update tagline
   updateTagline();
   // Clear selections and re-render all
@@ -1073,8 +1080,8 @@ document.getElementById('tip-kelly')?.addEventListener('click', e => { e.stopPro
 
 // ── Skin switcher ─────────────────────────────────────────────────────────────
 const SKINS = {
-  saoriii: {
-    tagline: 'con <strong>Saori Atenea</strong> 🏛️',
+  saoriii_REMOVED: {
+    tagline: '',
     glow: 'radial-gradient(ellipse,rgba(180,160,255,.35) 0%,transparent 70%)',
     svg: `<defs>
       <radialGradient id="sskin" cx="50%" cy="40%" r="55%">
@@ -1490,7 +1497,7 @@ document.querySelectorAll('.skin-btn').forEach(btn => {
 });
 
 // Restaurar skin guardado
-const savedSkin = localStorage.getItem('coolbet-skin') || 'maul';
+const savedSkin = ['maul','vidal'].includes(localStorage.getItem('coolbet-skin')) ? localStorage.getItem('coolbet-skin') : 'maul';
 applySkin(savedSkin);
 
 // Restaurar bookie guardado
@@ -1501,6 +1508,11 @@ applySkin(savedSkin);
     cb.classList.toggle('active', currentBookie === 'coolbet');
     bt.classList.toggle('active', currentBookie === 'betano');
   }
+  if (currentBookie === 'betano') {
+    const logo = document.getElementById('cb-logo-text');
+    if (logo) logo.innerHTML = 'beta<span>no</span>';
+  }
+  updateTagline();
 })();
 
 // ── Init ─────────────────────────────────────────────────────────────────────
