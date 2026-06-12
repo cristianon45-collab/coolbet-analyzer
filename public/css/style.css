@@ -29,14 +29,12 @@
 .ls-score { color: var(--gold); font-weight: 800; font-size: 13px; padding: 0 4px; }
 .ls-badge { font-size: 9px; color: var(--text-muted); margin-left: 2px; }
 .ls-live-dot { color: #e34; animation: livePulse 1s infinite; }
-.live-widget-bar {
+.ls-strip {
   background: #0a1520;
   border-bottom: 1px solid rgba(255,255,255,0.07);
-  padding: 6px 16px 0;
-}
-.live-widget-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 4px;
+  padding: 5px 14px;
+  display: flex; align-items: center; gap: 10px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 .ls-ext-btn {
   display: inline-flex; align-items: center; gap: 5px;
