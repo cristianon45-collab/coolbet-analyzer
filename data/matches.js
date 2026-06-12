@@ -51,14 +51,17 @@ const MATCHES = [
     ],
     resultado: {
       status: "FT",
-      scoreLocal: 2, scoreVisit: 1,
+      scoreLocal: 2, scoreVisit: 0,
       goles: [
-        { min: 17, jugador: "H. Lozano", equipo: "local" },
-        { min: 54, jugador: "R. Jiménez", equipo: "local" },
-        { min: 71, jugador: "P. de Bruyne", equipo: "visit" }
+        { min: 9,  jugador: "J. Quiñones", equipo: "local" },
+        { min: 67, jugador: "R. Jiménez",  equipo: "local" }
       ],
-      amarillas: { local: ["E. Álvarez (38)", "H. Moreno (82)"], visit: ["T. Nodada (58)", "B. Tau (90)"] },
-      rojas: []
+      amarillas: { local: [], visit: [] },
+      rojas: [
+        { min: 49,  jugador: "S. Sithole",  equipo: "visit" },
+        { min: 84,  jugador: "T. Zwane",    equipo: "visit" },
+        { min: 92,  jugador: "C. Montes",   equipo: "local" }
+      ]
     },
     contexto: {
       jornada: 1,
@@ -124,13 +127,10 @@ const MATCHES = [
     ],
     resultado: {
       status: "LIVE",
-      scoreLocal: 1, scoreVisit: 1,
-      minuto: 67,
-      goles: [
-        { min: 22, jugador: "H. Son", equipo: "local" },
-        { min: 61, jugador: "T. Souček", equipo: "visit" }
-      ],
-      amarillas: { local: ["K. Min-jae (44)"], visit: ["A. Barák (55)"] },
+      scoreLocal: 0, scoreVisit: 0,
+      minuto: "En curso",
+      goles: [],
+      amarillas: { local: [], visit: [] },
       rojas: []
     },
     contexto: {

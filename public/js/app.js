@@ -204,7 +204,7 @@ function renderMatchCard(m, cat) {
     // Amarillas
     const amL = (res.amarillas?.local || []).map(a => `<span class="res-tarjeta amarilla">🟨 ${a}</span>`).join('');
     const amV = (res.amarillas?.visit || []).map(a => `<span class="res-tarjeta amarilla">🟨 ${a}</span>`).join('');
-    const rojas = (res.rojas || []).map(r => `<span class="res-tarjeta roja">🟥 ${r.jugador} ${r.min}'</span>`).join('');
+    const rojas = (res.rojas || []).map(r => `<span class="res-tarjeta roja">🟥 ${r.jugador} ${typeof r.min === 'number' ? r.min + "'" : ''} <em>(${r.equipo === 'local' ? m.local : r.equipo === 'visit' ? m.visit : r.equipo})</em></span>`).join('');
 
     resultadoHtml = `
     <div class="res-box ${res.status === 'LIVE' ? 'res-live' : ''}">
