@@ -866,21 +866,88 @@ function renderSimResult(d, items) {
   `;
 }
 
-// ── Reloj en vivo — actualiza minuto cada 60 seg ─────────────────────────────
-function startLiveClock() {
-  setInterval(() => {
-    allMatches.forEach(m => {
-      if (!m.resultado || m.resultado.status !== 'LIVE') return;
-      const minEl = document.getElementById(`live-min-${m.id}`);
-      if (!minEl) return;
-      const cur = parseInt(minEl.textContent) || 0;
-      const next = cur >= 90 ? cur + 1 : cur + 1; // puede ir a extra time
-      minEl.textContent = next;
-      m.resultado.minuto = next;
-    });
-  }, 60000); // cada minuto real
+// ── Live scores ESPN poller ───────────────────────────────────────────────────
+// Normaliza nombre ESPN → nombre local del partido
+function normName(n) {
+  return (n || '').toLowerCase()
+    .replace(/republic/g,'').replace(/korea/g,'corea')
+    .replace(/czechia/g,'chequia').replace(/czech/g,'chequia')
+    .replace(/south africa/g,'sudáfrica')
+    .replace(/mexico/g,'méxico').replace(/canada/g,'canadá')
+    .replace(/brazil/g,'brasil').replace(/morocco/g,'marruecos')
+    .replace(/germany/g,'alemania').replace(/netherlands/g,'países bajos')
+    .replace(/japan/g,'japón').replace(/france/g,'francia')
+    .replace(/senegal/g,'senegal').replace(/argentina/g,'argentina')
+    .replace(/algeria/g,'argelia').replace(/england/g,'inglaterra')
+    .replace(/croatia/g,'croacia').replace(/portugal/g,'portugal')
+    .replace(/united states/g,'estados unidos').replace(/usa/g,'estados unidos')
+    .replace(/paraguay/g,'paraguay').replace(/curacao/g,'curaçao')
+    .replace(/dr congo/g,'rep. d. congo').replace(/bosnia/g,'bosnia')
+    .trim();
 }
-startLiveClock();
+
+async function pollLive() {
+  try {
+    const data = await fetch('/api/live').then(r => r.json());
+    if (!Array.isArray(data) || !data.length) return;
+
+    const bar = document.getElementById('ls-bar');
+    const lsMatches = document.getElementById('ls-matches');
+    const liveItems = data.filter(d => d.status === 'in' || d.status === 'post');
+
+    // Barra superior con todos los partidos del día
+    if (data.length) {
+      bar.style.display = 'block';
+      lsMatches.innerHTML = data.map(d => {
+        const isLive = d.status === 'in';
+        const isFT   = d.status === 'post';
+        const badge  = isLive ? `<span class="ls-live-dot">●</span> ${d.clock}` : isFT ? 'FT' : d.statusName;
+        return `<div class="ls-match ${isLive ? 'ls-match-live' : isFT ? 'ls-match-ft' : ''}">
+          <span class="ls-team">${d.homeTeam}</span>
+          <span class="ls-score">${d.scoreHome} - ${d.scoreAway}</span>
+          <span class="ls-team">${d.awayTeam}</span>
+          <span class="ls-badge">${badge}</span>
+        </div>`;
+      }).join('');
+    }
+
+    // Actualizar resultado en las cards de la app
+    data.forEach(espn => {
+      const homeN = normName(espn.homeTeam);
+      const awayN = normName(espn.awayTeam);
+      const match = allMatches.find(m =>
+        normName(m.local).includes(homeN) || homeN.includes(normName(m.local)) ||
+        normName(m.visit).includes(awayN) || awayN.includes(normName(m.visit))
+      );
+      if (!match) return;
+
+      const newStatus = espn.status === 'in' ? 'LIVE' : espn.status === 'post' ? 'FT' : 'PRE';
+      const prev = match.resultado || {};
+
+      // Solo actualizar si cambió algo
+      if (prev.status === newStatus && prev.scoreLocal === espn.scoreHome && prev.scoreAway === espn.scoreAway) return;
+
+      match.resultado = {
+        status:    newStatus,
+        scoreLocal: espn.scoreHome,
+        scoreVisit: espn.scoreAway,
+        minuto:    espn.clock ? espn.clock.replace("'","") : prev.minuto,
+        goles:     espn.goals || prev.goles || [],
+        amarillas: espn.amarillas || prev.amarillas || { local:[], visit:[] },
+        rojas:     espn.rojas || prev.rojas || []
+      };
+
+      // Re-render la card
+      const card = document.getElementById(`mc-${match.id}`);
+      if (card) card.outerHTML = renderMatchCard(match);
+    });
+
+  } catch(e) { /* silencioso */ }
+}
+
+// Arrancar poller: inmediato + cada 45 seg
+pollLive();
+setInterval(pollLive, 45000);
 
 // ── Nav filtros ──────────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn => {

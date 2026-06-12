@@ -1,3 +1,35 @@
+/* ── LIVESCORE BAR ──────────────────────────────────────────────────── */
+.livescore-bar {
+  background: #0a1520;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 6px 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.livescore-bar-inner {
+  display: flex; align-items: center; gap: 14px;
+  min-width: max-content;
+}
+.ls-title {
+  font-size: 10px; font-weight: 700; color: #e34;
+  letter-spacing: .5px; white-space: nowrap;
+  animation: livePulse 1.2s ease-in-out infinite;
+}
+.ls-matches { display: flex; gap: 10px; align-items: center; }
+.ls-match {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; padding: 4px 10px;
+  font-size: 11px; white-space: nowrap;
+}
+.ls-match-live { border-color: rgba(230,50,50,.4); background: rgba(230,50,50,.08); }
+.ls-match-ft   { opacity: 0.65; }
+.ls-team  { color: var(--text); font-weight: 600; }
+.ls-score { color: var(--gold); font-weight: 800; font-size: 13px; padding: 0 4px; }
+.ls-badge { font-size: 9px; color: var(--text-muted); margin-left: 2px; }
+.ls-live-dot { color: #e34; animation: livePulse 1s infinite; }
+
 /* ── RESET & BASE ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

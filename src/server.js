@@ -518,6 +518,77 @@ app.post('/api/simulate', (req, res) => {
   });
 });
 
+// ─── Live scores proxy → ESPN API pública (sin key) ─────────────────────────
+let liveCache = { ts: 0, data: null };
+
+app.get('/api/live', async (req, res) => {
+  if (Date.now() - liveCache.ts < 45000 && liveCache.data) {
+    return res.json(liveCache.data);
+  }
+  try {
+    const https = require('https');
+    const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
+    const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/FIFA.WORLD/scoreboard?dates=${today}`;
+
+    const raw = await new Promise((resolve, reject) => {
+      https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, r => {
+        let d = '';
+        r.on('data', c => d += c);
+        r.on('end', () => { try { resolve(JSON.parse(d)); } catch(e) { reject(e); } });
+      }).on('error', reject);
+    });
+
+    const events = (raw.events || []).map(ev => {
+      const comp   = ev.competitions?.[0];
+      const home   = comp?.competitors?.find(c => c.homeAway === 'home');
+      const away   = comp?.competitors?.find(c => c.homeAway === 'away');
+      const status = ev.status?.type;
+      const clock  = ev.status?.displayClock ?? '';
+      const period = ev.status?.period ?? 0;
+
+      const goals = [];
+      (comp?.details || []).forEach(d => {
+        if (d.type?.text === 'Goal' || d.type?.text === 'Penalty - Goal') {
+          goals.push({
+            jugador: d.athletesInvolved?.[0]?.displayName ?? '—',
+            min: d.clock?.displayValue ?? '?',
+            equipo: d.team?.id === home?.team?.id ? 'local' : 'visit'
+          });
+        }
+      });
+
+      const amarillas = { local: [], visit: [] };
+      const rojas = [];
+      (comp?.details || []).forEach(d => {
+        const isHome = d.team?.id === home?.team?.id;
+        const jugador = d.athletesInvolved?.[0]?.displayName ?? '—';
+        const min = d.clock?.displayValue ?? '?';
+        if (d.type?.text === 'Yellow Card') {
+          (isHome ? amarillas.local : amarillas.visit).push(`${jugador} (${min})`);
+        }
+        if (d.type?.text === 'Red Card' || d.type?.text === 'Yellow-Red Card') {
+          rojas.push({ jugador, min, equipo: isHome ? 'local' : 'visit' });
+        }
+      });
+
+      return {
+        homeTeam:  home?.team?.displayName ?? '',
+        awayTeam:  away?.team?.displayName ?? '',
+        scoreHome: parseInt(home?.score ?? 0),
+        scoreAway: parseInt(away?.score ?? 0),
+        status:    status?.state ?? 'pre',   // 'pre' | 'in' | 'post'
+        statusName: status?.shortDetail ?? '',
+        clock, period, goals, amarillas, rojas
+      };
+    });
+
+    liveCache = { ts: Date.now(), data: events };
+    res.json(events);
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`\n✅  Coolbet Analyzer corriendo en → http://localhost:${PORT}\n`);
