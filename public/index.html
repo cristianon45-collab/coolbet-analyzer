@@ -17,9 +17,9 @@
 
     <!-- BRAND BLOCK: mascota + logo -->
     <div class="cb-brand">
-      <!-- Mascota Darth Maul -->
-      <div class="saori-mascot">
-        <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg" class="saori-svg">
+      <!-- Mascota dinámica + selector de skin -->
+      <div class="saori-mascot" id="mascot-wrap">
+        <svg viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg" class="saori-svg" id="mascot-svg">
           <defs>
             <radialGradient id="faceGrad" cx="50%" cy="40%" r="55%">
               <stop offset="0%" stop-color="#cc1010"/>
@@ -135,14 +135,20 @@
           <rect x="45" y="96" width="18" height="3" rx="2" fill="#222"/>
         </svg>
 
-        <!-- Halo / glow rojo Sith -->
-        <div class="saori-glow" style="background:radial-gradient(ellipse,rgba(180,0,0,.35) 0%,transparent 70%)"></div>
+        <div class="saori-glow" id="mascot-glow"></div>
+      </div>
+
+      <!-- Selector de skin -->
+      <div class="skin-picker">
+        <button class="skin-btn" data-skin="saoriii" title="Modo Saoriii">🌸</button>
+        <button class="skin-btn active" data-skin="maul" title="Modo Darth Maul">⚔️</button>
+        <button class="skin-btn" data-skin="vidal" title="Modo Arturo Vidal">🍺</button>
       </div>
 
       <!-- Texto de marca -->
       <div class="cb-brand-text">
         <div class="cb-logo-text">cool<span>bet</span></div>
-        <div class="cb-tagline">con <strong>darth maul</strong> ⚔️</div>
+        <div class="cb-tagline" id="mascot-tagline">con <strong>darth maul</strong> ⚔️</div>
       </div>
     </div>
     <nav class="cb-nav">

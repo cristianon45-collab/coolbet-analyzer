@@ -883,5 +883,220 @@ document.getElementById('tip-sel')?.addEventListener('click', e => { e.stopPropa
 document.getElementById('tip-cuota')?.addEventListener('click', e => { e.stopPropagation(); showTip('cuotaTotal', e); });
 document.getElementById('tip-kelly')?.addEventListener('click', e => { e.stopPropagation(); showTip('kelly', e); });
 
+// ── Skin switcher ─────────────────────────────────────────────────────────────
+const SKINS = {
+  saoriii: {
+    tagline: 'con <strong>saoriiiii</strong> ⭐',
+    glow: 'radial-gradient(ellipse,rgba(244,196,48,.25) 0%,transparent 70%)',
+    svg: `<defs>
+      <radialGradient id="skinGrad" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#fde0bc"/><stop offset="100%" stop-color="#f0b880"/>
+      </radialGradient>
+      <radialGradient id="shirtGrad" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e8e8e8"/>
+      </radialGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <ellipse cx="40" cy="26" rx="18" ry="20" fill="#1a0800"/>
+    <path d="M22 28 Q14 38 16 55 Q18 62 22 60 Q20 48 24 38 Z" fill="#1a0800"/>
+    <path d="M58 28 Q66 38 64 55 Q62 62 58 60 Q60 48 56 38 Z" fill="#1a0800"/>
+    <path d="M28 14 Q32 8 40 10 Q48 8 52 14 Q48 12 40 13 Q32 12 28 14Z" fill="#1a0800"/>
+    <ellipse cx="40" cy="27" rx="14" ry="15" fill="url(#skinGrad)"/>
+    <ellipse cx="26" cy="28" rx="3" ry="4" fill="#f0b880"/>
+    <ellipse cx="54" cy="28" rx="3" ry="4" fill="#f0b880"/>
+    <path d="M31 19 Q34 17 37 19" stroke="#3d1f00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M43 19 Q46 17 49 19" stroke="#3d1f00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="34" cy="24" rx="4" ry="4.5" fill="#1a0800"/>
+    <ellipse cx="46" cy="24" rx="4" ry="4.5" fill="#1a0800"/>
+    <ellipse cx="34" cy="24.5" rx="2.5" ry="3" fill="#4a2800"/>
+    <ellipse cx="46" cy="24.5" rx="2.5" ry="3" fill="#4a2800"/>
+    <circle cx="35.5" cy="22.5" r="1.2" fill="white"/>
+    <circle cx="47.5" cy="22.5" r="1.2" fill="white"/>
+    <ellipse cx="40" cy="29" rx="1.5" ry="1" fill="#e0a070" opacity="0.7"/>
+    <path d="M34 33 Q40 38 46 33" stroke="#c0705a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <ellipse cx="28" cy="30" rx="4.5" ry="3" fill="#ffb3b3" opacity="0.45"/>
+    <ellipse cx="52" cy="30" rx="4.5" ry="3" fill="#ffb3b3" opacity="0.45"/>
+    <rect x="36" y="41" width="8" height="7" rx="2" fill="url(#skinGrad)"/>
+    <path d="M18 48 L22 44 Q30 41 37 42 L40 45 L43 42 Q50 41 58 44 L62 48 L60 78 L20 78 Z" fill="url(#shirtGrad)"/>
+    <rect x="37.5" y="42" width="5" height="36" fill="#111111"/>
+    <path d="M31 42 L40 50 L49 42" stroke="#111" stroke-width="2" fill="none" stroke-linejoin="round"/>
+    <g transform="translate(22,50) scale(0.9)" filter="url(#glow)">
+      <polygon points="7,0 8.5,5 14,5 9.5,8 11,13 7,10 3,13 4.5,8 0,5 5.5,5" fill="#f4c430" stroke="#c49a24" stroke-width="0.4"/>
+    </g>
+    <path d="M20 50 L10 68 Q8 72 12 73 L16 70 L22 54 Z" fill="url(#shirtGrad)"/>
+    <path d="M60 50 L68 65 Q70 69 67 71 L63 68 L58 54 Z" fill="url(#shirtGrad)"/>
+    <ellipse cx="11" cy="73" rx="4" ry="3" fill="url(#skinGrad)"/>
+    <ellipse cx="67" cy="70" rx="4" ry="3.5" fill="url(#skinGrad)" transform="rotate(-20,67,70)"/>
+    <rect x="64" y="64" width="3" height="7" rx="1.5" fill="url(#skinGrad)" transform="rotate(-15,65,68)"/>
+    <rect x="68" y="63" width="3" height="8" rx="1.5" fill="url(#skinGrad)" transform="rotate(10,69,67)"/>
+    <path d="M20 78 L22 95 L36 95 L40 83 L44 95 L58 95 L60 78 Z" fill="#111111"/>
+    <line x1="40" y1="78" x2="40" y2="95" stroke="#222" stroke-width="1.2"/>
+    <rect x="18" y="93" width="18" height="8" rx="4" fill="white"/>
+    <rect x="44" y="93" width="18" height="8" rx="4" fill="white"/>`
+  },
+
+  maul: {
+    tagline: 'con <strong>darth maul</strong> ⚔️',
+    glow: 'radial-gradient(ellipse,rgba(180,0,0,.35) 0%,transparent 70%)',
+    svg: `<defs>
+      <radialGradient id="faceGrad" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#cc1010"/><stop offset="100%" stop-color="#8b0000"/>
+      </radialGradient>
+      <filter id="saberBlur"><feGaussianBlur stdDeviation="2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="glowRed"><feGaussianBlur stdDeviation="1" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <ellipse cx="40" cy="22" rx="19" ry="21" fill="#111"/>
+    <path d="M21 22 Q18 50 20 80 Q30 85 40 85 Q50 85 60 80 Q62 50 59 22 Z" fill="#0a0a0a"/>
+    <path d="M28 8 Q26 2 29 0 Q31 4 30 9 Z" fill="#1a0000"/>
+    <path d="M34 6 Q33 1 36 0 Q37 4 36 7 Z" fill="#1a0000"/>
+    <path d="M52 8 Q54 2 51 0 Q49 4 50 9 Z" fill="#1a0000"/>
+    <path d="M46 6 Q47 1 44 0 Q43 4 44 7 Z" fill="#1a0000"/>
+    <path d="M40 5 Q39 0 40 -1 Q41 0 41 5 Z" fill="#1a0000"/>
+    <ellipse cx="40" cy="26" rx="13" ry="14" fill="url(#faceGrad)"/>
+    <path d="M27 20 Q28 15 33 14 Q36 16 37 26 Q36 35 33 38 Q28 37 27 32 Z" fill="#000"/>
+    <rect x="37" y="13" width="6" height="5" rx="1" fill="#000"/>
+    <rect x="37" y="29" width="6" height="6" rx="1" fill="#000"/>
+    <ellipse cx="50" cy="30" rx="4" ry="5" fill="#000" opacity="0.8"/>
+    <ellipse cx="35" cy="24" rx="3.5" ry="3" fill="#ffcc00"/>
+    <ellipse cx="45" cy="24" rx="3.5" ry="3" fill="#ffcc00"/>
+    <ellipse cx="35" cy="24" rx="1.8" ry="2" fill="#cc0000"/>
+    <ellipse cx="45" cy="24" rx="1.8" ry="2" fill="#cc0000"/>
+    <circle cx="36" cy="23" r="0.8" fill="#fff8" opacity="0.6"/>
+    <circle cx="46" cy="23" r="0.8" fill="#fff8" opacity="0.6"/>
+    <ellipse cx="40" cy="30" rx="2" ry="1.5" fill="#8b0000"/>
+    <path d="M34 35 Q40 33 46 35" stroke="#5a0000" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M30 19 Q33 17 37 19" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M43 19 Q47 17 50 19" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <rect x="36" y="39" width="8" height="6" rx="2" fill="#8b0000"/>
+    <path d="M16 46 L22 42 Q30 39 37 40 L40 44 L43 40 Q50 39 58 42 L64 46 L62 80 L18 80 Z" fill="#0d0d0d"/>
+    <path d="M16 46 Q8 55 6 90 Q10 92 14 88 Q16 70 22 55 Z" fill="#080808"/>
+    <path d="M64 46 Q72 55 74 90 Q70 92 66 88 Q64 70 58 55 Z" fill="#080808"/>
+    <path d="M18 50 L8 70 Q6 74 10 75 L14 72 L20 54 Z" fill="#0d0d0d"/>
+    <path d="M62 50 L55 72 Q54 76 58 77 Q63 75 65 70 L68 56 Z" fill="#0d0d0d"/>
+    <ellipse cx="10" cy="75" rx="4" ry="3" fill="#2a0000"/>
+    <ellipse cx="60" cy="77" rx="3.5" ry="3" fill="#2a0000"/>
+    <rect x="58" y="74" width="5" height="10" rx="2" fill="#555"/>
+    <rect x="60" y="30" width="6" height="46" rx="3" fill="#ff000033" filter="url(#saberBlur)"/>
+    <rect x="61.5" y="30" width="3" height="46" rx="1.5" fill="#ff4444" filter="url(#glowRed)"/>
+    <rect x="62.2" y="30" width="1.6" height="46" rx="0.8" fill="#ffffff" opacity="0.8"/>
+    <path d="M18 80 L20 97 L36 97 L40 85 L44 97 L60 97 L62 80 Z" fill="#080808"/>
+    <rect x="16" y="95" width="20" height="9" rx="3" fill="#111"/>
+    <rect x="44" y="95" width="20" height="9" rx="3" fill="#111"/>`
+  },
+
+  vidal: {
+    tagline: 'con <strong>el rey arturo</strong> 🍺',
+    glow: 'radial-gradient(ellipse,rgba(244,196,48,.3) 0%,transparent 70%)',
+    svg: `<defs>
+      <radialGradient id="vidalSkin" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#c8854a"/><stop offset="100%" stop-color="#a0622a"/>
+      </radialGradient>
+      <radialGradient id="vidalShirt" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#f5f5f5"/><stop offset="100%" stop-color="#e0e0e0"/>
+      </radialGradient>
+      <radialGradient id="beerGrad" cx="40%" cy="30%" r="60%">
+        <stop offset="0%" stop-color="#ffe066"/><stop offset="100%" stop-color="#d4a000"/>
+      </radialGradient>
+    </defs>
+    <!-- Cabeza rapada / pelo corto muy oscuro -->
+    <ellipse cx="40" cy="24" rx="15" ry="16" fill="#1a0a00"/>
+    <ellipse cx="40" cy="25" rx="13" ry="14" fill="url(#vidalSkin)"/>
+    <!-- Orejas -->
+    <ellipse cx="27" cy="26" rx="3" ry="3.5" fill="#b8743a"/>
+    <ellipse cx="53" cy="26" rx="3" ry="3.5" fill="#b8743a"/>
+    <!-- Barba corta / tupida - estilo Vidal -->
+    <path d="M28 32 Q30 38 40 40 Q50 38 52 32 Q48 36 40 37 Q32 36 28 32Z" fill="#1a0800" opacity="0.85"/>
+    <path d="M30 28 Q28 32 29 35" stroke="#1a0800" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M50 28 Q52 32 51 35" stroke="#1a0800" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Cejas fuertes / gruesas estilo Vidal -->
+    <path d="M29 18 Q33 15 38 17" stroke="#1a0800" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    <path d="M42 17 Q47 15 51 18" stroke="#1a0800" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+    <!-- Ojos intensos oscuros -->
+    <ellipse cx="34" cy="23" rx="3.5" ry="3.2" fill="#111"/>
+    <ellipse cx="46" cy="23" rx="3.5" ry="3.2" fill="#111"/>
+    <ellipse cx="34" cy="23" rx="2" ry="2.2" fill="#3a1500"/>
+    <ellipse cx="46" cy="23" rx="2" ry="2.2" fill="#3a1500"/>
+    <circle cx="35.2" cy="21.8" r="1" fill="white" opacity="0.7"/>
+    <circle cx="47.2" cy="21.8" r="1" fill="white" opacity="0.7"/>
+    <!-- Nariz ancha -->
+    <ellipse cx="40" cy="28" rx="2.5" ry="1.8" fill="#9a5a22"/>
+    <!-- Boca seria / sonrisa pícara -->
+    <path d="M33 33 Q40 37 47 33" stroke="#7a3010" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <path d="M34 33 Q40 36 46 33" fill="#cc6040" opacity="0.35"/>
+    <!-- Cuello fuerte -->
+    <rect x="35" y="39" width="10" height="8" rx="2" fill="#b8743a"/>
+    <!-- Camiseta COLO-COLO blanca con franja negra -->
+    <path d="M16 47 L22 42 Q30 39 37 40 L40 44 L43 40 Q50 39 58 42 L64 47 L62 80 L18 80 Z" fill="url(#vidalShirt)"/>
+    <!-- Franja negra central Colo-Colo -->
+    <rect x="37" y="40" width="6" height="40" fill="#111"/>
+    <!-- Cuello V -->
+    <path d="M31 41 L40 51 L49 41" stroke="#111" stroke-width="2" fill="none" stroke-linejoin="round"/>
+    <!-- Número 8 en el pecho izquierdo -->
+    <text x="24" y="61" font-size="10" font-weight="800" fill="#111" font-family="Arial,sans-serif">8</text>
+    <!-- Estrella Colo-Colo -->
+    <polygon points="52,48 53.5,53 59,53 54.5,56 56,61 52,58 48,61 49.5,56 45,53 50.5,53"
+             fill="#f4c430" stroke="#c49a24" stroke-width="0.5"/>
+    <!-- Brazos fuertes musculosos -->
+    <path d="M18 50 L6 66 Q4 72 8 73 L13 71 L20 54 Z" fill="url(#vidalShirt)"/>
+    <path d="M62 50 L70 66 Q72 72 68 73 L64 71 L60 54 Z" fill="url(#vidalShirt)"/>
+    <!-- Mano izq sosteniendo cerveza -->
+    <ellipse cx="8" cy="73" rx="4.5" ry="3.5" fill="#b8743a"/>
+    <!-- Vaso de cerveza ENORME -->
+    <rect x="-2" y="53" width="18" height="22" rx="3" fill="url(#beerGrad)" stroke="#c49a24" stroke-width="1"/>
+    <!-- Espuma cerveza -->
+    <ellipse cx="7" cy="53" rx="9" ry="4" fill="white" opacity="0.95"/>
+    <ellipse cx="3" cy="52" rx="4" ry="3" fill="white"/>
+    <ellipse cx="11" cy="51.5" rx="3.5" ry="2.5" fill="white"/>
+    <!-- Burbujas en la cerveza -->
+    <circle cx="4" cy="60" r="1.2" fill="#ffe066" opacity="0.6"/>
+    <circle cx="10" cy="65" r="1" fill="#ffe066" opacity="0.5"/>
+    <circle cx="6" cy="70" r="0.8" fill="#ffe066" opacity="0.5"/>
+    <!-- Mano der levantada / puño arriba (celebración) -->
+    <ellipse cx="68" cy="70" rx="4.5" ry="4" fill="#b8743a"/>
+    <rect x="66" y="62" width="4" height="8" rx="2" fill="#b8743a"/>
+    <!-- Pantalón negro Colo-Colo -->
+    <path d="M18 80 L20 97 L36 97 L40 85 L44 97 L60 97 L62 80 Z" fill="#111"/>
+    <line x1="40" y1="80" x2="40" y2="97" stroke="#222" stroke-width="1"/>
+    <!-- Botines negros -->
+    <rect x="16" y="95" width="20" height="9" rx="3" fill="#111"/>
+    <rect x="44" y="95" width="20" height="9" rx="3" fill="#111"/>
+    <rect x="17" y="96" width="18" height="3" rx="2" fill="#333"/>
+    <rect x="45" y="96" width="18" height="3" rx="2" fill="#333"/>`
+  }
+};
+
+function applySkin(name) {
+  const skin = SKINS[name];
+  if (!skin) return;
+  // Swap SVG internals
+  const svg = document.getElementById('mascot-svg');
+  if (svg) svg.innerHTML = skin.svg;
+  // Swap glow
+  const glow = document.getElementById('mascot-glow');
+  if (glow) glow.style.background = skin.glow;
+  // Swap tagline
+  const tag = document.getElementById('mascot-tagline');
+  if (tag) tag.innerHTML = skin.tagline;
+  // Update active button
+  document.querySelectorAll('.skin-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.skin === name);
+  });
+  localStorage.setItem('coolbet-skin', name);
+}
+
+document.querySelectorAll('.skin-btn').forEach(btn => {
+  btn.addEventListener('click', () => applySkin(btn.dataset.skin));
+});
+
+// Restaurar skin guardado
+const savedSkin = localStorage.getItem('coolbet-skin') || 'maul';
+applySkin(savedSkin);
+
 // ── Init ─────────────────────────────────────────────────────────────────────
 loadMatches('mundial');
