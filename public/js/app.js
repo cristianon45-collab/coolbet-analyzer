@@ -8,7 +8,7 @@ let currentMatch = null; // para el modal
 const TIPS = {
   ve: {
     titulo: '¿Qué es el VE?',
-    texto:  '🟢 Verde (+) = la cuota paga MÁS de lo que el riesgo justifica. Vale apostar.\n🔴 Rojo (−) = la casa cobra MÁS de lo justo. Tienen ventaja sobre ti.\n\nEjemplo práctico:\nVE −11.6% con cuota 2.40 → si apuestas $10.000 muchas veces, en promedio perderías $1.160 por apuesta.\n\nBusca siempre VE positivo o lo más cerca de 0.'
+    texto:  '🟢 Verde (+) = la cuota paga MÁS de lo que el riesgo justifica. Vale apostar.\n🔴 Rojo (−) = la casa tiene ventaja. A largo plazo pierdes dinero.\n\n⚠️ VE rojo NO significa que el resultado no va a pasar.\nEjemplo: "Menos de 3.5 goles" puede tener VE −6.6% y aun así ocurrir. La diferencia:\n• Prob. real del modelo: 71%\n• Prob. implícita en la cuota: 76%\n→ La casa ya sabía que era probable y te pagó menos de lo justo.\n\nGanar una vez no valida una mala apuesta.\nLo que importa es repetirlo 100 veces — ahí el VE negativo te cobra.'
   },
   probReal: {
     titulo: '¿Qué es la Prob. Real?',
