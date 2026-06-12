@@ -187,14 +187,56 @@ function renderMatchCard(m, cat) {
     ? `<div class="match-alertas">${m.alertas.map(a => `<span class="alerta-chip">${a}</span>`).join('')}</div>`
     : '';
 
+  // ── Resultado / Marcador ─────────────────────────────────────────────────
+  const res = m.resultado || { status: 'PRE' };
+  let resultadoHtml = '';
+  if (res.status === 'FT' || res.status === 'LIVE') {
+    const statusLabel = res.status === 'FT'
+      ? `<span class="res-badge ft">FINAL</span>`
+      : `<span class="res-badge live">● ${res.minuto}'</span>`;
+
+    // Goles por equipo
+    const golesLocal = (res.goles || []).filter(g => g.equipo === 'local')
+      .map(g => `<span class="res-gol">⚽ ${g.jugador} <em>${g.min}'</em></span>`).join('');
+    const golesVisit = (res.goles || []).filter(g => g.equipo === 'visit')
+      .map(g => `<span class="res-gol">⚽ ${g.jugador} <em>${g.min}'</em></span>`).join('');
+
+    // Amarillas
+    const amL = (res.amarillas?.local || []).map(a => `<span class="res-tarjeta amarilla">🟨 ${a}</span>`).join('');
+    const amV = (res.amarillas?.visit || []).map(a => `<span class="res-tarjeta amarilla">🟨 ${a}</span>`).join('');
+    const rojas = (res.rojas || []).map(r => `<span class="res-tarjeta roja">🟥 ${r.jugador} ${r.min}'</span>`).join('');
+
+    resultadoHtml = `
+    <div class="res-box ${res.status === 'LIVE' ? 'res-live' : ''}">
+      <div class="res-header">${statusLabel}</div>
+      <div class="res-score-row">
+        <div class="res-team-col">
+          <span class="res-team-name">${m.local}</span>
+          <div class="res-events">${golesLocal}${amL}</div>
+        </div>
+        <div class="res-score">
+          <span class="res-num ${res.scoreLocal > res.scoreVisit ? 'winner' : ''}">${res.scoreLocal}</span>
+          <span class="res-dash">-</span>
+          <span class="res-num ${res.scoreVisit > res.scoreLocal ? 'winner' : ''}">${res.scoreVisit}</span>
+        </div>
+        <div class="res-team-col right">
+          <span class="res-team-name">${m.visit}</span>
+          <div class="res-events">${golesVisit}${amV}</div>
+        </div>
+      </div>
+      ${rojas ? `<div class="res-rojas">${rojas}</div>` : ''}
+    </div>`;
+  }
+
   return `
-  <div class="match-card" id="mc-${m.id}">
+  <div class="match-card ${res.status === 'FT' ? 'mc-played' : res.status === 'LIVE' ? 'mc-live' : ''}" id="mc-${m.id}">
     <div class="mc-top">
       <span class="mc-comp">${m.comp}</span>
       <span class="mc-fase">${m.fase}</span>
-      <span class="mc-time">🕐 ${m.time}</span>
+      <span class="mc-time">${res.status === 'PRE' ? '🕐 ' : ''}${res.status === 'PRE' ? m.time : res.status === 'LIVE' ? '🔴 EN VIVO' : '✅ ' + m.time}</span>
     </div>
     ${alertasHtml}
+    ${resultadoHtml}
     <div class="mc-teams">
       <div class="team-block">
         <div class="team-name">${m.local}</div>
@@ -205,7 +247,7 @@ function renderMatchCard(m, cat) {
           <span class="stat-badge">#${m.statsLocal.posLiga} FIFA</span>
         </div>
       </div>
-      <div class="vs-block"><span class="vs-label">vs</span></div>
+      <div class="vs-block"><span class="vs-label">${res.status === 'PRE' ? 'vs' : res.scoreLocal + '-' + res.scoreVisit}</span></div>
       <div class="team-block right">
         <div class="team-name">${m.visit}</div>
         <div class="team-forma" style="justify-content:flex-end">${forma(m.statsVisit)}</div>

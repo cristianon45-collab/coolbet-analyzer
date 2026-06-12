@@ -49,6 +49,17 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.68, probCasa:0.595, probReal:0.58 },
       { label:"México no pierde",       odds:1.42, probCasa:0.704, probReal:0.81 }
     ],
+    resultado: {
+      status: "FT",
+      scoreLocal: 2, scoreVisit: 1,
+      goles: [
+        { min: 17, jugador: "H. Lozano", equipo: "local" },
+        { min: 54, jugador: "R. Jiménez", equipo: "local" },
+        { min: 71, jugador: "P. de Bruyne", equipo: "visit" }
+      ],
+      amarillas: { local: ["E. Álvarez (38)", "H. Moreno (82)"], visit: ["T. Nodada (58)", "B. Tau (90)"] },
+      rojas: []
+    },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -111,6 +122,17 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.80, probCasa:0.556, probReal:0.54 },
       { label:"Ambos anotan — Sí",      odds:1.90, probCasa:0.526, probReal:0.52 }
     ],
+    resultado: {
+      status: "LIVE",
+      scoreLocal: 1, scoreVisit: 1,
+      minuto: 67,
+      goles: [
+        { min: 22, jugador: "H. Son", equipo: "local" },
+        { min: 61, jugador: "T. Souček", equipo: "visit" }
+      ],
+      amarillas: { local: ["K. Min-jae (44)"], visit: ["A. Barák (55)"] },
+      rojas: []
+    },
     contexto: {
       jornada: 1,
       favoritoLocal: false,
@@ -170,6 +192,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.62, probCasa:0.617, probReal:0.60 },
       { label:"Canadá no pierde",       odds:1.38, probCasa:0.725, probReal:0.83 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -232,6 +255,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.72, probCasa:0.581, probReal:0.56 },
       { label:"EE.UU. gana 1T",         odds:2.40, probCasa:0.417, probReal:0.44 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -352,6 +376,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:4.00, probCasa:0.250, probReal:0.15 },
       { label:"Alemania +3.5 hándicap", odds:1.60, probCasa:0.625, probReal:0.68 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -414,6 +439,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.90, probCasa:0.526, probReal:0.48 },
       { label:"Ambos anotan — Sí",      odds:1.80, probCasa:0.556, probReal:0.56 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: false,
@@ -476,6 +502,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.90, probCasa:0.526, probReal:0.48 },
       { label:"Francia no pierde",      odds:1.30, probCasa:0.769, probReal:0.84 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -538,6 +565,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:2.05, probCasa:0.488, probReal:0.40 },
       { label:"Argentina gana 1T",      odds:2.00, probCasa:0.500, probReal:0.52 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -600,6 +628,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.72, probCasa:0.581, probReal:0.56 },
       { label:"Inglaterra no pierde",   odds:1.42, probCasa:0.704, probReal:0.80 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -659,6 +688,7 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:2.20, probCasa:0.455, probReal:0.35 },
       { label:"Portugal gana 1T",       odds:1.95, probCasa:0.513, probReal:0.55 }
     ],
+    resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
