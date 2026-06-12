@@ -4,6 +4,50 @@ let allMatches   = [];
 let selected     = {};   // key = "matchId-mktIdx" → { matchId, mktIdx, label, match, odds, probReal, ve }
 let currentMatch = null; // para el modal
 
+// ── Tooltip global de ayuda ──────────────────────────────────────────────────
+const TIPS = {
+  ve:        { titulo:'VE — Valor Esperado', texto:'Mide si la cuota paga más o menos de lo que el riesgo justifica.\n\nFórmula: (Prob. real × Cuota) − 1\n\n✅ VE positivo → hay valor, la casa paga de más.\n❌ VE negativo → la casa tiene ventaja en ese mercado.\n\nEjemplo: VE −8.8% significa que por cada $10.000 apostados, el modelo espera perder ~$880 en promedio.' },
+  probReal:  { titulo:'Prob. Real', texto:'Probabilidad que el modelo estima que tiene ese resultado de ocurrir, calculada con estadísticas reales de los equipos (goles promedio, forma, H2H, altitud, etc.).\n\nNo incluye el margen de ganancia de la casa.' },
+  probCasa:  { titulo:'Prob. Casa', texto:'Probabilidad que la casa de apuestas asigna al resultado, calculada como 1 ÷ cuota.\n\nSiempre es mayor que la Prob. Real porque incluye el margen de la casa (vigorish). Esa diferencia es su ganancia garantizada.' },
+  confianza: { titulo:'Nivel de Confianza', texto:'Alta → múltiples factores alineados, VE >6%, probabilidad real >55%.\nMedia → tendencia presente con incertidumbre o datos parciales. VE >2%.\nBaja → datos insuficientes, mercado corregido por señal activa.\nSin valor → VE negativo o dead rubber confirmado.' },
+  kelly:     { titulo:'Criterio de Kelly (25%)', texto:'Fórmula matemática que calcula el tamaño óptimo de apuesta en función de tu ventaja estadística y bankroll.\n\nUsamos Kelly al 25% (fraccionado) para reducir la varianza y proteger el bankroll ante rachas negativas.\n\nFórmula: Kelly = (p×b − q) / b × 0.25\np = prob. real · b = cuota−1 · q = 1−p' },
+};
+
+let tipTimeout = null;
+
+function showTip(key, e) {
+  e.stopPropagation();
+  closeTip();
+  const tip  = TIPS[key];
+  if (!tip) return;
+  const box  = document.createElement('div');
+  box.className = 'tip-box';
+  box.id = 'tip-global';
+  box.innerHTML = `
+    <div class="tip-header">
+      <span class="tip-titulo">${tip.titulo}</span>
+      <button class="tip-close" onclick="closeTip()">✕</button>
+    </div>
+    <div class="tip-texto">${tip.texto.replace(/\n/g,'<br>')}</div>`;
+  document.body.appendChild(box);
+  // Posicionar cerca del elemento clickeado
+  const rect = e.target.getBoundingClientRect();
+  const top  = Math.min(rect.bottom + 6, window.innerHeight - 200);
+  const left = Math.max(8, Math.min(rect.left, window.innerWidth - 280));
+  box.style.top  = top  + window.scrollY + 'px';
+  box.style.left = left + 'px';
+  // Cerrar al tocar fuera
+  tipTimeout = setTimeout(() => {
+    document.addEventListener('click', closeTip, { once: true });
+  }, 50);
+}
+
+function closeTip() {
+  const box = document.getElementById('tip-global');
+  if (box) box.remove();
+  clearTimeout(tipTimeout);
+}
+
 // ── Utilidades ──────────────────────────────────────────────────────────────
 const fmt = {
   odds:    v => parseFloat(v).toFixed(2),
@@ -71,12 +115,12 @@ function renderMatchCard(m, cat) {
     <div class="mkt-btn${isSel ? ' selected' : ''}"
          onclick="toggleSel(${m.id},${i})"
          title="Prob. casa: ${Math.round(mk.probImplicita*100)}%  |  Prob. real: ${pct}%  |  VE: ${veLabel(mk.ve)}">
-      <span class="ve-badge ${vc}">${veLabel(mk.ve)}</span>
-      <span class="conf-badge ${confClass}">${mk.confianza ?? '—'}</span>
+      <span class="ve-badge ${vc}" onclick="showTip('ve',event)">${veLabel(mk.ve)} ⓘ</span>
+      <span class="conf-badge ${confClass}" onclick="showTip('confianza',event)">${mk.confianza ?? '—'}</span>
       <div class="mkt-name">${mk.label}</div>
       <div class="mkt-odds">${fmt.odds(mk.odds)}</div>
       <div class="mkt-prob-row">
-        <span class="mkt-real-prob">${pct}% real</span>
+        <span class="mkt-real-prob" onclick="showTip('probReal',event)">${pct}% real ⓘ</span>
       </div>
       <div class="prob-bar"><div class="prob-fill ${vc}" style="width:${pct}%"></div></div>
     </div>`;
