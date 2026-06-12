@@ -650,8 +650,7 @@ function closeModal() { document.getElementById('modal').classList.add('hidden')
 
 // ── Simulador Monte Carlo ────────────────────────────────────────────────────
 function openSimulador() {
-  const items = Object.values(selected);
-  if (!items.length) { alert('Selecciona al menos una cuota primero.'); return; }
+  if (!getLegs().length) { alert('Selecciona al menos una cuota primero.'); return; }
   document.getElementById('sim-modal').classList.remove('hidden');
   document.getElementById('sim-result').innerHTML = '';
 }
