@@ -49,6 +49,11 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.68, probCasa:0.595, probReal:0.58 },
       { label:"México no pierde",       odds:1.42, probCasa:0.704, probReal:0.81 }
     ],
+    mercadosBetano: [
+      { label:"1 México",   odds:1.80, probCasa:0.556, probReal:0.55 },
+      { label:"Empate",     odds:3.55, probCasa:0.282, probReal:0.26 },
+      { label:"2 Sudáfrica",odds:4.60, probCasa:0.217, probReal:0.19 }
+    ],
     resultado: {
       status: "FT",
       scoreLocal: 2, scoreVisit: 0,
@@ -125,6 +130,11 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.80, probCasa:0.556, probReal:0.54 },
       { label:"Ambos anotan — Sí",      odds:1.90, probCasa:0.526, probReal:0.52 }
     ],
+    mercadosBetano: [
+      { label:"1 Corea del Sur", odds:2.38, probCasa:0.420, probReal:0.38 },
+      { label:"Empate",          odds:3.15, probCasa:0.317, probReal:0.30 },
+      { label:"2 Chequia",       odds:2.95, probCasa:0.339, probReal:0.32 }
+    ],
     resultado: {
       status: "FT",
       scoreLocal: 2, scoreVisit: 1,
@@ -195,6 +205,11 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.62, probCasa:0.617, probReal:0.60 },
       { label:"Canadá no pierde",       odds:1.38, probCasa:0.725, probReal:0.83 }
     ],
+    mercadosBetano: [
+      { label:"1 Canadá",          odds:1.72, probCasa:0.581, probReal:0.58 },
+      { label:"Empate",            odds:3.60, probCasa:0.278, probReal:0.25 },
+      { label:"2 Bosnia y Herz.",  odds:4.90, probCasa:0.204, probReal:0.17 }
+    ],
     resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
@@ -257,6 +272,11 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:2.10, probCasa:0.476, probReal:0.44 },
       { label:"Menos de 2.5 goles",     odds:1.72, probCasa:0.581, probReal:0.56 },
       { label:"EE.UU. gana 1T",         odds:2.40, probCasa:0.417, probReal:0.44 }
+    ],
+    mercadosBetano: [
+      { label:"1 Estados Unidos", odds:1.62, probCasa:0.617, probReal:0.62 },
+      { label:"Empate",           odds:3.80, probCasa:0.263, probReal:0.22 },
+      { label:"2 Paraguay",       odds:5.20, probCasa:0.192, probReal:0.16 }
     ],
     resultado: { status: "PRE" },
     contexto: {
@@ -321,6 +341,11 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:2.00, probCasa:0.500, probReal:0.42 },
       { label:"Brasil gana 1T",         odds:2.20, probCasa:0.455, probReal:0.48 }
     ],
+    mercadosBetano: [
+      { label:"1 Brasil",    odds:1.52, probCasa:0.658, probReal:0.65 },
+      { label:"Empate",      odds:4.20, probCasa:0.238, probReal:0.20 },
+      { label:"2 Marruecos", odds:5.70, probCasa:0.175, probReal:0.15 }
+    ],
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -378,6 +403,11 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.25, probCasa:0.800, probReal:0.85 },
       { label:"Menos de 2.5 goles",     odds:4.00, probCasa:0.250, probReal:0.15 },
       { label:"Alemania +3.5 hándicap", odds:1.60, probCasa:0.625, probReal:0.68 }
+    ],
+    mercadosBetano: [
+      { label:"1 Alemania", odds:1.10, probCasa:0.909, probReal:0.90 },
+      { label:"Empate",     odds:9.50, probCasa:0.105, probReal:0.07 },
+      { label:"2 Curaçao",  odds:26.0, probCasa:0.038, probReal:0.03 }
     ],
     resultado: { status: "PRE" },
     contexto: {
@@ -442,6 +472,11 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.90, probCasa:0.526, probReal:0.48 },
       { label:"Ambos anotan — Sí",      odds:1.80, probCasa:0.556, probReal:0.56 }
     ],
+    mercadosBetano: [
+      { label:"1 Países Bajos", odds:1.77, probCasa:0.565, probReal:0.54 },
+      { label:"Empate",         odds:3.60, probCasa:0.278, probReal:0.24 },
+      { label:"2 Japón",        odds:4.35, probCasa:0.230, probReal:0.22 }
+    ],
     resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
@@ -504,6 +539,11 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.90, probCasa:0.526, probReal:0.52 },
       { label:"Menos de 2.5 goles",     odds:1.90, probCasa:0.526, probReal:0.48 },
       { label:"Francia no pierde",      odds:1.30, probCasa:0.769, probReal:0.84 }
+    ],
+    mercadosBetano: [
+      { label:"1 Francia",  odds:1.57, probCasa:0.637, probReal:0.62 },
+      { label:"Empate",     odds:3.90, probCasa:0.256, probReal:0.22 },
+      { label:"2 Senegal",  odds:5.40, probCasa:0.185, probReal:0.16 }
     ],
     resultado: { status: "PRE" },
     contexto: {
@@ -568,6 +608,11 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:2.05, probCasa:0.488, probReal:0.40 },
       { label:"Argentina gana 1T",      odds:2.00, probCasa:0.500, probReal:0.52 }
     ],
+    mercadosBetano: [
+      { label:"1 Argentina", odds:1.42, probCasa:0.704, probReal:0.70 },
+      { label:"Empate",      odds:4.40, probCasa:0.227, probReal:0.18 },
+      { label:"2 Argelia",   odds:7.20, probCasa:0.139, probReal:0.12 }
+    ],
     resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
@@ -631,6 +676,11 @@ const MATCHES = [
       { label:"Menos de 2.5 goles",     odds:1.72, probCasa:0.581, probReal:0.56 },
       { label:"Inglaterra no pierde",   odds:1.42, probCasa:0.704, probReal:0.80 }
     ],
+    mercadosBetano: [
+      { label:"1 Inglaterra", odds:1.83, probCasa:0.546, probReal:0.55 },
+      { label:"Empate",       odds:3.60, probCasa:0.278, probReal:0.25 },
+      { label:"2 Croacia",    odds:4.40, probCasa:0.227, probReal:0.20 }
+    ],
     resultado: { status: "PRE" },
     contexto: {
       jornada: 1,
@@ -690,6 +740,11 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.65, probCasa:0.606, probReal:0.65 },
       { label:"Menos de 2.5 goles",     odds:2.20, probCasa:0.455, probReal:0.35 },
       { label:"Portugal gana 1T",       odds:1.95, probCasa:0.513, probReal:0.55 }
+    ],
+    mercadosBetano: [
+      { label:"1 Portugal",       odds:1.37, probCasa:0.730, probReal:0.72 },
+      { label:"Empate",           odds:4.70, probCasa:0.213, probReal:0.17 },
+      { label:"2 Rep. D. Congo",  odds:8.50, probCasa:0.118, probReal:0.11 }
     ],
     resultado: { status: "PRE" },
     contexto: {

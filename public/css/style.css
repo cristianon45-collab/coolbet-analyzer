@@ -186,6 +186,34 @@ body {
 .nav-btn:hover { border-color: var(--gold); color: var(--gold); }
 .nav-btn.active { background: var(--gold); color: var(--bg-dark); border-color: var(--gold); font-weight: 600; }
 
+/* ── BOOKIE TOGGLE ──────────────────────────────────────────────────── */
+.bookie-toggle {
+  display: flex; align-items: center; gap: 2px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px;
+  flex-shrink: 0;
+}
+.bookie-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: transparent; color: var(--text-muted);
+  border: none; border-radius: 16px;
+  padding: 4px 12px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .18s; white-space: nowrap;
+}
+.bookie-btn.active {
+  background: var(--gold); color: var(--bg-dark);
+}
+.bookie-btn:not(.active):hover { color: var(--text); }
+.bookie-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.cb-dot { background: #00b8f0; }
+.bt-dot { background: #ff6600; }
+.no-bookie-notice {
+  background: rgba(255,100,0,0.1); border: 1px solid rgba(255,100,0,0.3);
+  color: #ff9966; font-size: 12px; border-radius: 8px;
+  padding: 8px 12px; margin: 8px 0;
+}
+
 .cb-header-right { display: flex; gap: 16px; flex-shrink: 0; align-items: center; }
 .header-stats-row { display: flex; gap: 16px; align-items: center; }
 .header-stat { text-align: center; }

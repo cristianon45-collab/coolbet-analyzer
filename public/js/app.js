@@ -3,6 +3,7 @@
 let allMatches   = [];
 let selected     = {};   // key = "matchId-mktIdx" → { matchId, mktIdx, label, match, odds, probReal, ve }
 let currentMatch = null; // para el modal
+let currentBookie = localStorage.getItem('coolbet-bookie') || 'coolbet';
 
 // ── Tooltip global de ayuda ──────────────────────────────────────────────────
 const TIPS = {
@@ -147,24 +148,28 @@ const activeCat = {};
 function renderMatchCard(m, cat) {
   const forma = (stats) => stats.forma.map(f => `<span class="forma-dot ${f}" title="${f}">${formaChar(f)}</span>`).join('');
 
+  // Use Betano markets if selected and available, else Coolbet
+  const mercados = (currentBookie === 'betano' && m.mercadosBetano) ? m.mercadosBetano : m.mercados;
+  const hasBetano = !!m.mercadosBetano;
+
   // Build category list
-  const cats = ['Todos', ...new Set(m.mercados.map(mk => mk.categoria)), 'Jugada ⚡'];
+  const cats = ['Todos', ...new Set(mercados.map(mk => mk.categoria)), 'Jugada ⚡'];
   if (!activeCat[m.id]) activeCat[m.id] = 'Resultado';
   const currentCat = cat ?? activeCat[m.id];
   activeCat[m.id] = currentCat;
 
   const filtered = currentCat === 'Todos'
-    ? m.mercados
+    ? mercados
     : currentCat === 'Jugada ⚡'
-      ? m.mercados
-      : m.mercados.filter(mk => mk.categoria === currentCat);
+      ? mercados
+      : mercados.filter(mk => mk.categoria === currentCat);
 
   const catTabs = cats.map(c => `
     <button class="cat-tab${c === currentCat ? ' active' : ''}${c === 'Jugada ⚡' ? ' cat-tab-jugada' : ''}"
             onclick="switchCat(${m.id},'${c}')">${c}</button>`).join('');
 
   const mkts = filtered.map((mk, _i) => {
-    const i    = m.mercados.indexOf(mk);
+    const i    = mercados.indexOf(mk);
     const key  = `${m.id}-${i}`;
     const isSel = !!selected[key];
     const vc   = veClass(mk.ve);
@@ -261,7 +266,8 @@ function renderMatchCard(m, cat) {
       </div>
     </div>
     <div class="cat-tabs">${catTabs}</div>
-    ${currentCat === 'Jugada ⚡' ? renderJugada(m) : `<div class="mc-markets">${mkts}</div>`}
+    ${currentBookie === 'betano' && !hasBetano ? `<div class="no-bookie-notice">⚠️ Mercados Betano no disponibles para este partido</div>` : ''}
+    ${currentCat === 'Jugada ⚡' ? renderJugada(m, mercados) : `<div class="mc-markets">${mkts}</div>`}
     <button class="mc-info-btn" onclick="openMatchModal(${m.id})">
       📊 Ver estadísticas H2H y análisis de mercados
     </button>
@@ -269,8 +275,9 @@ function renderMatchCard(m, cat) {
 }
 
 // ── Jugada ⚡ — A cagarr + Al seco ──────────────────────────────────────────
-function renderJugada(m) {
-  const sorted = [...m.mercados]
+function renderJugada(m, mercados) {
+  if (!mercados) mercados = (currentBookie === 'betano' && m.mercadosBetano) ? m.mercadosBetano : m.mercados;
+  const sorted = [...mercados]
     .map((mk, i) => ({ ...mk, idx: i }))
     .sort((a, b) => b.probReal - a.probReal);
 
@@ -309,7 +316,7 @@ function renderJugada(m) {
   }).join('');
 
   // ── 🥤 AL SECO: la mejor apuesta de cada categoría de la barra ──
-  const dreamCats = [...new Set(m.mercados.map(mk => mk.categoria))];
+  const dreamCats = [...new Set(mercados.map(mk => mk.categoria))];
   const dreamFallback = dreamCats
     .map(cat => sorted.find(mk => mk.categoria === cat))
     .filter(Boolean);
@@ -356,6 +363,18 @@ function switchCat(matchId, cat) {
   if (card && m) card.outerHTML = renderMatchCard(m, cat);
 }
 
+function setBookie(bookie) {
+  currentBookie = bookie;
+  localStorage.setItem('coolbet-bookie', bookie);
+  // Update button states
+  document.getElementById('bookie-cb').classList.toggle('active', bookie === 'coolbet');
+  document.getElementById('bookie-bt').classList.toggle('active', bookie === 'betano');
+  // Clear selections and re-render all
+  selected = {};
+  renderMatches();
+  updateSlip();
+}
+
 // ── Helpers BetBuilder ───────────────────────────────────────────────────────
 // Agrupa selecciones por partido → legs
 function getLegs() {
@@ -392,7 +411,8 @@ function getSelectionsForAPI() {
 function toggleSel(matchId, mktIdx) {
   const key = `${matchId}-${mktIdx}`;
   const m   = allMatches.find(x => x.id === matchId);
-  const mk  = m.mercados[mktIdx];
+  const activeMercados = (currentBookie === 'betano' && m.mercadosBetano) ? m.mercadosBetano : m.mercados;
+  const mk  = activeMercados[mktIdx];
 
   if (selected[key]) {
     delete selected[key];
@@ -1458,6 +1478,16 @@ document.querySelectorAll('.skin-btn').forEach(btn => {
 // Restaurar skin guardado
 const savedSkin = localStorage.getItem('coolbet-skin') || 'maul';
 applySkin(savedSkin);
+
+// Restaurar bookie guardado
+(function() {
+  const cb = document.getElementById('bookie-cb');
+  const bt = document.getElementById('bookie-bt');
+  if (cb && bt) {
+    cb.classList.toggle('active', currentBookie === 'coolbet');
+    bt.classList.toggle('active', currentBookie === 'betano');
+  }
+})();
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 loadMatches('mundial');

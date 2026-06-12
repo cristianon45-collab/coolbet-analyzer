@@ -409,16 +409,100 @@ function buildBloque0(m, signals, venue) {
   };
 }
 
+function poissonPMF(k, lambda) {
+  let result = Math.exp(-lambda);
+  for (let i = 0; i < k; i++) result *= lambda / (i + 1);
+  return result;
+}
+
+function enrichMercadosBetano(m) {
+  const base = m.mercadosBetano;
+  const pL = base[0]?.probReal ?? 0.40;
+  const pE = base[1]?.probReal ?? 0.27;
+  const pV = base[2]?.probReal ?? 0.33;
+
+  const lambdaL = m.statsLocal.gfProm  * 0.88;
+  const lambdaV = m.statsVisit.gfProm  * 0.88;
+  const avgG    = lambdaL + lambdaV;
+  const pO15    = 1 - poissonCDF(1, avgG);
+  const pO25    = 1 - poissonCDF(2, avgG);
+  const pO35    = 1 - poissonCDF(3, avgG);
+  const pBTTS   = (1 - Math.exp(-lambdaL)) * (1 - Math.exp(-lambdaV));
+
+  const lN = m.local, vN = m.visit;
+
+  const dobleOp = [
+    mkMercado(`1X — ${lN} o Empate`,   'Doble Op.', Math.min(0.96, pL + pE)),
+    mkMercado(`X2 — Empate o ${vN}`,   'Doble Op.', Math.min(0.96, pE + pV)),
+    mkMercado(`12 — ${lN} o ${vN}`,    'Doble Op.', Math.min(0.98, pL + pV)),
+  ];
+
+  const totales = [
+    mkMercado('Más de 1.5 goles',   'Totales', Math.min(0.95, pO15)),
+    mkMercado('Menos de 1.5 goles', 'Totales', Math.max(0.05, 1 - pO15)),
+    mkMercado('Más de 2.5 goles',   'Totales', Math.min(0.90, pO25)),
+    mkMercado('Menos de 2.5 goles', 'Totales', Math.max(0.10, 1 - pO25)),
+    mkMercado('Más de 3.5 goles',   'Totales', Math.min(0.80, pO35)),
+    mkMercado('Menos de 3.5 goles', 'Totales', Math.max(0.20, 1 - pO35)),
+  ];
+
+  const btts = [
+    mkMercado('Ambos anotan — Sí', 'BTTS', Math.min(0.85, pBTTS)),
+    mkMercado('Ambos anotan — No', 'BTTS', Math.max(0.15, 1 - pBTTS)),
+  ];
+
+  const handicap = [
+    mkMercado(`${lN} -1 (hándicap)`,  'Hándicap', Math.max(0.05, pL - 0.15)),
+    mkMercado(`Empate / ${lN} +1`,    'Hándicap', Math.min(0.75, pE + pV * 0.5)),
+    mkMercado(`${vN} +1 (hándicap)`,  'Hándicap', Math.min(0.85, pV + 0.18)),
+  ];
+
+  const pH1L = pL * 0.62, pH1V = pV * 0.62, pH1E = 1 - pH1L - pH1V;
+  const primerTiempo = [
+    mkMercado(`1T — Gana ${lN}`, '1er Tiempo', Math.max(0.05, pH1L)),
+    mkMercado('1T — Empate',      '1er Tiempo', Math.min(0.75, pH1E)),
+    mkMercado(`1T — Gana ${vN}`, '1er Tiempo', Math.max(0.05, pH1V)),
+  ];
+
+  const primerGol = [
+    mkMercado(`Primer gol: ${lN}`,  'Primer Gol', Math.min(0.80, pL * 1.25)),
+    mkMercado('Sin goles (0-0)',     'Primer Gol', Math.max(0.04, poissonCDF(0, avgG))),
+    mkMercado(`Primer gol: ${vN}`,  'Primer Gol', Math.min(0.65, pV * 1.25)),
+  ];
+
+  // Betano exclusive: Marcador Exacto (Coolbet no tiene este mercado)
+  const scoreLines = [
+    [1,0],[2,0],[2,1],[3,0],[3,1],[3,2],
+    [0,0],[1,1],[2,2],
+    [0,1],[0,2],[1,2],[0,3]
+  ];
+  const marcadorExacto = scoreLines
+    .map(([a, b]) => {
+      const p = poissonPMF(a, lambdaL) * poissonPMF(b, lambdaV);
+      return mkMercado(`${lN} ${a}-${b} ${vN}`, 'Marcador Exacto', Math.min(0.40, p), 0.12);
+    })
+    .filter(mk => mk.probReal >= 0.04);
+
+  return [
+    ...base.map(mk => ({ ...mk, categoria: mk.categoria ?? 'Resultado' })),
+    ...dobleOp, ...totales, ...btts, ...handicap, ...primerTiempo, ...primerGol, ...marcadorExacto
+  ];
+}
+
 function processMatch(m) {
   const { signals, alerts, venue } = detectSignals(m);
   const mercadosRaw  = calcVE(enrichMercados(m), signals);
   const coherence    = coherenceCheck(mercadosRaw, signals, m);
   const bloque0      = buildBloque0(m, signals, venue);
+  const mercadosBetanoRaw = m.mercadosBetano
+    ? calcVE(enrichMercadosBetano(m), signals)
+    : null;
   return {
     ...m,
     signals,
     alertas: alerts,
     mercados: mercadosRaw,
+    mercadosBetano: mercadosBetanoRaw,
     coherencia: coherence,
     bloque0
   };
