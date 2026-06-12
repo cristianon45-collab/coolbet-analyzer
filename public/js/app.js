@@ -886,55 +886,148 @@ document.getElementById('tip-kelly')?.addEventListener('click', e => { e.stopPro
 // ── Skin switcher ─────────────────────────────────────────────────────────────
 const SKINS = {
   saoriii: {
-    tagline: 'con <strong>saoriiiii</strong> ⭐',
-    glow: 'radial-gradient(ellipse,rgba(244,196,48,.25) 0%,transparent 70%)',
+    tagline: 'con <strong>Saori Atenea</strong> 🏛️',
+    glow: 'radial-gradient(ellipse,rgba(180,160,255,.35) 0%,transparent 70%)',
     svg: `<defs>
-      <radialGradient id="skinGrad" cx="50%" cy="40%" r="55%">
-        <stop offset="0%" stop-color="#fde0bc"/><stop offset="100%" stop-color="#f0b880"/>
+      <radialGradient id="sskin" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="#fde8d0"/><stop offset="100%" stop-color="#f5c9a0"/>
       </radialGradient>
-      <radialGradient id="shirtGrad" cx="50%" cy="30%" r="70%">
-        <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e8e8e8"/>
+      <radialGradient id="sdress" cx="30%" cy="20%" r="80%">
+        <stop offset="0%" stop-color="#ffffff"/><stop offset="60%" stop-color="#f0eaff"/><stop offset="100%" stop-color="#d8ccff"/>
       </radialGradient>
-      <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <radialGradient id="sgold" cx="40%" cy="30%" r="60%">
+        <stop offset="0%" stop-color="#ffe566"/><stop offset="100%" stop-color="#c8900a"/>
+      </radialGradient>
+      <filter id="sglow">
+        <feGaussianBlur stdDeviation="1.2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="divineGlow">
+        <feGaussianBlur stdDeviation="2.5" result="blur"/>
         <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
       </filter>
     </defs>
-    <ellipse cx="40" cy="26" rx="18" ry="20" fill="#1a0800"/>
-    <path d="M22 28 Q14 38 16 55 Q18 62 22 60 Q20 48 24 38 Z" fill="#1a0800"/>
-    <path d="M58 28 Q66 38 64 55 Q62 62 58 60 Q60 48 56 38 Z" fill="#1a0800"/>
-    <path d="M28 14 Q32 8 40 10 Q48 8 52 14 Q48 12 40 13 Q32 12 28 14Z" fill="#1a0800"/>
-    <ellipse cx="40" cy="27" rx="14" ry="15" fill="url(#skinGrad)"/>
-    <ellipse cx="26" cy="28" rx="3" ry="4" fill="#f0b880"/>
-    <ellipse cx="54" cy="28" rx="3" ry="4" fill="#f0b880"/>
-    <path d="M31 19 Q34 17 37 19" stroke="#3d1f00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M43 19 Q46 17 49 19" stroke="#3d1f00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <ellipse cx="34" cy="24" rx="4" ry="4.5" fill="#1a0800"/>
-    <ellipse cx="46" cy="24" rx="4" ry="4.5" fill="#1a0800"/>
-    <ellipse cx="34" cy="24.5" rx="2.5" ry="3" fill="#4a2800"/>
-    <ellipse cx="46" cy="24.5" rx="2.5" ry="3" fill="#4a2800"/>
-    <circle cx="35.5" cy="22.5" r="1.2" fill="white"/>
-    <circle cx="47.5" cy="22.5" r="1.2" fill="white"/>
-    <ellipse cx="40" cy="29" rx="1.5" ry="1" fill="#e0a070" opacity="0.7"/>
-    <path d="M34 33 Q40 38 46 33" stroke="#c0705a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-    <ellipse cx="28" cy="30" rx="4.5" ry="3" fill="#ffb3b3" opacity="0.45"/>
-    <ellipse cx="52" cy="30" rx="4.5" ry="3" fill="#ffb3b3" opacity="0.45"/>
-    <rect x="36" y="41" width="8" height="7" rx="2" fill="url(#skinGrad)"/>
-    <path d="M18 48 L22 44 Q30 41 37 42 L40 45 L43 42 Q50 41 58 44 L62 48 L60 78 L20 78 Z" fill="url(#shirtGrad)"/>
-    <rect x="37.5" y="42" width="5" height="36" fill="#111111"/>
-    <path d="M31 42 L40 50 L49 42" stroke="#111" stroke-width="2" fill="none" stroke-linejoin="round"/>
-    <g transform="translate(22,50) scale(0.9)" filter="url(#glow)">
-      <polygon points="7,0 8.5,5 14,5 9.5,8 11,13 7,10 3,13 4.5,8 0,5 5.5,5" fill="#f4c430" stroke="#c49a24" stroke-width="0.4"/>
-    </g>
-    <path d="M20 50 L10 68 Q8 72 12 73 L16 70 L22 54 Z" fill="url(#shirtGrad)"/>
-    <path d="M60 50 L68 65 Q70 69 67 71 L63 68 L58 54 Z" fill="url(#shirtGrad)"/>
-    <ellipse cx="11" cy="73" rx="4" ry="3" fill="url(#skinGrad)"/>
-    <ellipse cx="67" cy="70" rx="4" ry="3.5" fill="url(#skinGrad)" transform="rotate(-20,67,70)"/>
-    <rect x="64" y="64" width="3" height="7" rx="1.5" fill="url(#skinGrad)" transform="rotate(-15,65,68)"/>
-    <rect x="68" y="63" width="3" height="8" rx="1.5" fill="url(#skinGrad)" transform="rotate(10,69,67)"/>
-    <path d="M20 78 L22 95 L36 95 L40 83 L44 95 L58 95 L60 78 Z" fill="#111111"/>
-    <line x1="40" y1="78" x2="40" y2="95" stroke="#222" stroke-width="1.2"/>
-    <rect x="18" y="93" width="18" height="8" rx="4" fill="white"/>
-    <rect x="44" y="93" width="18" height="8" rx="4" fill="white"/>`
+
+    <!-- AURA DIVINA de Atenea -->
+    <ellipse cx="40" cy="55" rx="36" ry="50" fill="#a080ff" opacity="0.06" filter="url(#divineGlow)"/>
+
+    <!-- PELO LARGO NEGRO (fluye hasta abajo) -->
+    <!-- Mechones laterales largos -->
+    <path d="M24 20 Q12 35 10 65 Q11 80 16 85 Q18 70 20 55 Q22 40 26 28 Z" fill="#0d0208"/>
+    <path d="M56 20 Q68 35 70 65 Q69 80 64 85 Q62 70 60 55 Q58 40 54 28 Z" fill="#0d0208"/>
+    <!-- Cuerpo del pelo detrás -->
+    <ellipse cx="40" cy="22" rx="17" ry="19" fill="#0d0208"/>
+    <!-- Flequillo con ondas suaves -->
+    <path d="M25 16 Q28 10 35 12 Q40 10 45 12 Q52 10 55 16 Q50 13 40 14 Q30 13 25 16Z" fill="#0d0208"/>
+    <!-- Mechón lateral derecho cayendo por el pecho -->
+    <path d="M55 25 Q62 40 60 70 Q58 80 56 85 Q54 72 55 58 Q56 42 54 30 Z" fill="#1a0510"/>
+    <!-- Mechón lateral izquierdo -->
+    <path d="M25 25 Q18 40 20 70 Q22 80 24 85 Q26 72 25 58 Q24 42 26 30 Z" fill="#1a0510"/>
+
+    <!-- CARA -->
+    <ellipse cx="40" cy="25" rx="13" ry="14" fill="url(#sskin)"/>
+
+    <!-- Orejas -->
+    <ellipse cx="27" cy="26" rx="2.5" ry="3" fill="#f5c9a0"/>
+    <ellipse cx="53" cy="26" rx="2.5" ry="3" fill="#f5c9a0"/>
+
+    <!-- Diadema dorada de Atenea -->
+    <path d="M28 15 Q40 10 52 15 Q48 12 40 11 Q32 12 28 15Z" fill="url(#sgold)" stroke="#c8900a" stroke-width="0.3"/>
+    <!-- Joya central diadema (omega/cruz) -->
+    <circle cx="40" cy="13" r="2.5" fill="url(#sgold)" stroke="#fff" stroke-width="0.5"/>
+    <text x="40" y="15" text-anchor="middle" font-size="3" fill="#5a0080" font-weight="bold">Ω</text>
+
+    <!-- Cejas finas elegantes -->
+    <path d="M31 18 Q35 16 38 18" stroke="#3d1a00" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M42 18 Q45 16 49 18" stroke="#3d1a00" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+
+    <!-- Ojos grandes anime — violeta/azul profundo (Saori) -->
+    <ellipse cx="34" cy="23" rx="4" ry="4.5" fill="#1a0a30"/>
+    <ellipse cx="46" cy="23" rx="4" ry="4.5" fill="#1a0a30"/>
+    <ellipse cx="34" cy="23.5" rx="2.8" ry="3.2" fill="#6a35cc"/>
+    <ellipse cx="46" cy="23.5" rx="2.8" ry="3.2" fill="#6a35cc"/>
+    <ellipse cx="34" cy="24" rx="1.4" ry="1.8" fill="#9060ff"/>
+    <ellipse cx="46" cy="24" rx="1.4" ry="1.8" fill="#9060ff"/>
+    <!-- Brillo ojos -->
+    <circle cx="35.8" cy="21.5" r="1.3" fill="white"/>
+    <circle cx="47.8" cy="21.5" r="1.3" fill="white"/>
+    <circle cx="33" cy="25" r="0.6" fill="white" opacity="0.7"/>
+    <circle cx="45" cy="25" r="0.6" fill="white" opacity="0.7"/>
+    <!-- Pestañas -->
+    <path d="M30 20 Q32 18 34 19" stroke="#0d0208" stroke-width="1" fill="none"/>
+    <path d="M34 19 Q36 18 38 19.5" stroke="#0d0208" stroke-width="1" fill="none"/>
+    <path d="M42 19.5 Q44 18 46 19" stroke="#0d0208" stroke-width="1" fill="none"/>
+    <path d="M46 19 Q48 18 50 20" stroke="#0d0208" stroke-width="1" fill="none"/>
+
+    <!-- Nariz pequeña delicada -->
+    <path d="M38.5 28 Q40 29.5 41.5 28" stroke="#d4a070" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+
+    <!-- Boca con leve sonrisa serena -->
+    <path d="M35 31.5 Q40 34.5 45 31.5" stroke="#c06878" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M36 31.8 Q40 34 44 31.8" fill="#e8909a" opacity="0.35"/>
+
+    <!-- Mejillas suaves rosadas -->
+    <ellipse cx="28" cy="28" rx="4" ry="2.5" fill="#ffb8c0" opacity="0.4"/>
+    <ellipse cx="52" cy="28" rx="4" ry="2.5" fill="#ffb8c0" opacity="0.4"/>
+
+    <!-- CUELLO -->
+    <rect x="37" y="39" width="6" height="7" rx="2" fill="url(#sskin)"/>
+
+    <!-- VESTIDO BLANCO/LILA de Atenea (toga griega con faja dorada) -->
+    <!-- Cuerpo principal del vestido -->
+    <path d="M14 47 L20 42 Q28 39 36 40 L40 44 L44 40 Q52 39 60 42 L66 47 L64 105 L16 105 Z" fill="url(#sdress)"/>
+    <!-- Faja/cinturón dorado -->
+    <rect x="18" y="62" width="44" height="5" rx="2" fill="url(#sgold)" stroke="#c8900a" stroke-width="0.4"/>
+    <!-- Escote V con borde dorado -->
+    <path d="M28 41 L40 54 L52 41" stroke="url(#sgold)" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+    <!-- Pliegues del vestido (toga) -->
+    <path d="M22 50 Q20 75 22 100" stroke="#c8bfee" stroke-width="0.8" fill="none" opacity="0.6"/>
+    <path d="M30 42 Q28 65 29 100" stroke="#c8bfee" stroke-width="0.6" fill="none" opacity="0.5"/>
+    <path d="M50 42 Q52 65 51 100" stroke="#c8bfee" stroke-width="0.6" fill="none" opacity="0.5"/>
+    <path d="M58 50 Q60 75 58 100" stroke="#c8bfee" stroke-width="0.8" fill="none" opacity="0.6"/>
+    <!-- Borde inferior dorado -->
+    <path d="M16 104 Q40 108 64 104" stroke="url(#sgold)" stroke-width="1.5" fill="none"/>
+
+    <!-- Hombros / drapeado toga -->
+    <path d="M14 47 Q10 52 12 60 Q16 58 18 50 Z" fill="#e8e0ff"/>
+    <path d="M66 47 Q70 52 68 60 Q64 58 62 50 Z" fill="#e8e0ff"/>
+
+    <!-- BÁCULO DORADO DE ATENEA (mano derecha) -->
+    <!-- Palo del báculo -->
+    <rect x="62" y="15" width="3" height="75" rx="1.5" fill="url(#sgold)" filter="url(#sglow)"/>
+    <!-- Cabeza del báculo — Cruz Ankh / símbolo Atenea -->
+    <!-- Círculo superior -->
+    <circle cx="63.5" cy="12" r="6" fill="none" stroke="url(#sgold)" stroke-width="2.2" filter="url(#sglow)"/>
+    <!-- Cruz del ankh -->
+    <line x1="63.5" y1="6" x2="63.5" y2="18" stroke="url(#sgold)" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="58" y1="14" x2="69" y2="14" stroke="url(#sgold)" stroke-width="2" stroke-linecap="round"/>
+    <!-- Omega en el círculo -->
+    <text x="63.5" y="14" text-anchor="middle" font-size="5.5" fill="#fff" font-weight="bold" opacity="0.9">Ω</text>
+    <!-- Brillo en el báculo -->
+    <rect x="63.5" y="18" width="1" height="70" rx="0.5" fill="white" opacity="0.4"/>
+    <!-- Punta inferior del báculo -->
+    <path d="M62 90 L63.5 97 L65 90 Z" fill="url(#sgold)"/>
+
+    <!-- Mano derecha sosteniendo báculo -->
+    <ellipse cx="63" cy="72" rx="3.5" ry="3" fill="url(#sskin)"/>
+
+    <!-- Brazo izquierdo (extendido elegantemente) -->
+    <path d="M16 52 L8 68 Q6 73 10 74 L14 72 L18 56 Z" fill="url(#sdress)"/>
+    <!-- Mano izquierda -->
+    <ellipse cx="9" cy="74" rx="4" ry="3" fill="url(#sskin)"/>
+
+    <!-- Sandalias doradas (pies asoman bajo vestido) -->
+    <ellipse cx="28" cy="103" rx="8" ry="3.5" fill="url(#sgold)" opacity="0.8"/>
+    <ellipse cx="52" cy="103" rx="8" ry="3.5" fill="url(#sgold)" opacity="0.8"/>
+    <!-- Tiras sandalia -->
+    <path d="M22 100 Q28 102 34 100" stroke="#c8900a" stroke-width="1" fill="none"/>
+    <path d="M46 100 Q52 102 58 100" stroke="#c8900a" stroke-width="1" fill="none"/>
+
+    <!-- Destellos divinos alrededor -->
+    <g filter="url(#divineGlow)" opacity="0.7">
+      <polygon points="6,30 7.5,35 12,35 8.5,38 10,43 6,40 2,43 3.5,38 0,35 4.5,35" fill="#f0d060" opacity="0.6" transform="scale(0.6) translate(5,10)"/>
+      <polygon points="6,30 7.5,35 12,35 8.5,38 10,43 6,40 2,43 3.5,38 0,35 4.5,35" fill="#c8a0ff" opacity="0.5" transform="scale(0.5) translate(120,5)"/>
+    </g>`
   },
 
   maul: {
