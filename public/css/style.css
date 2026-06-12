@@ -628,10 +628,12 @@ body {
   .cb-layout {
     grid-template-columns: 1fr;
     padding: 8px; gap: 8px;
+    width: 100%; overflow-x: hidden;
   }
+  body { overflow-x: hidden; width: 100%; }
 
   /* ── MATCH CARDS ── */
-  .match-card { border-radius: 8px; }
+  .match-card { border-radius: 8px; overflow: hidden; width: 100%; box-sizing: border-box; }
   .mc-top {
     flex-wrap: wrap; gap: 3px;
     padding: 7px 10px 5px;
@@ -666,9 +668,10 @@ body {
   .mc-markets {
     grid-template-columns: repeat(2, 1fr);
     gap: 5px; padding: 6px 10px 10px;
+    width: 100%; box-sizing: border-box;
   }
-  .mkt-btn    { padding: 7px 6px; min-height: 72px; }
-  .mkt-name   { font-size: 10px; line-height: 1.2; }
+  .mkt-btn    { padding: 7px 6px; min-height: 72px; overflow: hidden; box-sizing: border-box; }
+  .mkt-name   { font-size: 10px; line-height: 1.2; word-break: break-word; }
   .mkt-odds   { font-size: 16px; }
   .ve-badge   { font-size: 8px; padding: 1px 4px; }
   .conf-badge { font-size: 8px; }
