@@ -1099,6 +1099,152 @@ body {
   .cb-footer { font-size: 9px; padding: 10px 12px; }
 }
 
+/* ─────────────────────────────────────────────────────────────────────
+   SKIN THEMES — tema completo de página por personaje
+   ─────────────────────────────────────────────────────────────────── */
+
+/* ── SAORI ATENEA — Caballeros del Zodiaco (cosmos, dorado divino, violeta) */
+body[data-skin="saoriii"] {
+  --bg-dark:    #040814;
+  --bg-panel:   #0a1030;
+  --bg-card:    #0f1840;
+  --bg-hover:   #162050;
+  --bg-input:   #080e28;
+  --gold:       #c0a0ff;
+  --gold-dim:   #9070cc;
+  --green:      #4ab4b4;
+  --green-dim:  #358a8a;
+  --red:        #e24b4a;
+  --blue:       #7060d0;
+  --text:       #e8e0ff;
+  --text-muted: #9080c0;
+  --text-dim:   #504070;
+  --border:     rgba(180,140,255,0.12);
+  --border-hover: rgba(192,160,255,0.5);
+  background: var(--bg-dark);
+}
+body[data-skin="saoriii"] .cb-header {
+  background: linear-gradient(135deg, #0a1030 0%, #12083a 100%);
+  border-bottom-color: rgba(192,160,255,0.2);
+}
+body[data-skin="saoriii"] .cb-logo-text { text-shadow: 0 0 20px rgba(192,160,255,0.5); }
+body[data-skin="saoriii"] .nav-btn.active { background: var(--gold); color: #080820; }
+body[data-skin="saoriii"] .match-card { background: var(--bg-card); border-color: rgba(180,140,255,0.1); }
+body[data-skin="saoriii"] .match-card:hover { border-color: rgba(192,160,255,0.3); }
+body[data-skin="saoriii"] .mc-comp { background: rgba(192,160,255,0.12); color: var(--gold); border-color: rgba(192,160,255,0.25); }
+body[data-skin="saoriii"] .mkt-btn { background: #0a1030; border-color: rgba(180,140,255,0.12); }
+body[data-skin="saoriii"] .mkt-btn:hover { background: #162050; border-color: var(--gold); }
+body[data-skin="saoriii"] .mkt-btn.selected { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 0 12px rgba(192,160,255,0.25); }
+body[data-skin="saoriii"] .cb-slip { background: #0a1030; border-color: rgba(180,140,255,0.15); }
+body[data-skin="saoriii"] .slip-header { background: #040814; }
+body[data-skin="saoriii"] .btn-analyze { background: var(--gold); color: #080820; }
+body[data-skin="saoriii"] .btn-analyze:hover { background: var(--gold-dim); }
+body[data-skin="saoriii"] .res-box { background: rgba(180,140,255,0.05); }
+body[data-skin="saoriii"] .cat-tab.active { background: rgba(192,160,255,0.12); border-color: var(--gold); color: var(--gold); }
+body[data-skin="saoriii"] .prob-fill.pos { background: var(--green); }
+body[data-skin="saoriii"] .ls-strip { background: #040814; }
+body[data-skin="saoriii"] .modal-box { background: #0a1030; }
+body[data-skin="saoriii"] .modal-header { background: #0a1030; }
+body[data-skin="saoriii"] .stats-card { background: #040814; }
+body[data-skin="saoriii"] .metric-card { background: #040814; }
+body[data-skin="saoriii"] .saori-glow { background: radial-gradient(ellipse, rgba(192,160,255,.5) 0%, transparent 70%); }
+
+/* ── DARTH MAUL — Imperio Sith (negro oscuro, rojo carmesí) */
+body[data-skin="maul"] {
+  --bg-dark:    #060000;
+  --bg-panel:   #100505;
+  --bg-card:    #160808;
+  --bg-hover:   #1e0a0a;
+  --bg-input:   #0a0202;
+  --gold:       #cc1818;
+  --gold-dim:   #991010;
+  --green:      #1db954;
+  --green-dim:  #16913f;
+  --red:        #ff4040;
+  --blue:       #cc1818;
+  --text:       #e8d8d8;
+  --text-muted: #886060;
+  --text-dim:   #442020;
+  --border:     rgba(200,30,30,0.15);
+  --border-hover: rgba(200,50,50,0.5);
+  background: var(--bg-dark);
+}
+body[data-skin="maul"] .cb-header {
+  background: linear-gradient(135deg, #100505 0%, #1a0000 100%);
+  border-bottom-color: rgba(180,0,0,0.3);
+  box-shadow: 0 2px 20px rgba(150,0,0,0.4);
+}
+body[data-skin="maul"] .cb-logo-text { text-shadow: 0 0 20px rgba(200,0,0,0.5); }
+body[data-skin="maul"] .nav-btn.active { background: var(--gold); color: #fff; }
+body[data-skin="maul"] .nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+body[data-skin="maul"] .match-card { background: var(--bg-card); border-color: rgba(180,30,30,0.12); }
+body[data-skin="maul"] .match-card:hover { border-color: rgba(200,50,50,0.35); }
+body[data-skin="maul"] .mc-comp { background: rgba(200,30,30,0.12); color: var(--gold); border-color: rgba(200,30,30,0.3); }
+body[data-skin="maul"] .mkt-btn { background: #100505; border-color: rgba(180,30,30,0.15); }
+body[data-skin="maul"] .mkt-btn:hover { background: #1e0a0a; border-color: var(--gold); }
+body[data-skin="maul"] .mkt-btn.selected { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 0 14px rgba(200,0,0,0.3); }
+body[data-skin="maul"] .cb-slip { background: #100505; border-color: rgba(180,30,30,0.2); }
+body[data-skin="maul"] .slip-header { background: #060000; }
+body[data-skin="maul"] .btn-analyze { background: var(--gold); color: #fff; }
+body[data-skin="maul"] .btn-analyze:hover { background: var(--gold-dim); }
+body[data-skin="maul"] .res-box { background: rgba(180,0,0,0.06); }
+body[data-skin="maul"] .cat-tab { border-color: rgba(180,30,30,0.2); }
+body[data-skin="maul"] .cat-tab.active { background: rgba(200,30,30,0.15); border-color: var(--gold); color: var(--gold); }
+body[data-skin="maul"] .ve-badge.pos { background: rgba(29,185,84,0.15); color: #5dca9b; border-color: rgba(29,185,84,0.4); }
+body[data-skin="maul"] .ls-strip { background: #060000; border-color: rgba(180,0,0,0.25); }
+body[data-skin="maul"] .modal-box { background: #100505; border-color: rgba(180,30,30,0.2); }
+body[data-skin="maul"] .modal-header { background: #100505; }
+body[data-skin="maul"] .stats-card { background: #060000; }
+body[data-skin="maul"] .metric-card { background: #060000; }
+body[data-skin="maul"] .b0-section { background: rgba(200,30,30,0.05); border-color: rgba(200,30,30,0.2); }
+body[data-skin="maul"] .hdr-cuota { color: var(--gold); }
+body[data-skin="maul"] .indicators-legend { border-color: rgba(180,30,30,0.15); }
+body[data-skin="maul"] .jug-acagarr-title { color: var(--gold); }
+body[data-skin="maul"] .jug-rank { color: var(--gold); }
+body[data-skin="maul"] .jug-row:hover { border-color: rgba(200,30,30,.4); background: rgba(200,30,30,.06); }
+
+/* ── ARTURO VIDAL / COLO-COLO (blanco, negro, dorado, rojo cacique) */
+body[data-skin="vidal"] {
+  --bg-dark:    #080808;
+  --bg-panel:   #111111;
+  --bg-card:    #191919;
+  --bg-hover:   #222222;
+  --bg-input:   #0d0d0d;
+  --gold:       #f4c430;
+  --gold-dim:   #c49a24;
+  --green:      #1db954;
+  --green-dim:  #16913f;
+  --red:        #cc0000;
+  --blue:       #dddddd;
+  --text:       #f5f5f5;
+  --text-muted: #999999;
+  --text-dim:   #555555;
+  --border:     rgba(255,255,255,0.1);
+  --border-hover: rgba(244,196,48,0.5);
+  background: var(--bg-dark);
+}
+body[data-skin="vidal"] .cb-header {
+  background: linear-gradient(135deg, #111111 0%, #0a0a0a 100%);
+  border-bottom: 3px solid #f4c430;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.7);
+}
+body[data-skin="vidal"] .cb-logo-text { text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+body[data-skin="vidal"] .nav-btn.active { background: var(--gold); color: #111; }
+body[data-skin="vidal"] .match-card { background: var(--bg-card); border-left: 3px solid transparent; }
+body[data-skin="vidal"] .match-card:hover { border-color: rgba(244,196,48,0.25); }
+body[data-skin="vidal"] .mc-comp { background: rgba(244,196,48,0.12); }
+body[data-skin="vidal"] .mkt-btn { background: #111; }
+body[data-skin="vidal"] .mkt-btn.selected { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+body[data-skin="vidal"] .cb-slip { background: #111; border-top: 2px solid var(--gold); }
+body[data-skin="vidal"] .slip-header { background: #000; }
+body[data-skin="vidal"] .ls-strip { background: #000; border-bottom: 1px solid rgba(244,196,48,0.2); }
+body[data-skin="vidal"] .modal-box { background: #111; }
+body[data-skin="vidal"] .modal-header { background: #111; }
+body[data-skin="vidal"] .stats-card { background: #000; }
+body[data-skin="vidal"] .metric-card { background: #000; }
+/* Franja roja Colo-Colo en la barra de nav */
+body[data-skin="vidal"] .cb-nav { border-top: 1px solid rgba(204,0,0,0.3); }
+
 /* ── MÓVIL LANDSCAPE ─────────────────────────────────────────────────── */
 @media (max-height: 520px) and (orientation: landscape) {
   /* Ocultar barra flotante — ticket visible a la derecha */

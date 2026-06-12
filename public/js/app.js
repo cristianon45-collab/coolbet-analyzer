@@ -308,11 +308,11 @@ function renderJugada(m) {
     </div>`;
   }).join('');
 
-  // ── 🥤 AL SECO: combinación soñada — mejores por VE positivo o más prob. real ──
-  const dream = sorted
-    .filter(mk => mk.ve > 0)
-    .slice(0, 3);
-  const dreamFallback = dream.length < 2 ? sorted.slice(0, 3) : dream;
+  // ── 🥤 AL SECO: la mejor apuesta de cada categoría de la barra ──
+  const dreamCats = [...new Set(m.mercados.map(mk => mk.categoria))];
+  const dreamFallback = dreamCats
+    .map(cat => sorted.find(mk => mk.categoria === cat))
+    .filter(Boolean);
   const dreamOdds = dreamFallback.reduce((acc, mk) => acc * mk.odds, 1);
   const dreamProb  = dreamFallback.reduce((acc, mk) => acc * mk.probReal, 1);
   const dreamVE    = (dreamProb * dreamOdds - 1) * 100;
@@ -1355,6 +1355,7 @@ function applySkin(name) {
     b.classList.toggle('active', b.dataset.skin === name);
   });
   localStorage.setItem('coolbet-skin', name);
+  document.body.setAttribute('data-skin', name);
 }
 
 document.querySelectorAll('.skin-btn').forEach(btn => {
