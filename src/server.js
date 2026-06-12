@@ -1,4 +1,4 @@
-// src/server.js
+// src/server.js — v3.4-Mundial
 const express = require('express');
 const path = require('path');
 const MATCHES = require('../data/matches');
@@ -6,6 +6,54 @@ const MATCHES = require('../data/matches');
 const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
+
+// ─── Base de datos de sedes FIFA 2026 ───────────────────────────────────────
+const VENUES = {
+  // México
+  'Azteca':       { ciudad:'Ciudad de México', altitude:2240, altLevel:'critica', tempMax:23, rain:true,  climaTag:'🏔️ Altitud crítica 2,240m · Lluvias frecuentes' },
+  'Akron':        { ciudad:'Guadalajara',       altitude:1566, altLevel:'moderada', tempMax:26, rain:true,  climaTag:'🏔️ Altitud moderada 1,566m · Lluvias frecuentes' },
+  'BBVA':         { ciudad:'Monterrey',         altitude:538,  altLevel:null,       tempMax:37, rain:false, climaTag:'🌡️ Calor extremo 33–37°C — sede más caliente' },
+  // EE.UU.
+  'Arlington':    { ciudad:'Dallas/Arlington',  altitude:0,    altLevel:null,       tempMax:34, rain:false, climaTag:'🌡️ Calor extremo 30–35°C' },
+  'Houston':      { ciudad:'Houston',           altitude:0,    altLevel:null,       tempMax:34, rain:false, climaTag:'🌡️ Calor extremo 30–35°C + humedad alta' },
+  'Miami':        { ciudad:'Miami',             altitude:0,    altLevel:null,       tempMax:33, rain:false, climaTag:'🌡️ Calor húmedo 30–33°C' },
+  'Atlanta':      { ciudad:'Atlanta',           altitude:0,    altLevel:null,       tempMax:32, rain:false, climaTag:'🌡️ Calor húmedo 28–33°C (SEMIFINALES)' },
+  'KansasCity':   { ciudad:'Kansas City',       altitude:0,    altLevel:null,       tempMax:31, rain:false, climaTag:'🌡️ Calor moderado 25–32°C' },
+  'EastRutherford':{ ciudad:'Nueva Jersey',     altitude:0,    altLevel:null,       tempMax:29, rain:false, climaTag:'☁️ Cálido húmedo 25–30°C (FINAL)' },
+  'Philadelphia': { ciudad:'Philadelphia',      altitude:0,    altLevel:null,       tempMax:29, rain:false, climaTag:'☁️ Cálido 25–30°C' },
+  'Inglewood':    { ciudad:'Los Ángeles',       altitude:0,    altLevel:null,       tempMax:26, rain:false, climaTag:'🌤️ Seco 22–27°C' },
+  'SFO':          { ciudad:'San Francisco',     altitude:0,    altLevel:null,       tempMax:22, rain:false, climaTag:'✅ Óptimo 18–22°C' },
+  'Seattle':      { ciudad:'Seattle',           altitude:0,    altLevel:null,       tempMax:19, rain:true,  climaTag:'✅ Óptimo 16–20°C · posible lluvia' },
+  // Canadá
+  'Toronto':      { ciudad:'Toronto',           altitude:0,    altLevel:null,       tempMax:23, rain:false, climaTag:'✅ Óptimo 18–24°C' },
+  'Vancouver':    { ciudad:'Vancouver',         altitude:0,    altLevel:null,       tempMax:19, rain:true,  climaTag:'✅ Óptimo 15–20°C · posible lluvia' },
+};
+
+// Detecta venue desde el campo time/estadio del partido
+function getVenue(m) {
+  const src = (m.estadio || m.time || '').toLowerCase();
+  for (const [key, v] of Object.entries(VENUES)) {
+    if (src.includes(key.toLowerCase()) ||
+        src.includes(v.ciudad.toLowerCase().split('/')[0])) return { key, ...v };
+  }
+  // Fallback por palabras clave
+  if (src.includes('azteca'))     return { key:'Azteca',   ...VENUES.Azteca };
+  if (src.includes('akron') || src.includes('zapopan')) return { key:'Akron', ...VENUES.Akron };
+  if (src.includes('bbva') || src.includes('monterrey')) return { key:'BBVA', ...VENUES.BBVA };
+  if (src.includes('arlington'))  return { key:'Arlington', ...VENUES.Arlington };
+  if (src.includes('houston'))    return { key:'Houston',  ...VENUES.Houston };
+  if (src.includes('inglewood') || src.includes('los angeles') || src.includes('sofi')) return { key:'Inglewood', ...VENUES.Inglewood };
+  if (src.includes('east rutherford') || src.includes('metlife') || src.includes('new jersey')) return { key:'EastRutherford', ...VENUES.EastRutherford };
+  if (src.includes('kansas')) return { key:'KansasCity', ...VENUES.KansasCity };
+  if (src.includes('miami'))   return { key:'Miami',   ...VENUES.Miami };
+  if (src.includes('atlanta')) return { key:'Atlanta', ...VENUES.Atlanta };
+  if (src.includes('toronto')) return { key:'Toronto', ...VENUES.Toronto };
+  if (src.includes('seattle')) return { key:'Seattle', ...VENUES.Seattle };
+  if (src.includes('vancouver') || src.includes('bc place')) return { key:'Vancouver', ...VENUES.Vancouver };
+  if (src.includes('san francisco') || src.includes('bay area') || src.includes('levi')) return { key:'SFO', ...VENUES.SFO };
+  if (src.includes('philadelphia')) return { key:'Philadelphia', ...VENUES.Philadelphia };
+  return null;
+}
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 function poissonCDF(k, lambda) {
@@ -28,67 +76,201 @@ function mkMercado(label, categoria, probReal, margen = 0.07) {
   };
 }
 
-// ─── Señales A-G del framework v3.3-Mundial ────────────────────────────────
+// ─── Señales A-G del framework v3.4-Mundial ────────────────────────────────
 function detectSignals(m) {
   const signals = [];
   const alerts  = [...(m.contexto?.alertas || [])];
+  const ctx     = m.contexto || {};
+  const venue   = getVenue(m);
 
-  // Señal G: restricción diplomática
-  const diplomaticTeams = ['Irán','Haití','Haiti','Iran'];
-  if (diplomaticTeams.some(t => m.local === t || m.visit === t)) {
-    signals.push({ id:'G', msg:'Restricción diplomática activa → bajar 1 nivel todos los mercados del equipo afectado', level:'danger' });
-    alerts.push('🚨 Señal G: restricción diplomática');
+  // ── SEÑAL G: Restricción diplomática ──────────────────────────────────────
+  const diplomaticMap = {
+    'Irán': 'extreme', 'Iran': 'extreme',
+    'Haití': 'moderate', 'Haiti': 'moderate',
+  };
+  const gTeam = Object.keys(diplomaticMap).find(t => m.local === t || m.visit === t);
+  if (gTeam) {
+    const sev = diplomaticMap[gTeam];
+    if (sev === 'extreme') {
+      signals.push({ id:'G', msg:`Restricción EXTREMA (${gTeam}): entrada/salida mismo día en EE.UU., 15+ staff sin visa. Bajar 1 nivel todos los mercados de este equipo.`, level:'danger' });
+      alerts.push(`🚨 Señal G EXTREMA: ${gTeam} — restricción diplomática`);
+    } else {
+      signals.push({ id:'G', msg:`Restricción logística moderada (${gTeam}): travel ban con exención deportiva. Bajar 1 nivel.`, level:'danger' });
+      alerts.push(`🚨 Señal G: ${gTeam} — restricción logística`);
+    }
   }
 
-  // Señal altitud
-  const altitudCritica  = ['Ciudad de México','Est. Azteca','Zapopan'];
-  const altitudModerada = ['Guadalajara'];
-  if (m.estadio && altitudCritica.some(a => m.estadio.includes(a))) {
-    signals.push({ id:'ALT', msg:'Altitud crítica ~2,240m — impacto severo en ritmo y goles', level:'warn' });
-    alerts.push('🏔️ Altitud crítica 2,240m');
-  } else if (m.time && (m.time.includes('Zapopan') || (m.estadio && altitudModerada.some(a => m.estadio.includes(a))))) {
-    signals.push({ id:'ALT', msg:'Altitud moderada ~1,566m — leve impacto en ritmo y físico', level:'info' });
-    alerts.push('🏔️ Altitud moderada 1,566m');
-  }
-  if (m.time && m.time.includes('Azteca')) {
-    signals.push({ id:'ALT', msg:'Altitud crítica ~2,240m — impacto severo', level:'warn' });
-    alerts.push('🏔️ Altitud crítica 2,240m');
-  }
-
-  // Señal D: calor extremo (Houston, Arlington, Miami, Kansas City en verano)
-  const hotVenues = ['Houston','Arlington','Miami','Kansas City','Zapopan'];
-  if (hotVenues.some(v => m.time && m.time.includes(v))) {
-    signals.push({ id:'D', msg:'Calor extremo +33°C → restar 2+ córneres a línea, ritmo reducido', level:'warn' });
-    alerts.push('🌡️ Calor extremo +33°C');
+  // ── SEÑAL ALT: Altitud (vía base de datos de sedes) ───────────────────────
+  if (venue) {
+    if (venue.altLevel === 'critica') {
+      if (!signals.some(s => s.id === 'ALT')) {
+        signals.push({ id:'ALT', msg:`Altitud crítica ~${venue.altitude}m (${venue.ciudad}) — impacto SEVERO en ritmo, goles y resistencia, especialmente primeros 60 min.`, level:'warn' });
+        alerts.push(`🏔️ Altitud crítica ${venue.altitude}m`);
+      }
+    } else if (venue.altLevel === 'moderada') {
+      if (!signals.some(s => s.id === 'ALT')) {
+        signals.push({ id:'ALT', msg:`Altitud moderada ~${venue.altitude}m (${venue.ciudad}) — impacto leve en ritmo. Equipos europeos y asiáticos lo notan claramente.`, level:'info' });
+        alerts.push(`🏔️ Altitud moderada ${venue.altitude}m`);
+      }
+    }
   }
 
-  // Dead rubber detector (ambos equipos con forma muy baja)
+  // ── SEÑAL D: Clima extremo → impacta córneres y ritmo ────────────────────
+  if (venue && !venue.altLevel && venue.tempMax >= 33) {
+    signals.push({ id:'D', msg:`Calor extremo ${venue.tempMax}°C (${venue.ciudad}) → restar 2+ córneres a la línea estimada, ritmo reducido, más sustituciones tempranas.`, level:'warn' });
+    alerts.push(`🌡️ Calor extremo ${venue.tempMax}°C`);
+  } else if (venue && venue.rain) {
+    signals.push({ id:'D-LLUVIA', msg:`Lluvias frecuentes (${venue.ciudad}) → reduce córneres y tiros lejanos, perjudica juego combinativo.`, level:'info' });
+  }
+
+  // ── SEÑAL B: Rotaciones por clasificación definida ────────────────────────
+  const clL = ctx.clasificatorioLocal, clV = ctx.clasificatorioVisit;
+  if (clL === 'clasificado' || clL === 'eliminado') {
+    signals.push({ id:'B', msg:`Rotaciones probables — ${m.local} con situación clasificatoria definida (${clL}). Goleador titular baja a confianza Baja.`, level:'warn' });
+    alerts.push(`🔄 Señal B: posibles rotaciones (${m.local})`);
+  }
+  if (clV === 'clasificado' || clV === 'eliminado') {
+    signals.push({ id:'B', msg:`Rotaciones probables — ${m.visit} con situación clasificatoria definida (${clV}). Goleador titular baja a confianza Baja.`, level:'warn' });
+    alerts.push(`🔄 Señal B: posibles rotaciones (${m.visit})`);
+  }
+
+  // ── SEÑAL DR: Dead rubber ─────────────────────────────────────────────────
+  const deadRubberCtx = (clL === 'eliminado' && clV === 'eliminado') ||
+                        (clL === 'clasificado' && clV === 'clasificado');
   const sl = m.statsLocal, sv = m.statsVisit;
   const formaL = sl.forma.filter(f => f === 'G').length;
   const formaV = sv.forma.filter(f => f === 'G').length;
-  if (formaL >= 4 && formaV >= 4) {
-    signals.push({ id:'DR', msg:'⚠️ Posible Dead Rubber — ambos equipos en racha negativa, motivación comprometida', level:'danger' });
+  if (deadRubberCtx || (formaL >= 4 && formaV >= 4)) {
+    signals.push({ id:'DR', msg:'⚠️ Posible Dead Rubber — motivación comprometida. Mercados 1X2, BTTS y O/U goles pierden fiabilidad. Priorizar tarjetas y córneres.', level:'danger' });
     alerts.push('⚠️ Posible Dead Rubber');
   }
 
-  return { signals, alerts };
+  // ── SEÑAL PACTO TÁCTICO: J3 ambos clasifican con empate ──────────────────
+  if (ctx.jornada === 3 && ctx.pactoPosible) {
+    signals.push({ id:'PT', msg:'⚠️ Posible pacto táctico — a ambos equipos les conviene el empate. Suspender apuesta 1X2.', level:'danger' });
+    alerts.push('⚠️ Riesgo de pacto táctico (J3)');
+  }
+
+  // ── SEÑAL F: Factor poco priceado detectado ───────────────────────────────
+  const underpriced = [];
+  if (signals.some(s => s.id === 'ALT')) underpriced.push('altitud');
+  if (signals.some(s => s.id === 'G'))   underpriced.push('restricción logística');
+  if (signals.some(s => s.id === 'B'))   underpriced.push('rotaciones');
+  if (ctx.debut) underpriced.push('debut mundialista');
+  if (ctx.cambioCampamento) underpriced.push('cambio de campamento base');
+  if (ctx.diasDescansoLocal <= 3 || ctx.diasDescansoVisit <= 3) underpriced.push('fatiga/descanso insuficiente');
+  if (underpriced.length) {
+    signals.push({ id:'F', msg:`Factor poco priceado: ${underpriced.join(', ')}. Revisar si el mercado relacionado merece escalar confianza.`, level:'info' });
+  }
+
+  // ── REGLAS FIFA 2026 ──────────────────────────────────────────────────────
+  if (ctx.altaTension || ctx.rivalidadHistorica) {
+    signals.push({ id:'FIFA26', msg:'Reglas FIFA 2026: roja automática por taparse la boca en discusión + roja por abandonar campo en protesta. En partidos de alta tensión: escalar confianza en Over tarjetas rojas.', level:'info' });
+  }
+
+  // ── AMNISTÍA DE TARJETAS ──────────────────────────────────────────────────
+  if (ctx.jornada === 3) {
+    signals.push({ id:'AMN', msg:'Amnistía J3: al terminar la fase de grupos todas las amarillas individuales se borran. Solo afecta jugadores con 1 tarjeta; suspensiones pendientes se cumplen igual.', level:'info' });
+  }
+
+  return { signals, alerts, venue };
 }
 
-// ─── Nivel de confianza por mercado ────────────────────────────────────────
-function confLevel(probReal, ve, signals) {
-  const hasG = signals.some(s => s.id === 'G');
+// ─── Nivel de confianza por mercado (v3.4) ─────────────────────────────────
+function confLevel(probReal, ve, signals, categoria = '') {
+  const hasG   = signals.some(s => s.id === 'G');
+  const hasDR  = signals.some(s => s.id === 'DR');
+  const hasPT  = signals.some(s => s.id === 'PT');
+  const hasB   = signals.some(s => s.id === 'B');
+  const orden  = ['Alta','Media','Baja','Sin valor'];
+
+  // Dead rubber o pacto → sin valor en mercados de resultado/goles
+  if ((hasDR || hasPT) && ['Resultado','Totales','BTTS'].includes(categoria)) {
+    return 'Sin valor';
+  }
+
   let level;
   if (ve > 0.06 && probReal > 0.55)      level = 'Alta';
   else if (ve > 0.02 && probReal > 0.40) level = 'Media';
   else if (ve >= 0)                       level = 'Baja';
   else                                    level = 'Sin valor';
-  // Señal G baja un nivel
-  if (hasG) {
-    const orden = ['Alta','Media','Baja','Sin valor'];
-    const idx = orden.indexOf(level);
-    level = orden[Math.min(idx + 1, 3)];
-  }
+
+  // Señal G: baja 1 nivel todos los mercados del equipo afectado
+  if (hasG) level = orden[Math.min(orden.indexOf(level) + 1, 3)];
+
+  // Señal B: goleador baja a Baja si hay rotaciones
+  if (hasB && categoria === 'Primer Gol') level = 'Baja';
+
   return level;
+}
+
+// ─── Verificación de coherencia interna (Capa de Decisión v3.4) ────────────
+function coherenceCheck(mercados, signals, m) {
+  const corrections = [];
+  const ctx = m.contexto || {};
+
+  // SEÑAL A: velocistas vs BTTS
+  // Sub-condición J1: favorito local dominante + J1 → BTTS No-Baja es válido sin corrección
+  const bttsYes = mercados.find(mk => mk.label.includes('Ambos anotan') && mk.label.includes('Sí'));
+  const bttsNo  = mercados.find(mk => mk.label.includes('Ambos anotan') && mk.label.includes('No'));
+  const esJ1FavoritoLocal = ctx.jornada === 1 && ctx.favoritoLocal &&
+                             Math.abs((m.statsLocal?.posLiga || 50) - (m.statsVisit?.posLiga || 50)) >= 20;
+  if (ctx.visitanteVelocistas && bttsNo && !esJ1FavoritoLocal) {
+    if (bttsNo.confianza === 'Media' || bttsNo.confianza === 'Alta') {
+      corrections.push('🔴 Señal A: Velocistas del visitante → BTTS-No bajado a Baja');
+      bttsNo.confianza = 'Baja';
+    }
+  }
+  if (ctx.visitanteVelocistas && bttsYes && !esJ1FavoritoLocal) {
+    if (!bttsYes.confianza || bttsYes.confianza === 'Baja') {
+      corrections.push('🟡 Señal A: Velocistas presentes → revisado BTTS-Sí');
+    }
+  }
+
+  // SEÑAL C: hándicap en partido ajustado
+  const pL = m.mercados?.[0]?.probReal || 0.4;
+  const pV = m.mercados?.[2]?.probReal || 0.3;
+  const handicapMkt = mercados.find(mk => mk.categoria === 'Hándicap' &&
+    (mk.label.includes('-1') || mk.label.includes('-0')));
+  if (Math.abs(pL - pV) < 0.15 && handicapMkt?.confianza === 'Alta') {
+    corrections.push('🔴 Señal C: partido ajustado → hándicap -1 bajado de Alta a Media');
+    handicapMkt.confianza = 'Media';
+  }
+
+  // SEÑAL D: clima extremo vs línea córneres
+  const hasClima = signals.some(s => s.id === 'D');
+  if (hasClima) {
+    const overCornHigh = mercados.find(mk =>
+      mk.categoria === 'Córneres' && mk.label.includes('Más de') &&
+      ['9.5','10.5','11.5'].some(l => mk.label.includes(l)) && mk.confianza !== 'Baja'
+    );
+    if (overCornHigh) {
+      corrections.push('🔴 Señal D: clima extremo → línea córneres alta bajada a Baja');
+      overCornHigh.confianza = 'Baja';
+    }
+  }
+
+  // SEÑAL E: rival débil → Over goles puede escalar
+  const gcVisitAlto = (m.statsVisit?.gcProm || 0) > 1.8;
+  const gfLocalAlto = (m.statsLocal?.gfProm || 0) > 2.2;
+  const over25 = mercados.find(mk => mk.label === 'Más de 2.5 goles');
+  if (gcVisitAlto && gfLocalAlto && over25 && over25.confianza === 'Media') {
+    corrections.push('🟢 Señal E: rival frágil + local en forma → Over 2.5 escalado a Alta');
+    over25.confianza = 'Alta';
+  }
+
+  // FILTRO DE CALIDAD (Paso 3)
+  const apuestaCandidatos = mercados
+    .filter(mk => mk.confianza === 'Alta' && mk.ve > 0.03 && mk.odds > 1.20)
+    .sort((a, b) => b.ve - a.ve);
+
+  const apuestaRecomendada = apuestaCandidatos[0] || null;
+
+  const declaracion = corrections.length
+    ? corrections.join(' | ')
+    : '✅ Sin contradicciones detectadas';
+
+  return { corrections, declaracion, apuestaRecomendada };
 }
 
 function enrichMercados(m) {
@@ -182,15 +364,64 @@ function calcVE(mercados, signals = []) {
       ...mk,
       ve,
       probImplicita: parseFloat((1 / mk.odds).toFixed(4)),
-      confianza: confLevel(mk.probReal, ve, signals)
+      confianza: confLevel(mk.probReal, ve, signals, mk.categoria || '')
     };
   });
 }
 
+function buildBloque0(m, signals, venue) {
+  const ctx = m.contexto || {};
+  const clL = ctx.clasificatorioLocal  || null;
+  const clV = ctx.clasificatorioVisit  || null;
+  const hasDR  = signals.some(s => s.id === 'DR');
+  const hasPT  = signals.some(s => s.id === 'PT');
+  const hasG   = signals.some(s => s.id === 'G');
+  const hasB   = signals.some(s => s.id === 'B');
+  const hasAlt = signals.some(s => s.id === 'ALT');
+  const hasClima = signals.some(s => ['D','D-LLUVIA'].includes(s.id));
+
+  const alerta = hasDR ? '⚠️ DEAD RUBBER — motivación comprometida'
+               : hasPT ? '⚠️ RIESGO PACTO TÁCTICO (J3)'
+               : hasG  ? '🚨 RESTRICCIÓN DIPLOMÁTICA ACTIVA'
+               : null;
+
+  return {
+    fase:      m.fase || '—',
+    jornada:   ctx.jornada ? `J${ctx.jornada}` : null,
+    sede:      venue ? `${venue.ciudad} (${venue.key})` : (m.time || '—'),
+    clima:     venue?.climaTag || null,
+    altitud:   venue?.altitude > 0 ? `${venue.altitude}m (${venue.altLevel})` : null,
+    clasificatoriLocal:  clL,
+    clasificatoriVisit:  clV,
+    deadRubber:   hasDR,
+    pactoPosible: hasPT,
+    restriccion:  hasG,
+    rotaciones:   hasB,
+    factorAltitud: hasAlt,
+    factorClima:   hasClima,
+    alerta,
+    arbitro:   ctx.arbitro || null,
+    suspensiones: ctx.suspensiones || [],
+    diasDescanso: {
+      local: ctx.diasDescansoLocal || null,
+      visit: ctx.diasDescansoVisit || null
+    }
+  };
+}
+
 function processMatch(m) {
-  const { signals, alerts } = detectSignals(m);
-  const mercados = calcVE(enrichMercados(m), signals);
-  return { ...m, signals, alertas: alerts, mercados };
+  const { signals, alerts, venue } = detectSignals(m);
+  const mercadosRaw  = calcVE(enrichMercados(m), signals);
+  const coherence    = coherenceCheck(mercadosRaw, signals, m);
+  const bloque0      = buildBloque0(m, signals, venue);
+  return {
+    ...m,
+    signals,
+    alertas: alerts,
+    mercados: mercadosRaw,
+    coherencia: coherence,
+    bloque0
+  };
 }
 
 // ─── API: todos los partidos ────────────────────────────────────────────────

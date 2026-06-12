@@ -476,19 +476,58 @@ function renderMatchModal(m) {
       </td>
     </tr>`).join('');
 
+  // ── Bloque 0 — Contexto del torneo (v3.4) ──────────────────────────────
+  const b0 = m.bloque0 || {};
+  const b0Html = `
+    <div class="modal-section b0-section">
+      <div class="modal-section-title">📋 Bloque 0 — Contexto del torneo</div>
+      <div class="b0-grid">
+        <div class="b0-row"><span class="b0-lbl">Fase</span><span class="b0-val">${b0.fase || m.fase || '—'}</span></div>
+        ${b0.jornada ? `<div class="b0-row"><span class="b0-lbl">Jornada</span><span class="b0-val">${b0.jornada}</span></div>` : ''}
+        <div class="b0-row"><span class="b0-lbl">Sede</span><span class="b0-val">${b0.sede || '—'}</span></div>
+        ${b0.clima ? `<div class="b0-row"><span class="b0-lbl">Clima</span><span class="b0-val">${b0.clima}</span></div>` : ''}
+        ${b0.altitud ? `<div class="b0-row"><span class="b0-lbl">Altitud</span><span class="b0-val">${b0.altitud}</span></div>` : ''}
+        ${b0.clasificatoriLocal ? `<div class="b0-row"><span class="b0-lbl">${m.local}</span><span class="b0-val b0-cl-${b0.clasificatoriLocal}">${b0.clasificatoriLocal.toUpperCase()}</span></div>` : ''}
+        ${b0.clasificatoriVisit ? `<div class="b0-row"><span class="b0-lbl">${m.visit}</span><span class="b0-val b0-cl-${b0.clasificatoriVisit}">${b0.clasificatoriVisit.toUpperCase()}</span></div>` : ''}
+        ${b0.diasDescanso?.local ? `<div class="b0-row"><span class="b0-lbl">Descanso local</span><span class="b0-val">${b0.diasDescanso.local} días</span></div>` : ''}
+        ${b0.diasDescanso?.visit ? `<div class="b0-row"><span class="b0-lbl">Descanso visit.</span><span class="b0-val">${b0.diasDescanso.visit} días</span></div>` : ''}
+        ${b0.suspensiones?.length ? `<div class="b0-row"><span class="b0-lbl">Suspensiones</span><span class="b0-val red">${b0.suspensiones.join(', ')}</span></div>` : ''}
+        ${b0.arbitro ? `<div class="b0-row"><span class="b0-lbl">Árbitro</span><span class="b0-val">${b0.arbitro.nombre} (${b0.arbitro.pais})</span></div>` : ''}
+      </div>
+      ${b0.alerta ? `<div class="b0-alerta">${b0.alerta}</div>` : ''}
+    </div>`;
+
+  // ── Señales activas ─────────────────────────────────────────────────────
   const signalsHtml = (m.signals && m.signals.length) ? `
     <div class="modal-section">
-      <div class="modal-section-title">⚡ Señales activas del framework v3.3-Mundial</div>
+      <div class="modal-section-title">⚡ Señales activas — Framework v3.4-Mundial</div>
       <div class="signals-list">
         ${m.signals.map(s => `
-          <div class="signal-item signal-${s.level}">
+          <div class="signal-item signal-${s.level || 'info'}">
             <span class="signal-id">Señal ${s.id}</span>
             <span class="signal-msg">${s.msg}</span>
           </div>`).join('')}
       </div>
     </div>` : '';
 
-  document.getElementById('modal-body').innerHTML = signalsHtml + `
+  // ── Capa de Decisión: coherencia ────────────────────────────────────────
+  const coh = m.coherencia;
+  const cohHtml = coh ? `
+    <div class="modal-section">
+      <div class="modal-section-title">🔍 Capa de Decisión — Verificación de coherencia</div>
+      <div class="coherencia-box">
+        <div class="coh-declaracion">${coh.declaracion}</div>
+        ${coh.apuestaRecomendada ? `
+          <div class="coh-recomendada">
+            <span class="coh-rec-lbl">⭐ Apuesta recomendada:</span>
+            <span class="coh-rec-mkt">${coh.apuestaRecomendada.label}</span>
+            <span class="coh-rec-odds">${fmt.odds(coh.apuestaRecomendada.odds)}</span>
+            <span class="coh-rec-ve" style="color:#5dca9b">VE ${veLabel(coh.apuestaRecomendada.ve)}</span>
+          </div>` : '<div class="coh-sinap">⚠️ Sin apuesta recomendada con valor suficiente para este partido.</div>'}
+      </div>
+    </div>` : '';
+
+  document.getElementById('modal-body').innerHTML = b0Html + signalsHtml + cohHtml + `
 
     <div class="modal-section">
       <div class="modal-section-title">Head to Head — últimos ${total} partidos</div>

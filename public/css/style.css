@@ -594,6 +594,38 @@ body {
 }
 .sim-sel-odds { font-weight: 700; color: var(--text); }
 
+/* ── BLOQUE 0 — Contexto del torneo ─────────────────────────────────── */
+.b0-section { background: rgba(244,196,48,0.04); border-radius: 8px; padding: 12px; border: 1px solid rgba(244,196,48,0.15); }
+.b0-grid    { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.b0-row     { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; }
+.b0-lbl     { color: var(--text-muted); flex-shrink: 0; min-width: 100px; }
+.b0-val     { color: var(--text); font-weight: 500; text-align: right; }
+.b0-val.red { color: var(--red); font-weight: 700; }
+.b0-cl-clasificado { color: var(--green); font-weight: 700; }
+.b0-cl-eliminado   { color: var(--red);   font-weight: 700; }
+.b0-alerta  {
+  background: rgba(226,75,74,0.12); border: 1px solid rgba(226,75,74,0.3);
+  border-radius: 6px; padding: 7px 10px; font-size: 12px; font-weight: 700;
+  color: #f09595; margin-top: 6px; text-align: center;
+}
+
+/* ── CAPA DE DECISIÓN — Coherencia ──────────────────────────────────── */
+.coherencia-box {
+  background: rgba(55,138,221,0.07); border: 1px solid rgba(55,138,221,0.2);
+  border-radius: 8px; padding: 12px;
+}
+.coh-declaracion { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
+.coh-recomendada {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  background: rgba(244,196,48,0.1); border: 1px solid rgba(244,196,48,0.3);
+  border-radius: 6px; padding: 8px 10px;
+}
+.coh-rec-lbl  { font-size: 11px; color: var(--gold); font-weight: 700; width: 100%; }
+.coh-rec-mkt  { font-size: 13px; color: var(--text); font-weight: 600; flex: 1; }
+.coh-rec-odds { font-size: 16px; color: var(--gold); font-weight: 800; }
+.coh-rec-ve   { font-size: 12px; font-weight: 600; }
+.coh-sinap    { font-size: 11px; color: var(--text-muted); padding: 4px 0; }
+
 /* ── PANEL DE SEÑALES (modal) ───────────────────────────────────────── */
 .signals-list { display: flex; flex-direction: column; gap: 6px; }
 .signal-item {

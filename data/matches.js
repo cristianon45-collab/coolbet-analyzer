@@ -48,7 +48,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:2.20, probCasa:0.455, probReal:0.42 },
       { label:"Menos de 2.5 goles",     odds:1.68, probCasa:0.595, probReal:0.58 },
       { label:"México no pierde",       odds:1.42, probCasa:0.704, probReal:0.81 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: true,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 11,
@@ -97,7 +110,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:2.00, probCasa:0.500, probReal:0.46 },
       { label:"Menos de 2.5 goles",     odds:1.80, probCasa:0.556, probReal:0.54 },
       { label:"Ambos anotan — Sí",      odds:1.90, probCasa:0.526, probReal:0.52 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: false,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 12,
@@ -143,7 +169,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:2.30, probCasa:0.435, probReal:0.40 },
       { label:"Menos de 2.5 goles",     odds:1.62, probCasa:0.617, probReal:0.60 },
       { label:"Canadá no pierde",       odds:1.38, probCasa:0.725, probReal:0.83 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 13,
@@ -192,7 +231,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:2.10, probCasa:0.476, probReal:0.44 },
       { label:"Menos de 2.5 goles",     odds:1.72, probCasa:0.581, probReal:0.56 },
       { label:"EE.UU. gana 1T",         odds:2.40, probCasa:0.417, probReal:0.44 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 14,
@@ -241,7 +293,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.80, probCasa:0.556, probReal:0.58 },
       { label:"Menos de 2.5 goles",     odds:2.00, probCasa:0.500, probReal:0.42 },
       { label:"Brasil gana 1T",         odds:2.20, probCasa:0.455, probReal:0.48 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 15,
@@ -286,7 +351,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.25, probCasa:0.800, probReal:0.85 },
       { label:"Menos de 2.5 goles",     odds:4.00, probCasa:0.250, probReal:0.15 },
       { label:"Alemania +3.5 hándicap", odds:1.60, probCasa:0.625, probReal:0.68 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: true,
+      altaTension: false
+    }
   },
   {
     id: 16,
@@ -335,7 +413,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.90, probCasa:0.526, probReal:0.52 },
       { label:"Menos de 2.5 goles",     odds:1.90, probCasa:0.526, probReal:0.48 },
       { label:"Ambos anotan — Sí",      odds:1.80, probCasa:0.556, probReal:0.56 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: false,
+      visitanteVelocistas: true,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 17,
@@ -384,7 +475,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.90, probCasa:0.526, probReal:0.52 },
       { label:"Menos de 2.5 goles",     odds:1.90, probCasa:0.526, probReal:0.48 },
       { label:"Francia no pierde",      odds:1.30, probCasa:0.769, probReal:0.84 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 18,
@@ -433,7 +537,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.75, probCasa:0.571, probReal:0.60 },
       { label:"Menos de 2.5 goles",     odds:2.05, probCasa:0.488, probReal:0.40 },
       { label:"Argentina gana 1T",      odds:2.00, probCasa:0.500, probReal:0.52 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   },
   {
     id: 19,
@@ -482,7 +599,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:2.10, probCasa:0.476, probReal:0.44 },
       { label:"Menos de 2.5 goles",     odds:1.72, probCasa:0.581, probReal:0.56 },
       { label:"Inglaterra no pierde",   odds:1.42, probCasa:0.704, probReal:0.80 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: true
+    }
   },
   {
     id: 20,
@@ -528,7 +658,20 @@ const MATCHES = [
       { label:"Más de 2.5 goles",       odds:1.65, probCasa:0.606, probReal:0.65 },
       { label:"Menos de 2.5 goles",     odds:2.20, probCasa:0.455, probReal:0.35 },
       { label:"Portugal gana 1T",       odds:1.95, probCasa:0.513, probReal:0.55 }
-    ]
+    ],
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: false,
+      altaTension: false
+    }
   }
 ];
 
