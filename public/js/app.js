@@ -130,6 +130,38 @@ function switchCat(matchId, cat) {
   if (card && m) card.outerHTML = renderMatchCard(m, cat);
 }
 
+// ── Helpers BetBuilder ───────────────────────────────────────────────────────
+// Agrupa selecciones por partido → legs
+function getLegs() {
+  const legMap = {};
+  Object.values(selected).forEach(s => {
+    if (!legMap[s.matchId]) legMap[s.matchId] = [];
+    legMap[s.matchId].push(s);
+  });
+  return Object.values(legMap).map(mkts => {
+    const legOdds = parseFloat(mkts.reduce((a, s) => a * s.odds, 1).toFixed(3));
+    const legProb = mkts.reduce((a, s) => a * s.probReal, 1);
+    const legVe   = legProb * legOdds - 1;
+    const isBB    = mkts.length >= 2;
+    return { mkts, legOdds, legProb, legVe, isBB, matchId: mkts[0].matchId, match: mkts[0].match };
+  });
+}
+
+// Convierte legs a selecciones planas para la API
+function getSelectionsForAPI() {
+  return getLegs().map(leg => ({
+    matchId:      leg.matchId,
+    label:        leg.isBB
+                    ? `BB: ${leg.mkts.map(m => m.label).join(' + ')}`
+                    : leg.mkts[0].label,
+    match:        leg.match,
+    odds:         leg.legOdds,
+    probReal:     leg.legProb,
+    ve:           leg.legVe,
+    isBetBuilder: leg.isBB
+  }));
+}
+
 // ── Toggle selección ─────────────────────────────────────────────────────────
 function toggleSel(matchId, mktIdx) {
   const key = `${matchId}-${mktIdx}`;
@@ -139,8 +171,7 @@ function toggleSel(matchId, mktIdx) {
   if (selected[key]) {
     delete selected[key];
   } else {
-    // Solo 1 selección por partido
-    Object.keys(selected).filter(k => k.startsWith(matchId + '-')).forEach(k => delete selected[k]);
+    // BetBuilder: se permite agregar múltiples mercados del mismo partido
     selected[key] = {
       key, matchId, mktIdx,
       label:    mk.label,
@@ -160,8 +191,9 @@ function toggleSel(matchId, mktIdx) {
 
 // ── Betslip ──────────────────────────────────────────────────────────────────
 function updateSlip() {
-  const items = Object.values(selected);
-  const count = items.length;
+  const legs  = getLegs();
+  const count = legs.length;
+  const totalMkts = Object.values(selected).length;
   document.getElementById('sel-count').textContent = count;
 
   const si = document.getElementById('slip-items');
@@ -174,32 +206,44 @@ function updateSlip() {
           <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M12 8v8"/>
         </svg>
         <p>Selecciona cuotas para armar tu combinación</p>
-        <span>Máximo recomendado: 4 selecciones</span>
+        <span>BetBuilder: 2+ mercados del mismo partido</span>
       </div>`;
     sm.classList.add('hidden');
     document.getElementById('hdr-cuota').textContent = '—';
     return;
   }
 
-  si.innerHTML = items.map(s => `
-    <div class="slip-item">
-      <div class="si-info">
-        <div class="si-match">${s.match}</div>
-        <div class="si-sel">${s.label}</div>
-        <div class="si-ve" style="color:${s.ve > 0 ? '#5dca9b' : '#f09595'}">
-          VE: ${veLabel(s.ve)}
-        </div>
-      </div>
-      <div class="si-right">
-        <div class="si-odds">${fmt.odds(s.odds)}</div>
-        <span class="si-remove" onclick="removeItem('${s.key}')">✕ quitar</span>
-      </div>
-    </div>
-  `).join('');
+  // Render legs agrupadas
+  si.innerHTML = legs.map(leg => {
+    const hasBB = leg.isBB;
+    const mktsHtml = leg.mkts.map(s => `
+      <div class="si-mkt-row">
+        <span class="si-mkt-label">${s.label}</span>
+        <span class="si-mkt-odds">${fmt.odds(s.odds)}</span>
+        <span class="si-remove" onclick="removeItem('${s.key}')">✕</span>
+      </div>`).join('');
 
-  // Calcular métricas
-  const cuotaTotal     = items.reduce((a, s) => a * s.odds, 1);
-  const probCombinada  = items.reduce((a, s) => a * s.probReal, 1);
+    const legOddsHtml = hasBB
+      ? `<div class="bb-leg-odds">
+           Cuota BB: <strong>${fmt.odds(leg.legOdds)}</strong>
+           <span class="bb-note">(aprox.)</span>
+         </div>`
+      : '';
+
+    return `
+    <div class="slip-leg${hasBB ? ' slip-leg-bb' : ''}">
+      <div class="sl-leg-header">
+        <span class="sl-leg-match">${leg.match}</span>
+        ${hasBB ? '<span class="bb-badge">BetBuilder</span>' : ''}
+      </div>
+      ${mktsHtml}
+      ${legOddsHtml}
+    </div>`;
+  }).join('');
+
+  // Calcular métricas desde legs
+  const cuotaTotal     = legs.reduce((a, l) => a * l.legOdds, 1);
+  const probCombinada  = legs.reduce((a, l) => a * l.legProb, 1);
   const veTotal        = probCombinada * cuotaTotal - 1;
   const stake          = parseFloat(document.getElementById('stake-inp').value) || 10000;
   const retorno        = cuotaTotal * stake;
@@ -237,29 +281,32 @@ function updateSlip() {
   }
 
   // Veredicto
+  const bbLegs = legs.filter(l => l.isBB);
   const vd = document.getElementById('ve-verdict');
+  const legDesc = count > 1 ? `${count} partidos` : '1 partido';
+  const bbDesc  = bbLegs.length ? ` · ${bbLegs.length} BetBuilder` : '';
   if (count > 4) {
     vd.className = 've-verdict neg';
-    vd.textContent = `⚠ ${count} selecciones — demasiado riesgo acumulado. Reduce a máximo 4.`;
+    vd.textContent = `⚠ ${count} partidos — demasiado riesgo acumulado. Reduce a máximo 4.`;
   } else if (veTotal > 0.08) {
     vd.className = 've-verdict pos';
-    vd.textContent = `✅ Excelente combinación — VE +${(veTotal*100).toFixed(1)}% con ${count} selecciones. Muy recomendada.`;
+    vd.textContent = `✅ Excelente — VE +${(veTotal*100).toFixed(1)}% · ${legDesc}${bbDesc}. Muy recomendada.`;
   } else if (veTotal > 0.03) {
     vd.className = 've-verdict pos';
-    vd.textContent = `✓ Valor positivo (+${(veTotal*100).toFixed(1)}%). Combinación con ventaja estadística.`;
+    vd.textContent = `✓ Valor positivo (+${(veTotal*100).toFixed(1)}%) · ${legDesc}${bbDesc}.`;
   } else if (veTotal >= 0) {
     vd.className = 've-verdict warn';
-    vd.textContent = `Valor marginal (${veLabel(veTotal)}). Procede solo con alta convicción.`;
+    vd.textContent = `Valor marginal (${veLabel(veTotal)}) · ${legDesc}${bbDesc}. Procede con convicción.`;
   } else {
     vd.className = 've-verdict neg';
-    vd.textContent = `✗ VE negativo (${veLabel(veTotal)}). La casa tiene ventaja en esta combinación.`;
+    vd.textContent = `✗ VE negativo (${veLabel(veTotal)}) · ${legDesc}${bbDesc}. La casa tiene ventaja.`;
   }
 
-  // Alertas individuales
-  const malas = items.filter(s => s.ve < -0.03);
+  // Alertas — mercados individuales con VE negativo
+  const malas = Object.values(selected).filter(s => s.ve < -0.03);
   const alEl  = document.getElementById('ve-alerts');
   if (malas.length) {
-    alEl.innerHTML = `Selecciones con VE negativo (evalúa eliminar):<ul>` +
+    alEl.innerHTML = `Mercados con VE negativo (evalúa eliminar):<ul>` +
       malas.map(s => `<li>${s.label} — VE ${veLabel(s.ve)}</li>`).join('') + '</ul>';
     alEl.classList.remove('hidden');
   } else {
@@ -298,13 +345,18 @@ document.addEventListener('input', e => {
 
 // ── Análisis detallado POST /api/analyze ────────────────────────────────────
 async function openModal() {
-  const items = Object.values(selected);
-  if (!items.length) return;
+  const legs = getLegs();
+  if (!legs.length) return;
 
-  // Si hay una sola selección, abrir modal del partido
-  if (items.length === 1) { openMatchModal(items[0].matchId); return; }
+  // Si hay una sola leg sin BetBuilder, abrir modal del partido
+  if (legs.length === 1 && !legs[0].isBB) { openMatchModal(legs[0].matchId); return; }
 
-  document.getElementById('modal-title').textContent = `Análisis de combinación (${items.length} selecciones)`;
+  const apiItems = getSelectionsForAPI();
+  const bbCount  = legs.filter(l => l.isBB).length;
+  const title    = bbCount
+    ? `Análisis — ${legs.length} partido${legs.length>1?'s':''} · ${bbCount} BetBuilder`
+    : `Análisis de combinación (${legs.length} partidos)`;
+  document.getElementById('modal-title').textContent = title;
 
   const body = document.getElementById('modal-body');
   body.innerHTML = '<div class="loading">Calculando…</div>';
@@ -314,10 +366,10 @@ async function openModal() {
     const r = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ selections: items })
+      body: JSON.stringify({ selections: apiItems })
     });
     const d = await r.json();
-    renderAnalysisModal(d, items);
+    renderAnalysisModal(d, apiItems);
   } catch(e) {
     body.innerHTML = '<div class="loading">Error al analizar.</div>';
   }
@@ -501,7 +553,7 @@ function openSimulador() {
 function closeSimulador() { document.getElementById('sim-modal').classList.add('hidden'); }
 
 async function runSimulacion() {
-  const items    = Object.values(selected);
+  const items    = getSelectionsForAPI();
   if (!items.length) return;
   const bankroll = parseFloat(document.getElementById('sim-bankroll').value) || 200000;
   const stake    = parseFloat(document.getElementById('sim-stake').value)    || 10000;
@@ -600,8 +652,11 @@ function renderSimResult(d, items) {
     </div>
 
     <div class="sim-selecciones">
-      <div class="sim-sel-title">Ticket simulado (${items.length} selección${items.length > 1 ? 'es' : ''})</div>
-      ${items.map(s => `<div class="sim-sel-item"><span>${s.match} — ${s.label}</span><span class="sim-sel-odds">${fmt.odds(s.odds)}</span></div>`).join('')}
+      <div class="sim-sel-title">Ticket simulado (${items.length} partido${items.length > 1 ? 's' : ''})</div>
+      ${items.map(s => `<div class="sim-sel-item${s.isBetBuilder ? ' sim-sel-bb' : ''}">
+        <span>${s.match}${s.isBetBuilder ? ' <em class="bb-tag">BB</em>' : ''} — ${s.label}</span>
+        <span class="sim-sel-odds">${fmt.odds(s.odds)}</span>
+      </div>`).join('')}
       <div class="sim-sel-item" style="border-top:1px solid rgba(255,255,255,0.08);margin-top:4px;padding-top:6px">
         <span style="color:#e8edf2;font-weight:600">Cuota combinada</span>
         <span class="sim-sel-odds" style="color:#f4c430">${fmt.odds(d.cuota)}</span>
