@@ -470,7 +470,28 @@ function enrichMercadosBetano(m) {
     mkMercado(`Primer gol: ${vN}`,  'Primer Gol', Math.min(0.65, pV * 1.25)),
   ];
 
-  // Betano exclusive: Marcador Exacto (Coolbet no tiene este mercado)
+  // Córneres (también disponible en Betano)
+  const avgCornLocal  = m.statsLocal.gfProm  * 2.2 + 1.8;
+  const avgCornVisit  = m.statsVisit.gfProm  * 2.0 + 1.5;
+  const avgCornTotal  = avgCornLocal + avgCornVisit;
+  const pO85  = 1 - poissonCDF(8,  avgCornTotal);
+  const pO95  = 1 - poissonCDF(9,  avgCornTotal);
+  const pO105 = 1 - poissonCDF(10, avgCornTotal);
+  const pO115 = 1 - poissonCDF(11, avgCornTotal);
+  const corneres = [
+    mkMercado('Córneres Más de 8.5',   'Córneres', Math.min(0.92, pO85)),
+    mkMercado('Córneres Menos de 8.5', 'Córneres', Math.max(0.08, 1 - pO85)),
+    mkMercado('Córneres Más de 9.5',   'Córneres', Math.min(0.85, pO95)),
+    mkMercado('Córneres Menos de 9.5', 'Córneres', Math.max(0.15, 1 - pO95)),
+    mkMercado('Córneres Más de 10.5',  'Córneres', Math.min(0.75, pO105)),
+    mkMercado('Córneres Menos de 10.5','Córneres', Math.max(0.25, 1 - pO105)),
+    mkMercado('Córneres Más de 11.5',  'Córneres', Math.min(0.60, pO115)),
+    mkMercado('Córneres Menos de 11.5','Córneres', Math.max(0.40, 1 - pO115)),
+    mkMercado(`${lN} más córneres`,    'Córneres', Math.min(0.80, pL * 0.9 + 0.25)),
+    mkMercado(`${vN} más córneres`,    'Córneres', Math.min(0.70, pV * 0.9 + 0.20)),
+  ];
+
+  // Marcador Exacto — exclusivo Betano (no disponible en Coolbet)
   const scoreLines = [
     [1,0],[2,0],[2,1],[3,0],[3,1],[3,2],
     [0,0],[1,1],[2,2],
@@ -485,7 +506,7 @@ function enrichMercadosBetano(m) {
 
   return [
     ...base.map(mk => ({ ...mk, categoria: mk.categoria ?? 'Resultado' })),
-    ...dobleOp, ...totales, ...btts, ...handicap, ...primerTiempo, ...primerGol, ...marcadorExacto
+    ...dobleOp, ...totales, ...btts, ...handicap, ...primerTiempo, ...primerGol, ...corneres, ...marcadorExacto
   ];
 }
 

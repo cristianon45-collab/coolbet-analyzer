@@ -369,6 +369,8 @@ function setBookie(bookie) {
   // Update button states
   document.getElementById('bookie-cb').classList.toggle('active', bookie === 'coolbet');
   document.getElementById('bookie-bt').classList.toggle('active', bookie === 'betano');
+  // Update tagline
+  updateTagline();
   // Clear selections and re-render all
   selected = {};
   renderMatches();
@@ -1451,6 +1453,19 @@ const SKINS = {
   }
 };
 
+function updateTagline() {
+  const skinName = localStorage.getItem('coolbet-skin') || 'maul';
+  const skin = SKINS[skinName];
+  if (!skin) return;
+  const tag = document.getElementById('mascot-tagline');
+  if (!tag) return;
+  if (currentBookie === 'betano') {
+    tag.innerHTML = skin.tagline + ' &nbsp;·&nbsp; <span style="color:#ff6600;font-weight:700">betano</span>';
+  } else {
+    tag.innerHTML = skin.tagline;
+  }
+}
+
 function applySkin(name) {
   const skin = SKINS[name];
   if (!skin) return;
@@ -1461,8 +1476,7 @@ function applySkin(name) {
   const glow = document.getElementById('mascot-glow');
   if (glow) glow.style.background = skin.glow;
   // Swap tagline
-  const tag = document.getElementById('mascot-tagline');
-  if (tag) tag.innerHTML = skin.tagline;
+  updateTagline();
   // Update active button
   document.querySelectorAll('.skin-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.skin === name);
