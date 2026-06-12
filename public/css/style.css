@@ -637,11 +637,50 @@ body {
   .mc-markets { grid-template-columns: repeat(3, 1fr); }
 }
 
-/* ── MÓVIL ───────────────────────────────────────────────────────────── */
-@media (max-width: 600px) {
-  html { font-size: 14px; }
+/* ── BARRA FLOTANTE MÓVIL ────────────────────────────────────────────── */
+.mob-bar {
+  display: none; /* oculto en desktop */
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: var(--bg-panel);
+  border-top: 2px solid var(--gold);
+  padding: 10px 16px;
+  align-items: center; justify-content: space-between; gap: 12px;
+  box-shadow: 0 -6px 24px rgba(0,0,0,0.6);
+}
+.mob-bar.hidden { display: none !important; }
+.mob-bar-left {
+  display: flex; align-items: center; gap: 6px;
+  flex: 1; min-width: 0;
+}
+.mob-bar-count {
+  font-size: 20px; font-weight: 800; color: var(--gold); line-height: 1;
+}
+.mob-bar-label { font-size: 11px; color: var(--text-muted); }
+.mob-bar-sep   { color: var(--text-dim); }
+.mob-bar-odds  { font-size: 18px; font-weight: 700; color: var(--text); }
+.mob-bar-btn {
+  background: var(--gold); color: #1a2332;
+  font-size: 13px; font-weight: 700;
+  border: none; border-radius: 20px;
+  padding: 9px 18px; cursor: pointer;
+  white-space: nowrap; flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(244,196,48,0.4);
+}
+.mob-bar-btn:active { opacity: .85; }
 
-  /* ── HEADER ── */
+/* ── MÓVIL PORTRAIT ──────────────────────────────────────────────────── */
+@media (max-width: 600px) and (orientation: portrait),
+       (max-width: 600px) {
+  html { font-size: 14px; }
+  html, body { overflow-x: hidden; max-width: 100vw; }
+
+  /* Espacio para barra flotante */
+  body { padding-bottom: 68px; }
+
+  /* Mostrar barra flotante */
+  .mob-bar { display: flex; }
+
+  /* ── HEADER compacto ── */
   .cb-header-inner {
     flex-wrap: wrap; gap: 6px; padding: 8px 12px;
     justify-content: space-between;
@@ -649,45 +688,35 @@ body {
   .cb-brand { flex-shrink: 0; gap: 6px; }
   .saori-svg    { width: 36px; height: 50px; }
   .cb-logo-text { font-size: 18px; }
-  .cb-tagline   { font-size: 9px; display: none; }
-
+  .cb-tagline   { display: none; }
   .cb-nav {
     order: 3; width: 100%;
     overflow-x: auto; flex-wrap: nowrap;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 2px; gap: 5px;
-    scrollbar-width: none;
+    padding-bottom: 2px; gap: 5px; scrollbar-width: none;
   }
   .cb-nav::-webkit-scrollbar { display: none; }
   .nav-btn { white-space: nowrap; flex-shrink: 0; font-size: 12px; padding: 5px 12px; }
-
   .cb-header-right { margin-left: auto; }
   .hs-label { display: none; }
   .hs-val { font-size: 14px; }
 
-  /* ── LAYOUT PRINCIPAL ── */
-  html, body { overflow-x: hidden; max-width: 100vw; }
+  /* ── LAYOUT: 1 columna ── */
   .cb-layout {
     grid-template-columns: 1fr;
-    padding: 8px; gap: 8px;
-    width: 100%;
+    padding: 8px; gap: 8px; width: 100%;
   }
 
   /* ── MATCH CARDS ── */
-  .match-card { border-radius: 8px; overflow: hidden; width: 100%; box-sizing: border-box; }
-  .mc-top {
-    flex-wrap: wrap; gap: 3px;
-    padding: 7px 10px 5px;
-  }
+  .match-card { border-radius: 8px; overflow: hidden; width: 100%; }
+  .mc-top { flex-wrap: wrap; gap: 3px; padding: 7px 10px 5px; }
   .mc-comp { font-size: 9px; }
   .mc-fase { font-size: 9px; }
   .mc-time { font-size: 9px; width: 100%; }
-
-  /* Alertas más compactas */
   .match-alertas { padding: 2px 10px 6px; gap: 3px; }
   .alerta-chip   { font-size: 9px; padding: 1px 6px; }
 
-  /* Equipos — una fila compacta con VS en el medio */
+  /* Equipos — flex row */
   .mc-teams {
     display: flex; flex-direction: row;
     align-items: flex-start; gap: 6px;
@@ -697,19 +726,21 @@ body {
   .team-block.right { text-align: right; }
   .team-block.right .team-forma { justify-content: flex-end; }
   .team-block.right .team-stats-row { justify-content: flex-end; }
-  .team-name { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .team-name {
+    font-size: 12px; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .team-stats-row { gap: 3px; flex-wrap: wrap; }
   .stat-badge { font-size: 8px; padding: 1px 4px; }
   .forma-dot  { width: 14px; height: 14px; font-size: 7px; }
   .vs-label   { font-size: 11px; }
   .vs-block   { flex-shrink: 0; padding-top: 4px; }
 
-  /* Tabs de categoría — scroll horizontal sin barra */
+  /* Tabs scroll */
   .cat-tabs {
     overflow-x: auto; flex-wrap: nowrap;
     padding: 5px 10px 4px; gap: 4px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
   }
   .cat-tabs::-webkit-scrollbar { display: none; }
   .cat-tab { flex-shrink: 0; font-size: 10px; padding: 3px 8px; }
@@ -717,28 +748,23 @@ body {
   /* Mercados: 2 columnas */
   .mc-markets {
     grid-template-columns: repeat(2, 1fr);
-    gap: 5px; padding: 6px 10px 10px;
-    width: 100%; box-sizing: border-box;
+    gap: 5px; padding: 6px 10px 10px; width: 100%;
   }
-  .mkt-btn    { padding: 7px 6px; min-height: 72px; overflow: hidden; box-sizing: border-box; }
+  .mkt-btn    { padding: 7px 6px; min-height: 72px; overflow: hidden; }
   .mkt-name   { font-size: 10px; line-height: 1.2; word-break: break-word; }
   .mkt-odds   { font-size: 16px; }
   .ve-badge   { font-size: 8px; padding: 1px 4px; }
   .conf-badge { font-size: 8px; }
   .mkt-real-prob { font-size: 9px; }
-
-  /* Botón info del partido */
   .mc-info-btn { font-size: 11px; padding: 8px 10px; }
 
-  /* ── TICKET DE COMBINACIÓN ── */
-  .cb-slip    { border-radius: 8px; }
+  /* ── TICKET ── */
+  .cb-slip     { border-radius: 8px; }
   .slip-header { padding: 10px 12px; gap: 6px; }
-  .slip-title  { font-size: 14px; }
-  .slip-item   { padding: 8px 10px; }
-  .si-match    { font-size: 10px; }
-  .si-sel      { font-size: 12px; }
-  .si-odds     { font-size: 18px; }
-  .si-remove   { font-size: 10px; }
+  .slip-leg    { padding: 6px 12px 8px; }
+  .sl-leg-match { font-size: 10px; }
+  .si-mkt-label { font-size: 11px; }
+  .si-mkt-odds  { font-size: 13px; }
 
   .metric-grid { grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 10px; }
   .mc-label    { font-size: 9px; }
@@ -748,108 +774,122 @@ body {
   .stake-inp   { width: 100%; font-size: 14px; }
   .retorno-box { width: 100%; justify-content: space-between; font-size: 12px; }
 
-  .kelly-row   { margin: 0 12px 8px; }
-  .kelly-body  { gap: 4px; }
-  .kelly-pct   { font-size: 11px; }
+  .kelly-row    { margin: 0 12px 8px; }
+  .kelly-body   { gap: 4px; }
+  .kelly-pct    { font-size: 11px; }
   .kelly-amount { font-size: 13px; }
 
-  .ve-verdict  { font-size: 11px; padding: 8px 10px; margin: 0 12px 8px; }
-  .ve-alerts   { font-size: 10px; margin: 0 12px 8px; }
+  .ve-verdict { font-size: 11px; padding: 8px 10px; margin: 0 12px 8px; }
+  .ve-alerts  { font-size: 10px; margin: 0 12px 8px; }
 
-  /* Botones acción */
   .slip-action-row { flex-direction: row; gap: 6px; padding: 0 12px 12px; }
   .btn-analyze,
   .btn-simulate { font-size: 12px; padding: 10px 6px; }
 
-  /* ── MODAL fullscreen ── */
+  /* ── MODAL hoja inferior ── */
   .modal { align-items: flex-end; }
   .modal-backdrop { display: none; }
   .modal-box {
-    width: 100%; height: 95dvh;
-    max-height: 95dvh;
-    border-radius: 14px 14px 0 0;
-    margin: 0;
+    width: 100%; height: 95dvh; max-height: 95dvh;
+    border-radius: 14px 14px 0 0; margin: 0;
   }
   .modal-header { padding: 12px 14px; }
   .modal-body   { padding: 12px 14px; }
   .modal-section { margin-bottom: 16px; }
-
   .stats-grid        { grid-template-columns: 1fr; gap: 8px; }
   .mkt-analysis-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
   .mkt-analysis-card { padding: 8px; }
-  .mac-label  { font-size: 10px; }
-  .mac-odds   { font-size: 16px; }
-
+  .mac-label { font-size: 10px; }
+  .mac-odds  { font-size: 16px; }
   .h2h-bar-wrap { margin: 8px 0; }
   .h2h-table th, .h2h-table td { font-size: 11px; padding: 5px 6px; }
-
-  /* Señales */
   .signal-item { padding: 6px 8px; }
   .signal-msg  { font-size: 11px; }
 
-  /* ── SIMULADOR modal ── */
-  .sim-config {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px; padding: 10px;
-  }
-  .btn-run-sim  { grid-column: 1 / -1; padding: 9px; }
-  .sim-metrics  { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-  .sm-val       { font-size: 15px; }
+  /* ── SIMULADOR ── */
+  .sim-config { grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; }
+  .btn-run-sim { grid-column: 1 / -1; padding: 9px; }
+  .sim-metrics { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .sm-val      { font-size: 15px; }
   .sim-chart-wrap { padding: 8px; }
 
   /* ── FOOTER ── */
   .cb-footer { font-size: 9px; padding: 10px 12px; }
 }
 
-/* ── HORIZONTAL (landscape) en celular ──────────────────────────────── */
-@media (max-height: 500px) and (orientation: landscape) {
+/* ── MÓVIL LANDSCAPE ─────────────────────────────────────────────────── */
+@media (max-height: 520px) and (orientation: landscape) {
+  /* Ocultar barra flotante — ticket visible a la derecha */
+  .mob-bar { display: none !important; }
+  body { padding-bottom: 0; }
+
   /* Header ultra compacto */
   .cb-header-inner { padding: 4px 12px; gap: 4px; }
-  .saori-svg  { width: 28px; height: 38px; }
-  .cb-logo-text { font-size: 16px; }
-  .cb-nav { padding-bottom: 0; }
-  .nav-btn { font-size: 11px; padding: 3px 10px; }
+  .saori-svg    { width: 26px; height: 36px; }
+  .cb-logo-text { font-size: 15px; }
+  .cb-tagline   { display: none; }
+  .cb-nav       { padding-bottom: 0; }
+  .nav-btn      { font-size: 11px; padding: 3px 10px; }
+  .cb-header-right { flex-direction: row; gap: 8px; }
+  .hs-label { display: none; }
+  .hs-val   { font-size: 13px; }
 
-  /* Layout: 2 columnas lado a lado */
+  /* Layout: 2 columnas — partidos | ticket */
   .cb-layout {
-    grid-template-columns: 1fr 340px;
-    padding: 6px;
-    gap: 6px;
-    height: calc(100dvh - 52px);
-    overflow: hidden;
+    grid-template-columns: 1fr 300px;
+    padding: 5px; gap: 5px;
+    height: calc(100dvh - 46px);
+    align-items: stretch;
   }
 
-  /* Columna de partidos con scroll */
+  /* Scroll independiente por columna */
   .cb-matches {
-    overflow-y: auto;
-    height: 100%;
+    overflow-y: auto; height: 100%;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
   }
-
-  /* Ticket fijo a la derecha */
   .cb-slip {
-    height: 100%;
-    overflow-y: auto;
+    overflow-y: auto; height: 100%;
     -webkit-overflow-scrolling: touch;
-    position: sticky;
-    top: 0;
+    position: static;
   }
 
-  /* Cards más compactas */
-  .mc-top { padding: 5px 10px 4px; }
+  /* Cards compactas */
+  .mc-top   { padding: 4px 10px 3px; }
   .mc-teams { padding: 4px 10px; }
-  .team-name { font-size: 12px; }
-  .forma-dot { width: 13px; height: 13px; font-size: 7px; }
-  .cat-tabs { padding: 3px 8px; }
-  .mc-markets { gap: 4px; padding: 4px 8px 8px; }
-  .mkt-btn { padding: 5px 5px; min-height: 60px; }
-  .mkt-odds { font-size: 14px; }
+  .team-name { font-size: 11px; }
+  .forma-dot { width: 12px; height: 12px; font-size: 6px; }
+  .stat-badge { font-size: 8px; padding: 0 3px; }
+  .cat-tabs  { padding: 3px 8px; gap: 3px; }
+  .cat-tab   { font-size: 9px; padding: 2px 7px; }
+  .mc-markets {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px; padding: 4px 8px 8px;
+  }
+  .mkt-btn   { padding: 4px 5px; min-height: 56px; }
+  .mkt-odds  { font-size: 13px; }
+  .mkt-name  { font-size: 9px; }
+  .ve-badge  { font-size: 7px; }
+  .conf-badge { font-size: 7px; }
+
+  /* Ticket compacto */
+  .slip-header { padding: 7px 10px; }
+  .slip-leg    { padding: 5px 10px 7px; }
+  .metric-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 8px; }
+  .mc-label    { font-size: 8px; }
+  .mc-val      { font-size: 13px; }
+  .stake-row   { flex-wrap: wrap; gap: 4px; padding: 0 10px 8px; }
+  .stake-inp   { font-size: 12px; padding: 4px 6px; }
+  .ve-verdict  { font-size: 10px; padding: 6px 8px; margin: 0 10px 6px; }
+  .slip-action-row { flex-direction: row; gap: 4px; padding: 0 10px 10px; }
+  .btn-analyze,
+  .btn-simulate { font-size: 11px; padding: 8px 4px; }
 
   /* Modal en landscape */
   .modal { align-items: center; }
   .modal-box {
-    width: 90%; height: 90dvh;
-    border-radius: 10px;
-    margin: auto;
+    width: 92%; height: 92dvh;
+    border-radius: 10px; margin: auto;
   }
 }

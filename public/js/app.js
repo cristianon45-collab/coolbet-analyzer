@@ -210,6 +210,7 @@ function updateSlip() {
       </div>`;
     sm.classList.add('hidden');
     document.getElementById('hdr-cuota').textContent = '—';
+    updateMobBar(0, 0);
     return;
   }
 
@@ -314,6 +315,25 @@ function updateSlip() {
   }
 
   sm.classList.remove('hidden');
+
+  // Actualizar barra flotante móvil
+  const cuotaFinal = legs.reduce((a, l) => a * l.legOdds, 1);
+  updateMobBar(count, cuotaFinal);
+}
+
+// ── Barra flotante móvil ─────────────────────────────────────────────────────
+function updateMobBar(count, cuotaTotal) {
+  const bar = document.getElementById('mob-bar');
+  if (!bar) return;
+  if (count === 0) { bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+  document.getElementById('mob-count').textContent = count;
+  document.getElementById('mob-odds').textContent  = fmt.odds(cuotaTotal);
+}
+
+function scrollToTicket() {
+  const slip = document.querySelector('.cb-slip');
+  if (slip) slip.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function removeItem(key) {
