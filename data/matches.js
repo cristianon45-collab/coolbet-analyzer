@@ -126,11 +126,10 @@ const MATCHES = [
       { label:"Ambos anotan — Sí",      odds:1.90, probCasa:0.526, probReal:0.52 }
     ],
     resultado: {
-      status: "FT",
-      scoreLocal: 0, scoreVisit: 1,
-      goles: [
-        { min: 59, jugador: "L. Krejcí", equipo: "visit" }
-      ],
+      status: "LIVE",
+      scoreLocal: 1, scoreVisit: 1,
+      minuto: 55,
+      goles: [],
       amarillas: { local: [], visit: [] },
       rojas: []
     },

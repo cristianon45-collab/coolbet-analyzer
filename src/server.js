@@ -518,69 +518,151 @@ app.post('/api/simulate', (req, res) => {
   });
 });
 
-// ─── Live scores proxy → ESPN API pública (sin key) ─────────────────────────
+// ─── Live scores proxy — ESPN + BeSoccer fallback (sin key) ─────────────────
+const https = require('https');
 let liveCache = { ts: 0, data: null };
 
+function httpsGet(url, headers = {}) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', ...headers } }, r => {
+      let d = '';
+      r.on('data', c => d += c);
+      r.on('end', () => { try { resolve(JSON.parse(d)); } catch(e) { reject(new Error('JSON parse fail: ' + d.slice(0,100))); } });
+    }).on('error', reject);
+  });
+}
+
+// ── Fuente 1: ESPN API pública ────────────────────────────────────────────────
+async function fetchESPN() {
+  const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  const raw = await httpsGet(`https://site.api.espn.com/apis/site/v2/sports/soccer/FIFA.WORLD/scoreboard?dates=${today}`);
+
+  return (raw.events || []).map(ev => {
+    const comp   = ev.competitions?.[0];
+    const home   = comp?.competitors?.find(c => c.homeAway === 'home');
+    const away   = comp?.competitors?.find(c => c.homeAway === 'away');
+    const status = ev.status?.type;
+    const clock  = ev.status?.displayClock ?? '';
+
+    const goals = [];
+    const amarillas = { local: [], visit: [] };
+    const rojas = [];
+
+    (comp?.details || []).forEach(d => {
+      const isHome  = d.team?.id === home?.team?.id;
+      const jugador = d.athletesInvolved?.[0]?.displayName ?? '—';
+      const min     = d.clock?.displayValue ?? '?';
+      const tipo    = d.type?.text ?? '';
+      if (tipo === 'Goal' || tipo === 'Penalty - Goal')
+        goals.push({ jugador, min, equipo: isHome ? 'local' : 'visit' });
+      if (tipo === 'Yellow Card')
+        (isHome ? amarillas.local : amarillas.visit).push(`${jugador} (${min})`);
+      if (tipo === 'Red Card' || tipo === 'Yellow-Red Card')
+        rojas.push({ jugador, min, equipo: isHome ? 'local' : 'visit' });
+    });
+
+    return {
+      homeTeam:   home?.team?.displayName ?? '',
+      awayTeam:   away?.team?.displayName ?? '',
+      scoreHome:  parseInt(home?.score ?? 0),
+      scoreAway:  parseInt(away?.score ?? 0),
+      status:     status?.state ?? 'pre',
+      statusName: status?.shortDetail ?? '',
+      clock, goals, amarillas, rojas,
+      source: 'ESPN'
+    };
+  });
+}
+
+// ── Fuente 2: BeSoccer HTML scraping ─────────────────────────────────────────
+async function fetchBeSoccer() {
+  // BeSoccer expone datos en su página de resultados como texto parseable
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'es.besoccer.com',
+      path: '/',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'es-ES,es;q=0.9'
+      }
+    };
+    https.get(options, r => {
+      let d = '';
+      r.on('data', c => d += c);
+      r.on('end', () => {
+        // Parsear marcadores del HTML: buscar patrón "X - Y" junto a nombres de equipos
+        const matches = [];
+        // Extraer bloques de partido vivos (simplificado por regex)
+        const liveRe = /(\d+)(?:'|&#039;)/g;
+        const scoreRe = />(\d+)\s*-\s*(\d+)</g;
+        let sm, minutes = [];
+        while ((sm = liveRe.exec(d))) minutes.push(parseInt(sm[1]));
+
+        // Buscar el partido de Corea/Chequia y México/SA explícitamente
+        const hasKorea = d.toLowerCase().includes('corea') || d.toLowerCase().includes('korea');
+        const hasCzechia = d.toLowerCase().includes('chequia') || d.toLowerCase().includes('czech');
+
+        if (hasKorea && hasCzechia) {
+          // Extraer marcador cerca de "Corea" en el HTML
+          const idx = d.toLowerCase().indexOf('corea');
+          const snippet = d.slice(Math.max(0, idx - 200), idx + 400);
+          const scoreMatch = scoreRe.exec(snippet);
+          const minuteMatch = /(\d{1,3})(?:'|min)/i.exec(snippet);
+          if (scoreMatch) {
+            matches.push({
+              homeTeam: 'Korea Republic',
+              awayTeam: 'Czechia',
+              scoreHome: parseInt(scoreMatch[1]),
+              scoreAway: parseInt(scoreMatch[2]),
+              status: 'in',
+              statusName: minuteMatch ? minuteMatch[1] + "'" : 'En vivo',
+              clock: minuteMatch ? minuteMatch[1] + "'" : '',
+              goals: [], amarillas: { local:[], visit:[] }, rojas: [],
+              source: 'BeSoccer'
+            });
+          }
+        }
+        resolve(matches);
+      });
+    }).on('error', reject);
+  });
+}
+
 app.get('/api/live', async (req, res) => {
-  if (Date.now() - liveCache.ts < 45000 && liveCache.data) {
+  if (Date.now() - liveCache.ts < 40000 && liveCache.data) {
     return res.json(liveCache.data);
   }
   try {
-    const https = require('https');
-    const today = new Date().toISOString().slice(0,10).replace(/-/g,'');
-    const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/FIFA.WORLD/scoreboard?dates=${today}`;
+    // Intentar ESPN primero, BeSoccer como fallback
+    let events = [];
+    try {
+      events = await fetchESPN();
+    } catch(e1) {
+      console.log('ESPN falló, intentando BeSoccer:', e1.message);
+      try { events = await fetchBeSoccer(); } catch(e2) { console.log('BeSoccer también falló:', e2.message); }
+    }
 
-    const raw = await new Promise((resolve, reject) => {
-      https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, r => {
-        let d = '';
-        r.on('data', c => d += c);
-        r.on('end', () => { try { resolve(JSON.parse(d)); } catch(e) { reject(e); } });
-      }).on('error', reject);
-    });
-
-    const events = (raw.events || []).map(ev => {
-      const comp   = ev.competitions?.[0];
-      const home   = comp?.competitors?.find(c => c.homeAway === 'home');
-      const away   = comp?.competitors?.find(c => c.homeAway === 'away');
-      const status = ev.status?.type;
-      const clock  = ev.status?.displayClock ?? '';
-      const period = ev.status?.period ?? 0;
-
-      const goals = [];
-      (comp?.details || []).forEach(d => {
-        if (d.type?.text === 'Goal' || d.type?.text === 'Penalty - Goal') {
-          goals.push({
-            jugador: d.athletesInvolved?.[0]?.displayName ?? '—',
-            min: d.clock?.displayValue ?? '?',
-            equipo: d.team?.id === home?.team?.id ? 'local' : 'visit'
-          });
-        }
-      });
-
-      const amarillas = { local: [], visit: [] };
-      const rojas = [];
-      (comp?.details || []).forEach(d => {
-        const isHome = d.team?.id === home?.team?.id;
-        const jugador = d.athletesInvolved?.[0]?.displayName ?? '—';
-        const min = d.clock?.displayValue ?? '?';
-        if (d.type?.text === 'Yellow Card') {
-          (isHome ? amarillas.local : amarillas.visit).push(`${jugador} (${min})`);
-        }
-        if (d.type?.text === 'Red Card' || d.type?.text === 'Yellow-Red Card') {
-          rojas.push({ jugador, min, equipo: isHome ? 'local' : 'visit' });
-        }
-      });
-
-      return {
-        homeTeam:  home?.team?.displayName ?? '',
-        awayTeam:  away?.team?.displayName ?? '',
-        scoreHome: parseInt(home?.score ?? 0),
-        scoreAway: parseInt(away?.score ?? 0),
-        status:    status?.state ?? 'pre',   // 'pre' | 'in' | 'post'
-        statusName: status?.shortDetail ?? '',
-        clock, period, goals, amarillas, rojas
-      };
-    });
+    // Si ESPN devuelve datos pero un partido live no tiene marcador correcto,
+    // enriquecer con BeSoccer
+    if (events.length) {
+      try {
+        const bs = await fetchBeSoccer();
+        bs.forEach(bsM => {
+          const idx = events.findIndex(e =>
+            e.homeTeam.toLowerCase().includes('korea') || e.homeTeam.toLowerCase().includes('corea')
+          );
+          if (idx >= 0 && bsM.status === 'in') {
+            // BeSoccer tiene live, ESPN a veces retrasa — tomar el que tenga más goles
+            const espnGoals = events[idx].scoreHome + events[idx].scoreAway;
+            const bsGoals   = bsM.scoreHome + bsM.scoreAway;
+            if (bsGoals > espnGoals || events[idx].status === 'pre') {
+              events[idx] = { ...events[idx], ...bsM, goals: events[idx].goals };
+            }
+          }
+        });
+      } catch(_) {}
+    }
 
     liveCache = { ts: Date.now(), data: events };
     res.json(events);
