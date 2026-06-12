@@ -193,7 +193,7 @@ function renderMatchCard(m, cat) {
   if (res.status === 'FT' || res.status === 'LIVE') {
     const statusLabel = res.status === 'FT'
       ? `<span class="res-badge ft">FINAL</span>`
-      : `<span class="res-badge live">● ${res.minuto}'</span>`;
+      : `<span class="res-badge live" id="live-badge-${m.id}">● <span class="live-min" id="live-min-${m.id}">${res.minuto ?? '?'}</span>'</span>`;
 
     // Goles por equipo
     const golesLocal = (res.goles || []).filter(g => g.equipo === 'local')
@@ -865,6 +865,22 @@ function renderSimResult(d, items) {
     </div>
   `;
 }
+
+// ── Reloj en vivo — actualiza minuto cada 60 seg ─────────────────────────────
+function startLiveClock() {
+  setInterval(() => {
+    allMatches.forEach(m => {
+      if (!m.resultado || m.resultado.status !== 'LIVE') return;
+      const minEl = document.getElementById(`live-min-${m.id}`);
+      if (!minEl) return;
+      const cur = parseInt(minEl.textContent) || 0;
+      const next = cur >= 90 ? cur + 1 : cur + 1; // puede ir a extra time
+      minEl.textContent = next;
+      m.resultado.minuto = next;
+    });
+  }, 60000); // cada minuto real
+}
+startLiveClock();
 
 // ── Nav filtros ──────────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn => {
