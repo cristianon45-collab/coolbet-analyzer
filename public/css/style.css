@@ -220,7 +220,10 @@ body {
   padding: 2px 8px; border-radius: 8px;
 }
 .res-badge.ft   { background: rgba(255,255,255,0.12); color: var(--text-muted); }
-.res-badge.live { background: #e34; color: #fff; animation: livePulse 1.2s ease-in-out infinite; }
+.res-badge.live { background: #e34; color: #fff; animation: livePulse 1.2s ease-in-out infinite; font-size: 12px; padding: 3px 10px; }
+.live-min { font-weight: 900; font-size: 14px; }
+.live-tick { opacity: 0; animation: tickBlink 1s step-end infinite; font-weight: 900; }
+@keyframes tickBlink { 0%,100%{opacity:0} 50%{opacity:1} }
 @keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:.65} }
 
 .res-score-row {

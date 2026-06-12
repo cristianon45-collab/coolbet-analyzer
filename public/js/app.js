@@ -193,7 +193,7 @@ function renderMatchCard(m, cat) {
   if (res.status === 'FT' || res.status === 'LIVE') {
     const statusLabel = res.status === 'FT'
       ? `<span class="res-badge ft">FINAL</span>`
-      : `<span class="res-badge live" id="live-badge-${m.id}">● <span class="live-min" id="live-min-${m.id}">${res.minuto ?? '?'}</span>'</span>`;
+      : `<span class="res-badge live">🔴 <span class="live-min" id="live-min-${m.id}">${res.minuto ?? '?'}</span><span class="live-tick">'</span></span>`;
 
     // Goles por equipo
     const golesLocal = (res.goles || []).filter(g => g.equipo === 'local')
@@ -945,9 +945,17 @@ async function pollLive() {
   } catch(e) { /* silencioso */ }
 }
 
-// Arrancar poller: inmediato + cada 45 seg
+// Arrancar poller: inmediato + cada 30 seg
 pollLive();
-setInterval(pollLive, 45000);
+setInterval(pollLive, 30000);
+
+// ── Ticker de minuto en vivo — avanza 1' cada 60 seg en pantalla ─────────────
+setInterval(() => {
+  document.querySelectorAll('.live-min').forEach(el => {
+    const cur = parseInt(el.textContent) || 0;
+    if (cur < 120) el.textContent = cur + 1;
+  });
+}, 60000);
 
 // ── Nav filtros ──────────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn => {

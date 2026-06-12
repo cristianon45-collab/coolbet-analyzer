@@ -128,7 +128,7 @@ const MATCHES = [
     resultado: {
       status: "LIVE",
       scoreLocal: 1, scoreVisit: 1,
-      minuto: 55,
+      minuto: 85,
       goles: [],
       amarillas: { local: [], visit: [] },
       rojas: []
