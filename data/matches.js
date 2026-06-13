@@ -346,6 +346,13 @@ const MATCHES = [
       { label:"Empate",      odds:4.20, probCasa:0.238, probReal:0.20 },
       { label:"2 Marruecos", odds:5.70, probCasa:0.175, probReal:0.15 }
     ],
+    resultado: {
+      status: "FT",
+      scoreLocal: 0, scoreVisit: 0,
+      goles: [],
+      amarillas: { local: [], visit: [] },
+      rojas: []
+    },
     contexto: {
       jornada: 1,
       favoritoLocal: true,

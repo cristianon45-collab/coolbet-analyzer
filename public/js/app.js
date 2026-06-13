@@ -1057,9 +1057,9 @@ async function pollLive() {
   } catch(e) { /* silencioso */ }
 }
 
-// Live poller desactivado — resultados finales en data/matches.js
-// pollLive();
-// setInterval(pollLive, 30000);
+// Poller activo — actualiza resultados cada 45s desde ESPN
+pollLive();
+setInterval(pollLive, 45000);
 
 // ── Nav filtros ──────────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn => {
