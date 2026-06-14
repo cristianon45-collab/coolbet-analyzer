@@ -347,9 +347,13 @@ const MATCHES = [
       { label:"2 Marruecos", odds:5.70, probCasa:0.175, probReal:0.15 }
     ],
     resultado: {
-      status: "FT",
-      scoreLocal: 0, scoreVisit: 0,
-      goles: [],
+      status: "LIVE",
+      scoreLocal: 1, scoreVisit: 1,
+      minuto: "65",
+      goles: [
+        { min: "?", jugador: "Gol Marruecos", equipo: "visit" },
+        { min: "?", jugador: "Gol Brasil",    equipo: "local" }
+      ],
       amarillas: { local: [], visit: [] },
       rojas: []
     },
@@ -765,6 +769,78 @@ const MATCHES = [
       suspensiones: [],
       arbitro: null,
       debut: false,
+      altaTension: false
+    }
+  },
+  {
+    id: 21,
+    comp: "Mundial 2026",
+    compKey: "mundial",
+    fase: "Fase de Grupos — Grupo G",
+    local: "Escocia",
+    visit: "Haití",
+    time: "13 Jun · En curso",
+    statsLocal: {
+      forma: ["V","E","V","V","E"],
+      gfProm: 1.5,
+      gcProm: 1.0,
+      racha: "Primer Mundial desde 1998",
+      posLiga: 39,
+      golesUltimos5: [2,1,1,2,1],
+      gcUltimos5: [1,1,0,1,2],
+      localRecord: { v:5, e:3, d:3 }
+    },
+    statsVisit: {
+      forma: ["G","V","G","G","V"],
+      gfProm: 0.8,
+      gcProm: 1.6,
+      racha: "Debut mundialista histórico",
+      posLiga: 83,
+      golesUltimos5: [0,1,0,1,2],
+      gcUltimos5: [2,1,2,2,1],
+      visitRecord: { v:1, e:2, d:7 }
+    },
+    h2h: {
+      local: 2, empate: 0, visit: 0,
+      golesLocal:  [3,2],
+      golesVisit:  [0,1],
+      partidos: [
+        { fecha:"2019", res:"3-0", ganador:"local" },
+        { fecha:"2015", res:"2-1", ganador:"local" }
+      ]
+    },
+    mercados: [
+      { label:"1 Escocia",              odds:1.75, probCasa:0.571, probReal:0.58 },
+      { label:"Empate",                 odds:3.60, probCasa:0.278, probReal:0.24 },
+      { label:"2 Haití",                odds:4.80, probCasa:0.208, probReal:0.18 },
+      { label:"Más de 2.5 goles",       odds:2.20, probCasa:0.455, probReal:0.42 },
+      { label:"Menos de 2.5 goles",     odds:1.65, probCasa:0.606, probReal:0.58 },
+      { label:"Escocia no pierde",      odds:1.38, probCasa:0.725, probReal:0.82 }
+    ],
+    mercadosBetano: [
+      { label:"1 Escocia", odds:1.72, probCasa:0.581, probReal:0.58 },
+      { label:"Empate",    odds:3.70, probCasa:0.270, probReal:0.24 },
+      { label:"2 Haití",   odds:4.90, probCasa:0.204, probReal:0.18 }
+    ],
+    resultado: {
+      status: "LIVE",
+      scoreLocal: 1, scoreVisit: 1,
+      minuto: "65",
+      goles: [],
+      amarillas: { local: [], visit: [] },
+      rojas: []
+    },
+    contexto: {
+      jornada: 1,
+      favoritoLocal: true,
+      visitanteVelocistas: false,
+      clasificatorioLocal: null,
+      clasificatorioVisit: null,
+      diasDescansoLocal: null,
+      diasDescansoVisit: null,
+      suspensiones: [],
+      arbitro: null,
+      debut: true,
       altaTension: false
     }
   }
