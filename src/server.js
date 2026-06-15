@@ -510,8 +510,46 @@ function enrichMercadosBetano(m) {
   ];
 }
 
+// ── Forma real del torneo ────────────────────────────────────────────────────
+function normT(name) {
+  return (name || '').toLowerCase()
+    .replace(/[áàâã]/g,'a').replace(/[éèê]/g,'e').replace(/[íìî]/g,'i')
+    .replace(/[óòô]/g,'o').replace(/[úùû]/g,'u').replace(/ñ/g,'n')
+    .trim();
+}
+function sameTeam(a, b) {
+  const na = normT(a), nb = normT(b);
+  return na === nb || na.includes(nb) || nb.includes(na);
+}
+
+function getTournamentData(teamName) {
+  const played = MATCHES.filter(m =>
+    m.resultado?.status === 'FT' &&
+    (sameTeam(m.local, teamName) || sameTeam(m.visit, teamName))
+  );
+  const forma = [];
+  let gf = 0, gc = 0;
+  played.forEach(m => {
+    const isLocal = sameTeam(m.local, teamName);
+    const gl = m.resultado.golesLocal ?? m.resultado.scoreLocal ?? 0;
+    const gv = m.resultado.golesVisit ?? m.resultado.scoreVisit ?? 0;
+    const mGF = isLocal ? gl : gv;
+    const mGC = isLocal ? gv : gl;
+    gf += mGF; gc += mGC;
+    if (mGF > mGC) forma.push('V');
+    else if (mGF === mGC) forma.push('E');
+    else forma.push('G');
+  });
+  return { forma, gf, gc, pj: played.length };
+}
+
 function processMatch(m) {
   const { signals, alerts, venue } = detectSignals(m);
+
+  // Inyectar forma real del torneo
+  const torneoLocal = getTournamentData(m.local);
+  const torneoVisit = getTournamentData(m.visit);
+
   const mercadosRaw  = calcVE(enrichMercados(m), signals);
   const coherence    = coherenceCheck(mercadosRaw, signals, m);
   const bloque0      = buildBloque0(m, signals, venue);
@@ -525,7 +563,9 @@ function processMatch(m) {
     mercados: mercadosRaw,
     mercadosBetano: mercadosBetanoRaw,
     coherencia: coherence,
-    bloque0
+    bloque0,
+    torneoLocal,
+    torneoVisit,
   };
 }
 

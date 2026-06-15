@@ -146,6 +146,47 @@ function renderMatches() {
 // Track active category tab per match card
 const activeCat = {};
 
+function renderTorneoBar(torneoData, side) {
+  if (!torneoData || torneoData.pj === 0) return '';
+  const badges = torneoData.forma.map(f =>
+    `<span class="forma-dot ${f}">${formaChar(f)}</span>`
+  ).join('');
+  const gfgc = `<span class="torneo-stat">${torneoData.gf} GF · ${torneoData.gc} GC</span>`;
+  return side === 'left'
+    ? `<div class="torneo-row left">${badges} ${gfgc}</div>`
+    : `<div class="torneo-row right">${gfgc} ${badges}</div>`;
+}
+
+function renderComparativa(m) {
+  const tl = m.torneoLocal, tv = m.torneoVisit;
+  if (!tl || !tv || (tl.pj === 0 && tv.pj === 0)) return '';
+  const rows = [
+    { label:'GF en torneo', vl: tl.gf, vr: tv.gf, higherBetter: true },
+    { label:'GC en torneo', vl: tl.gc, vr: tv.gc, higherBetter: false },
+    { label:'GF/p histórico', vl: m.statsLocal.gfProm.toFixed(1), vr: m.statsVisit.gfProm.toFixed(1), higherBetter: true },
+    { label:'GC/p histórico', vl: m.statsLocal.gcProm.toFixed(1), vr: m.statsVisit.gcProm.toFixed(1), higherBetter: false },
+    { label:'Ranking FIFA', vl: '#'+m.statsLocal.posLiga, vr: '#'+m.statsVisit.posLiga, higherBetter: false, rankMode: true },
+  ];
+  const rowsHtml = rows.map(r => {
+    const nl = parseFloat(r.vl), nr = parseFloat(r.vr);
+    let winL = false, winR = false;
+    if (!isNaN(nl) && !isNaN(nr)) {
+      if (r.rankMode) { winL = nl < nr; winR = nr < nl; }
+      else if (r.higherBetter) { winL = nl > nr; winR = nr > nl; }
+      else { winL = nl < nr; winR = nr < nl; }
+    }
+    return `<div class="comp-row">
+      <span class="comp-val ${winL?'comp-win':''}">${r.vl}</span>
+      <span class="comp-label">${r.label}</span>
+      <span class="comp-val right ${winR?'comp-win':''}">${r.vr}</span>
+    </div>`;
+  }).join('');
+  return `<div class="mc-comparativa">
+    <div class="comp-title">📊 Comparativa en el torneo</div>
+    ${rowsHtml}
+  </div>`;
+}
+
 function renderMatchCard(m, cat) {
   const forma = (stats) => stats.forma.map(f => `<span class="forma-dot ${f}" title="${f}">${formaChar(f)}</span>`).join('');
 
@@ -252,6 +293,7 @@ function renderMatchCard(m, cat) {
       <div class="team-block">
         <div class="team-name">${m.local}</div>
         <div class="team-forma">${forma(m.statsLocal)}</div>
+        ${m.torneoLocal?.pj > 0 ? renderTorneoBar(m.torneoLocal,'left') : ''}
         <div class="team-stats-row">
           <span class="stat-badge good" onclick="showTip('gfprom',event)">${m.statsLocal.gfProm.toFixed(1)} GF/p</span>
           <span class="stat-badge" onclick="showTip('gcprom',event)">${m.statsLocal.gcProm.toFixed(1)} GC/p</span>
@@ -262,6 +304,7 @@ function renderMatchCard(m, cat) {
       <div class="team-block right">
         <div class="team-name">${m.visit}</div>
         <div class="team-forma" style="justify-content:flex-end">${forma(m.statsVisit)}</div>
+        ${m.torneoVisit?.pj > 0 ? renderTorneoBar(m.torneoVisit,'right') : ''}
         <div class="team-stats-row" style="justify-content:flex-end">
           <span class="stat-badge good" onclick="showTip('gfprom',event)">${m.statsVisit.gfProm.toFixed(1)} GF/p</span>
           <span class="stat-badge" onclick="showTip('gcprom',event)">${m.statsVisit.gcProm.toFixed(1)} GC/p</span>
@@ -269,6 +312,7 @@ function renderMatchCard(m, cat) {
         </div>
       </div>
     </div>
+    ${renderComparativa(m)}
     <div class="cat-tabs">${catTabs}</div>
     ${currentBookie === 'betano' && !hasBetano ? `<div class="no-bookie-notice">⚠️ Mercados Betano no disponibles para este partido</div>` : ''}
     ${currentCat === 'Jugada ⚡' ? renderJugada(m, mercados) : `<div class="mc-markets">${mkts}</div>`}

@@ -419,6 +419,20 @@ body {
 .forma-dot.G { background: var(--red); color: #fff; }
 .forma-dot.E { background: #888; color: #fff; }
 
+/* Forma real del torneo */
+.torneo-row { display: flex; align-items: center; gap: 4px; margin: 3px 0; flex-wrap: wrap; }
+.torneo-row.right { justify-content: flex-end; }
+.torneo-stat { font-size: 9px; color: var(--text-dim); background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px; }
+
+/* Comparativa en el torneo */
+.mc-comparativa { margin: 8px 12px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.comp-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-align: center; padding: 5px 8px; background: rgba(255,255,255,0.04); letter-spacing: .5px; text-transform: uppercase; }
+.comp-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 4px 10px; border-top: 1px solid var(--border); }
+.comp-label { font-size: 9px; color: var(--text-dim); text-align: center; padding: 0 6px; }
+.comp-val { font-size: 12px; font-weight: 700; color: var(--text); }
+.comp-val.right { text-align: right; }
+.comp-val.comp-win { color: var(--green); }
+
 .vs-block { text-align: center; }
 .vs-label { font-size: 11px; color: var(--text-dim); display: block; }
 
