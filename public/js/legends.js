@@ -373,52 +373,40 @@ const LEGENDS = [
   }
 ];
 
-// ── Spawn y animación de leyendas ────────────────────────────────────────────
-const ANIM_STYLES = ['walk-lr', 'walk-rl', 'float-up', 'bounce-in'];
+// ── Spawn en esquina inferior derecha ────────────────────────────────────────
+let activeLegend = null;
 
-function createLegendEl(legend, animStyle) {
-  const size = 72 + Math.random() * 16;
+function createLegendEl(legend) {
+  const size = 80 + Math.random() * 20;
   const svgContent = legend.svg(
     legend.jerseyColor, legend.shortColor, legend.skinColor, legend.hairColor
   );
 
   const wrap = document.createElement('div');
-  wrap.className = `legend-char legend-${animStyle}`;
+  wrap.className = 'legend-char legend-corner';
   wrap.title = `${legend.name} — ${legend.country} #${legend.num}`;
   wrap.style.cssText = `
     position: fixed;
+    bottom: 16px;
+    right: 380px;
     width: ${size}px;
-    height: auto;
     pointer-events: none;
-    z-index: 1;
+    z-index: 10;
     opacity: 0;
-    bottom: ${Math.random() > 0.5 ? '0px' : '60px'};
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.8));
+    transform: translateY(30px) scale(0.8);
+    transition: opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1);
   `;
-
-  if (animStyle === 'walk-lr') {
-    wrap.style.left = '-100px';
-    wrap.style.bottom = `${20 + Math.random() * 40}px`;
-  } else if (animStyle === 'walk-rl') {
-    wrap.style.right = '-100px';
-    wrap.style.bottom = `${20 + Math.random() * 40}px`;
-  } else if (animStyle === 'float-up') {
-    wrap.style.left = `${10 + Math.random() * 80}%`;
-    wrap.style.bottom = '-120px';
-  } else {
-    wrap.style.left = `${5 + Math.random() * 85}%`;
-    wrap.style.bottom = `${10 + Math.random() * 30}px`;
-  }
 
   wrap.innerHTML = `
     <svg viewBox="0 0 48 88" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size * 1.83}">
       <defs>
-        <filter id="legendGlow">
+        <filter id="legendGlow${legend.id}">
           <feGaussianBlur stdDeviation="1.5" result="blur"/>
           <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
       </defs>
-      <g style="filter:url(#legendGlow)" transform="scale(0.48) translate(0,0)">
+      <g style="filter:url(#legendGlow${legend.id})" transform="scale(0.48) translate(0,0)">
         ${svgContent}
       </g>
     </svg>
@@ -429,33 +417,56 @@ function createLegendEl(legend, animStyle) {
 }
 
 function spawnLegend() {
-  const legend   = LEGENDS[Math.floor(Math.random() * LEGENDS.length)];
-  const animStyle = ANIM_STYLES[Math.floor(Math.random() * ANIM_STYLES.length)];
-  const el       = createLegendEl(legend, animStyle);
+  // Remover el anterior si existe
+  if (activeLegend) {
+    activeLegend.style.opacity = '0';
+    activeLegend.style.transform = 'translateY(30px) scale(0.8)';
+    setTimeout(() => activeLegend?.remove(), 500);
+    activeLegend = null;
+  }
 
+  const legend = LEGENDS[Math.floor(Math.random() * LEGENDS.length)];
+  const el     = createLegendEl(legend);
   document.body.appendChild(el);
+  activeLegend = el;
 
-  // Pequeño delay para que el DOM esté listo
+  // Entrada
   requestAnimationFrame(() => {
-    el.classList.add('legend-active');
+    setTimeout(() => {
+      el.style.opacity = '0.92';
+      el.style.transform = 'translateY(0) scale(1)';
+    }, 30);
   });
 
-  // Remover después de que termine la animación
-  const duration = animStyle === 'walk-lr' || animStyle === 'walk-rl' ? 12000 : 8000;
-  setTimeout(() => el.remove(), duration + 500);
+  // Idle bounce suave mientras está visible
+  let bounceDir = 1;
+  const bounce = setInterval(() => {
+    if (!el.parentNode) { clearInterval(bounce); return; }
+    el.style.transform = `translateY(${bounceDir * -6}px) scale(1)`;
+    bounceDir *= -1;
+  }, 1200);
+
+  // Salida después de 8s
+  setTimeout(() => {
+    clearInterval(bounce);
+    if (el.parentNode) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px) scale(0.8)';
+      setTimeout(() => { el.remove(); if (activeLegend === el) activeLegend = null; }, 600);
+    }
+  }, 8000);
 }
 
-// Iniciar con delay aleatorio entre apariciones
 function scheduleLegend() {
-  const delay = 6000 + Math.random() * 10000; // 6-16s entre apariciones
+  const delay = 7000 + Math.random() * 9000; // 7-16s entre apariciones
   setTimeout(() => {
     spawnLegend();
     scheduleLegend();
   }, delay);
 }
 
-// Arrancar después de que la página cargue
+// Primera aparición a los 3s
 setTimeout(() => {
-  spawnLegend(); // Primera aparición rápida
+  spawnLegend();
   scheduleLegend();
 }, 3000);
