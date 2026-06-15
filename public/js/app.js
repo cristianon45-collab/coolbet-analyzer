@@ -1043,7 +1043,7 @@ async function pollLive() {
         status:    newStatus,
         scoreLocal: espn.scoreHome,
         scoreVisit: espn.scoreAway,
-        minuto:    espn.clock ? espn.clock.replace("'","") : prev.minuto,
+        minuto:    newStatus === 'LIVE' && espn.clock ? espn.clock.replace("'","") : null,
         goles:     espn.goals || prev.goles || [],
         amarillas: espn.amarillas || prev.amarillas || { local:[], visit:[] },
         rojas:     espn.rojas || prev.rojas || []
