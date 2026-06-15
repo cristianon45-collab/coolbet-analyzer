@@ -210,7 +210,7 @@ const MATCHES = [
       { label:"Empate",            odds:3.60, probCasa:0.278, probReal:0.25 },
       { label:"2 Bosnia y Herz.",  odds:4.90, probCasa:0.204, probReal:0.17 }
     ],
-    resultado: { status: "PRE" },
+    resultado: { status:"FT", scoreLocal:1, scoreVisit:1, goles:[], amarillas:{local:[],visit:[]}, rojas:[] },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -278,7 +278,7 @@ const MATCHES = [
       { label:"Empate",           odds:3.80, probCasa:0.263, probReal:0.22 },
       { label:"2 Paraguay",       odds:5.20, probCasa:0.192, probReal:0.16 }
     ],
-    resultado: { status: "PRE" },
+    resultado: { status:"FT", scoreLocal:4, scoreVisit:1, goles:[], amarillas:{local:[],visit:[]}, rojas:[] },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -420,7 +420,7 @@ const MATCHES = [
       { label:"Empate",     odds:9.50, probCasa:0.105, probReal:0.07 },
       { label:"2 Curaçao",  odds:26.0, probCasa:0.038, probReal:0.03 }
     ],
-    resultado: { status: "PRE" },
+    resultado: { status:"FT", scoreLocal:7, scoreVisit:1, goles:[], amarillas:{local:[],visit:[]}, rojas:[] },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -488,7 +488,7 @@ const MATCHES = [
       { label:"Empate",         odds:3.60, probCasa:0.278, probReal:0.24 },
       { label:"2 Japón",        odds:4.35, probCasa:0.230, probReal:0.22 }
     ],
-    resultado: { status: "PRE" },
+    resultado: { status:"FT", scoreLocal:2, scoreVisit:2, goles:[], amarillas:{local:[],visit:[]}, rojas:[] },
     contexto: {
       jornada: 1,
       favoritoLocal: false,
@@ -510,7 +510,7 @@ const MATCHES = [
     fase: "Fase de Grupos — Grupo I",
     local: "Francia",
     visit: "Senegal",
-    time: "14 Jun 15:00 ET · East Rutherford",
+    time: "16 Jun 15:00 ET · East Rutherford",
     statsLocal: {
       forma: ["V","V","V","G","V"],
       gfProm: 2.3,
@@ -578,7 +578,7 @@ const MATCHES = [
     fase: "Fase de Grupos — Grupo J",
     local: "Argentina",
     visit: "Argelia",
-    time: "14 Jun 21:00 ET · Kansas City",
+    time: "16 Jun 21:00 ET · Kansas City",
     statsLocal: {
       forma: ["V","V","V","V","E"],
       gfProm: 2.2,
@@ -822,14 +822,7 @@ const MATCHES = [
       { label:"Empate",    odds:3.70, probCasa:0.270, probReal:0.24 },
       { label:"2 Haití",   odds:4.90, probCasa:0.204, probReal:0.18 }
     ],
-    resultado: {
-      status: "LIVE",
-      scoreLocal: 1, scoreVisit: 1,
-      minuto: "65",
-      goles: [],
-      amarillas: { local: [], visit: [] },
-      rojas: []
-    },
+    resultado: { status:"FT", scoreLocal:1, scoreVisit:0, goles:[], amarillas:{local:[],visit:[]}, rojas:[] },
     contexto: {
       jornada: 1,
       favoritoLocal: true,
@@ -845,13 +838,13 @@ const MATCHES = [
     }
   },
 
-  // ── HOY 13 JUN ────────────────────────────────────────────────────────────
+  // ── HOY 15 JUN ────────────────────────────────────────────────────────────
   {
     id: 22,
     comp: "Mundial 2026", compKey: "mundial",
     fase: "Fase de Grupos — Grupo H",
     local: "España", visit: "Cabo Verde",
-    time: "13 Jun · 15:00 ET",
+    time: "15 Jun · 15:00 ET",
     statsLocal: {
       forma: ["V","V","V","E","V"], gfProm: 2.2, gcProm: 0.6,
       racha: "Campeón de Europa 2024", posLiga: 8,
@@ -888,7 +881,7 @@ const MATCHES = [
     comp: "Mundial 2026", compKey: "mundial",
     fase: "Fase de Grupos — Grupo I",
     local: "Bélgica", visit: "Egipto",
-    time: "13 Jun · 18:00 ET",
+    time: "15 Jun · 18:00 ET",
     statsLocal: {
       forma: ["V","V","V","V","E"], gfProm: 2.0, gcProm: 0.8,
       racha: "Generación dorada en declive pero sólida", posLiga: 3,
@@ -926,7 +919,7 @@ const MATCHES = [
     comp: "Mundial 2026", compKey: "mundial",
     fase: "Fase de Grupos — Grupo J",
     local: "Arabia Saudí", visit: "Uruguay",
-    time: "13 Jun · 21:00 ET",
+    time: "15 Jun · 21:00 ET",
     statsLocal: {
       forma: ["V","E","G","V","E"], gfProm: 1.3, gcProm: 1.2,
       racha: "Campeón asiático 2023", posLiga: 55,
@@ -964,7 +957,7 @@ const MATCHES = [
     comp: "Mundial 2026", compKey: "mundial",
     fase: "Fase de Grupos — Grupo K",
     local: "Irán", visit: "Nueva Zelanda",
-    time: "13 Jun · 21:00 ET",
+    time: "15 Jun · 21:00 ET",
     statsLocal: {
       forma: ["V","E","V","E","V"], gfProm: 1.4, gcProm: 1.0,
       racha: "Potencia asiática consolidada", posLiga: 25,
@@ -1003,7 +996,7 @@ const MATCHES = [
     comp: "Mundial 2026", compKey: "mundial",
     fase: "Fase de Grupos — Grupo C",
     local: "Irak", visit: "Noruega",
-    time: "14 Jun · 18:00 ET",
+    time: "16 Jun · 18:00 ET",
     statsLocal: {
       forma: ["V","G","E","V","G"], gfProm: 1.2, gcProm: 1.3,
       racha: "Sorpresa de Asia", posLiga: 65,
@@ -1034,6 +1027,146 @@ const MATCHES = [
     ],
     resultado: { status: "PRE" },
     contexto: { jornada:1, favoritoLocal:false, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:true, altaTension:false }
+  },
+
+  // ── VIE 13 JUN (completados) ───────────────────────────────────────────────
+  {
+    id: 27,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo A",
+    local: "Qatar", visit: "Suiza",
+    time: "13 Jun · 12:00 ET",
+    statsLocal: {
+      forma: ["G","E","G","E","G"], gfProm: 0.9, gcProm: 1.4,
+      racha: "Anfitrión 2022", posLiga: 58,
+      golesUltimos5: [0,1,1,2,0], gcUltimos5: [2,1,3,1,2],
+      localRecord: { v:3, e:2, d:6 }
+    },
+    statsVisit: {
+      forma: ["V","E","V","V","E"], gfProm: 1.8, gcProm: 0.8,
+      racha: "Sólida defensivamente", posLiga: 15,
+      golesUltimos5: [2,1,3,1,2], gcUltimos5: [0,1,0,1,0],
+      visitRecord: { v:7, e:3, d:2 }
+    },
+    h2h: { local: 0, empate: 1, visit: 2, golesLocal: [0,1,0], golesVisit: [1,2,3], partidos: [
+      { fecha:"2022", res:"0-3", ganador:"visit" }
+    ]},
+    mercados: [
+      { label:"1 Qatar",   odds:5.00, probCasa:0.200, probReal:0.14 },
+      { label:"Empate",    odds:3.80, probCasa:0.263, probReal:0.24 },
+      { label:"2 Suiza",   odds:1.65, probCasa:0.606, probReal:0.62 }
+    ],
+    mercadosBetano: [
+      { label:"1 Qatar",   odds:5.20, probCasa:0.192, probReal:0.14 },
+      { label:"Empate",    odds:3.90, probCasa:0.256, probReal:0.24 },
+      { label:"2 Suiza",   odds:1.62, probCasa:0.617, probReal:0.62 }
+    ],
+    resultado: { status: "FT", golesLocal: 1, golesVisit: 1 },
+    contexto: { jornada:1, favoritoLocal:false, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:true, altaTension:false }
+  },
+
+  // ── SÁB 14 JUN (completados) ───────────────────────────────────────────────
+  {
+    id: 28,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo F",
+    local: "Australia", visit: "Turquía",
+    time: "14 Jun · 12:00 ET",
+    statsLocal: {
+      forma: ["V","V","E","V","G"], gfProm: 1.6, gcProm: 1.1,
+      racha: "Socceroos en alza", posLiga: 24,
+      golesUltimos5: [2,1,2,3,1], gcUltimos5: [1,0,1,2,1],
+      localRecord: { v:5, e:3, d:3 }
+    },
+    statsVisit: {
+      forma: ["V","E","G","V","V"], gfProm: 1.8, gcProm: 1.2,
+      racha: "Clasificado directo", posLiga: 40,
+      golesUltimos5: [2,1,0,2,3], gcUltimos5: [1,2,1,0,1],
+      visitRecord: { v:4, e:3, d:4 }
+    },
+    h2h: { local: 2, empate: 1, visit: 1, golesLocal: [1,2,0,2], golesVisit: [0,1,2,1], partidos: [
+      { fecha:"2010", res:"1-1", ganador:"empate" }
+    ]},
+    mercados: [
+      { label:"1 Australia", odds:2.40, probCasa:0.417, probReal:0.42 },
+      { label:"Empate",      odds:3.20, probCasa:0.313, probReal:0.28 },
+      { label:"2 Turquía",   odds:2.80, probCasa:0.357, probReal:0.30 }
+    ],
+    mercadosBetano: [
+      { label:"1 Australia", odds:2.45, probCasa:0.408, probReal:0.42 },
+      { label:"Empate",      odds:3.25, probCasa:0.308, probReal:0.28 },
+      { label:"2 Turquía",   odds:2.75, probCasa:0.364, probReal:0.30 }
+    ],
+    resultado: { status: "FT", golesLocal: 2, golesVisit: 0 },
+    contexto: { jornada:1, favoritoLocal:true, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:true, altaTension:false }
+  },
+  {
+    id: 29,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo G",
+    local: "Costa de Marfil", visit: "Ecuador",
+    time: "14 Jun · 15:00 ET",
+    statsLocal: {
+      forma: ["V","V","E","G","V"], gfProm: 1.7, gcProm: 1.1,
+      racha: "Los Elefantes de vuelta al Mundial", posLiga: 52,
+      golesUltimos5: [2,1,2,0,3], gcUltimos5: [1,0,2,2,1],
+      localRecord: { v:5, e:2, d:4 }
+    },
+    statsVisit: {
+      forma: ["E","V","G","V","E"], gfProm: 1.4, gcProm: 1.3,
+      racha: "Regular en clasificatorias", posLiga: 44,
+      golesUltimos5: [1,2,0,1,2], gcUltimos5: [1,1,2,0,1],
+      visitRecord: { v:3, e:4, d:4 }
+    },
+    h2h: { local: 1, empate: 1, visit: 0, golesLocal: [2,1], golesVisit: [1,1], partidos: [
+      { fecha:"2018", res:"2-1", ganador:"local" }
+    ]},
+    mercados: [
+      { label:"1 Costa de Marfil", odds:2.50, probCasa:0.400, probReal:0.38 },
+      { label:"Empate",            odds:3.00, probCasa:0.333, probReal:0.30 },
+      { label:"2 Ecuador",         odds:2.70, probCasa:0.370, probReal:0.32 }
+    ],
+    mercadosBetano: [
+      { label:"1 Costa de Marfil", odds:2.55, probCasa:0.392, probReal:0.38 },
+      { label:"Empate",            odds:3.05, probCasa:0.328, probReal:0.30 },
+      { label:"2 Ecuador",         odds:2.65, probCasa:0.377, probReal:0.32 }
+    ],
+    resultado: { status: "FT", golesLocal: 1, golesVisit: 0 },
+    contexto: { jornada:1, favoritoLocal:true, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:true, altaTension:false }
+  },
+  {
+    id: 30,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo H",
+    local: "Suecia", visit: "Túnez",
+    time: "14 Jun · 18:00 ET",
+    statsLocal: {
+      forma: ["V","V","V","E","V"], gfProm: 2.4, gcProm: 0.8,
+      racha: "Ofensiva letal", posLiga: 18,
+      golesUltimos5: [3,2,4,1,3], gcUltimos5: [0,1,0,1,0],
+      localRecord: { v:8, e:2, d:1 }
+    },
+    statsVisit: {
+      forma: ["G","E","G","V","G"], gfProm: 1.1, gcProm: 1.5,
+      racha: "Debilitados en defensa", posLiga: 30,
+      golesUltimos5: [1,1,0,2,1], gcUltimos5: [2,1,3,1,2],
+      visitRecord: { v:2, e:3, d:6 }
+    },
+    h2h: { local: 2, empate: 1, visit: 0, golesLocal: [2,3,1], golesVisit: [0,1,0], partidos: [
+      { fecha:"2002", res:"2-0", ganador:"local" }
+    ]},
+    mercados: [
+      { label:"1 Suecia",  odds:1.45, probCasa:0.690, probReal:0.72 },
+      { label:"Empate",    odds:4.00, probCasa:0.250, probReal:0.18 },
+      { label:"2 Túnez",   odds:6.50, probCasa:0.154, probReal:0.10 }
+    ],
+    mercadosBetano: [
+      { label:"1 Suecia",  odds:1.42, probCasa:0.704, probReal:0.72 },
+      { label:"Empate",    odds:4.10, probCasa:0.244, probReal:0.18 },
+      { label:"2 Túnez",   odds:6.80, probCasa:0.147, probReal:0.10 }
+    ],
+    resultado: { status: "FT", golesLocal: 5, golesVisit: 1 },
+    contexto: { jornada:1, favoritoLocal:true, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:true, altaTension:false }
   }
 ];
 
