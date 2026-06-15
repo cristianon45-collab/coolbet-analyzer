@@ -510,6 +510,21 @@ function enrichMercadosBetano(m) {
   ];
 }
 
+// ── Ajuste de stats con rendimiento real del torneo ─────────────────────────
+function blendStats(historical, torneoData) {
+  if (!torneoData || torneoData.pj === 0) return historical;
+  const pj = torneoData.pj;
+  const tGF = torneoData.gf / pj;
+  const tGC = torneoData.gc / pj;
+  // A más partidos jugados, más peso al torneo (máx 60% con 3+ partidos)
+  const w = Math.min(0.6, pj * 0.2);
+  return {
+    ...historical,
+    gfProm: parseFloat((historical.gfProm * (1 - w) + tGF * w).toFixed(2)),
+    gcProm: parseFloat((historical.gcProm * (1 - w) + tGC * w).toFixed(2)),
+  };
+}
+
 // ── Forma real del torneo ────────────────────────────────────────────────────
 function normT(name) {
   return (name || '').toLowerCase()
@@ -543,21 +558,66 @@ function getTournamentData(teamName) {
   return { forma, gf, gc, pj: played.length };
 }
 
+function calcXG(m) {
+  // xG estimado usando lambda del modelo Poisson (misma base que probabilidades)
+  const lambdaL = m.statsLocal.gfProm * 0.88;
+  const lambdaV = m.statsVisit.gfProm * 0.88;
+  return {
+    xgLocal:  parseFloat(lambdaL.toFixed(2)),
+    xgVisit:  parseFloat(lambdaV.toFixed(2)),
+  };
+}
+
+function calcPosesion(m) {
+  // Estimación de posesión basada en ranking FIFA y GF promedio
+  const rankL = m.statsLocal.posLiga || 50;
+  const rankV = m.statsVisit.posLiga || 50;
+  const gfL   = m.statsLocal.gfProm || 1.2;
+  const gfV   = m.statsVisit.gfProm || 1.2;
+  // Mejor ranking + más goles → más posesión
+  const scoreL = (100 - rankL) * 0.6 + gfL * 15;
+  const scoreV = (100 - rankV) * 0.6 + gfV * 15;
+  const total  = scoreL + scoreV || 100;
+  const posL   = Math.round(Math.min(70, Math.max(30, (scoreL / total) * 100)));
+  return { posLocal: posL, posVisit: 100 - posL };
+}
+
+function calcTirosEstimados(m) {
+  // Tiros al arco estimados: correlación con gfProm del torneo
+  const tirosL = Math.round(m.statsLocal.gfProm * 3.8 + 2);
+  const tirosV = Math.round(m.statsVisit.gfProm * 3.8 + 2);
+  return { tirosLocal: tirosL, tirosVisit: tirosV };
+}
+
 function processMatch(m) {
   const { signals, alerts, venue } = detectSignals(m);
 
-  // Inyectar forma real del torneo
+  // Forma real del torneo
   const torneoLocal = getTournamentData(m.local);
   const torneoVisit = getTournamentData(m.visit);
 
-  const mercadosRaw  = calcVE(enrichMercados(m), signals);
-  const coherence    = coherenceCheck(mercadosRaw, signals, m);
-  const bloque0      = buildBloque0(m, signals, venue);
-  const mercadosBetanoRaw = m.mercadosBetano
-    ? calcVE(enrichMercadosBetano(m), signals)
+  // Ajustar stats con rendimiento real del torneo
+  const mAjustado = {
+    ...m,
+    statsLocal: blendStats(m.statsLocal, torneoLocal),
+    statsVisit: blendStats(m.statsVisit, torneoVisit),
+  };
+
+  const mercadosRaw  = calcVE(enrichMercados(mAjustado), signals);
+  const coherence    = coherenceCheck(mercadosRaw, signals, mAjustado);
+  const bloque0      = buildBloque0(mAjustado, signals, venue);
+  const mercadosBetanoRaw = mAjustado.mercadosBetano
+    ? calcVE(enrichMercadosBetano(mAjustado), signals)
     : null;
+
+  const xg       = calcXG(mAjustado);
+  const posesion = calcPosesion(mAjustado);
+  const tiros    = calcTirosEstimados(mAjustado);
+
   return {
     ...m,
+    statsLocal: mAjustado.statsLocal,
+    statsVisit: mAjustado.statsVisit,
     signals,
     alertas: alerts,
     mercados: mercadosRaw,
@@ -566,6 +626,9 @@ function processMatch(m) {
     bloque0,
     torneoLocal,
     torneoVisit,
+    xg,
+    posesion,
+    tiros,
   };
 }
 

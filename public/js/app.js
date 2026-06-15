@@ -187,6 +187,49 @@ function renderComparativa(m) {
   </div>`;
 }
 
+function renderMetricasAvanzadas(m) {
+  if (!m.xg && !m.posesion) return '';
+  const xg  = m.xg  || {};
+  const pos = m.posesion || {};
+  const tir = m.tiros || {};
+
+  const posBarL = pos.posLocal || 50;
+  const posBarR = pos.posVisit || 50;
+
+  return `<div class="mc-metricas">
+    <div class="metricas-title">⚡ Métricas del modelo</div>
+    <div class="metricas-grid">
+      <div class="metrica-item">
+        <div class="metrica-label">xG esperado</div>
+        <div class="metrica-vals">
+          <span class="metrica-val ${xg.xgLocal > xg.xgVisit ? 'mv-win':''}">${xg.xgLocal ?? '—'}</span>
+          <span class="metrica-sep">·</span>
+          <span class="metrica-val ${xg.xgVisit > xg.xgLocal ? 'mv-win':''}">${xg.xgVisit ?? '—'}</span>
+        </div>
+      </div>
+      <div class="metrica-item">
+        <div class="metrica-label">Tiros arco (est.)</div>
+        <div class="metrica-vals">
+          <span class="metrica-val ${tir.tirosLocal > tir.tirosVisit ? 'mv-win':''}">${tir.tirosLocal ?? '—'}</span>
+          <span class="metrica-sep">·</span>
+          <span class="metrica-val ${tir.tirosVisit > tir.tirosLocal ? 'mv-win':''}">${tir.tirosVisit ?? '—'}</span>
+        </div>
+      </div>
+    </div>
+    <div class="metrica-pos">
+      <div class="metrica-label">Posesión estimada</div>
+      <div class="pos-bar-wrap">
+        <span class="pos-pct">${posBarL}%</span>
+        <div class="pos-bar">
+          <div class="pos-fill-l" style="width:${posBarL}%"></div>
+          <div class="pos-fill-r" style="width:${posBarR}%"></div>
+        </div>
+        <span class="pos-pct">${posBarR}%</span>
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderMatchCard(m, cat) {
   const forma = (stats) => stats.forma.map(f => `<span class="forma-dot ${f}" title="${f}">${formaChar(f)}</span>`).join('');
 
@@ -216,13 +259,17 @@ function renderMatchCard(m, cat) {
     const isSel = !!selected[key];
     const vc   = veClass(mk.ve);
     const pct  = Math.round(mk.probReal * 100);
-    const confClass = mk.confianza === 'Alta' ? 'conf-alta' : mk.confianza === 'Media' ? 'conf-media' : mk.confianza === 'Baja' ? 'conf-baja' : 'conf-sv';
+    const confScore = mk.confianza === 'Alta' ? 85 : mk.confianza === 'Media' ? 55 : mk.confianza === 'Baja' ? 25 : 10;
+    const confColor = confScore >= 70 ? '#22c55e' : confScore >= 45 ? '#f59e0b' : '#ef4444';
     return `
     <div class="mkt-btn${isSel ? ' selected' : ''}"
          onclick="toggleSel(${m.id},${i})"
          title="Prob. casa: ${Math.round(mk.probImplicita*100)}%  |  Prob. real: ${pct}%  |  VE: ${veLabel(mk.ve)}">
       <span class="ve-badge ${vc}" onclick="showTip('ve',event)">${veLabel(mk.ve)} ⓘ</span>
-      <span class="conf-badge ${confClass}" onclick="showTip('confianza',event)">${mk.confianza ?? '—'}</span>
+      <div class="conf-visual" onclick="showTip('confianza',event)" title="Confianza: ${mk.confianza}">
+        <div class="conf-bar-wrap"><div class="conf-bar-fill" style="width:${confScore}%;background:${confColor}"></div></div>
+        <span class="conf-score" style="color:${confColor}">${confScore}</span>
+      </div>
       <div class="mkt-name">${mk.label}</div>
       <div class="mkt-odds">${fmt.odds(mk.odds)}</div>
       <div class="mkt-prob-row">
@@ -313,6 +360,7 @@ function renderMatchCard(m, cat) {
       </div>
     </div>
     ${renderComparativa(m)}
+    ${renderMetricasAvanzadas(m)}
     <div class="cat-tabs">${catTabs}</div>
     ${currentBookie === 'betano' && !hasBetano ? `<div class="no-bookie-notice">⚠️ Mercados Betano no disponibles para este partido</div>` : ''}
     ${currentCat === 'Jugada ⚡' ? renderJugada(m, mercados) : `<div class="mc-markets">${mkts}</div>`}
