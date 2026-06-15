@@ -383,9 +383,9 @@ function renderJugada(m, mercados) {
     const pct    = Math.round(mk.probReal * 100);
     const isSel  = !!selected[`${m.id}-${mk.idx}`];
     const vc     = veClass(mk.ve);
-    // Alternativas: las 2 siguientes del mismo bloque de mercado (por categoría)
+    // Alternativas: las 2 siguientes de la misma categoría con prob >= 50%
     const alts = sorted
-      .filter(a => a.idx !== mk.idx && a.categoria === mk.categoria)
+      .filter(a => a.idx !== mk.idx && a.categoria === mk.categoria && a.probReal >= 0.50)
       .slice(0, 2);
     const altsHtml = alts.length
       ? `<div class="jug-alts">${alts.map(a => {
