@@ -49,11 +49,11 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-dark:    #0f1923;
-  --bg-panel:   #1a2332;
-  --bg-card:    #1f2d3d;
-  --bg-hover:   #243344;
-  --bg-input:   #152030;
+  --bg-dark:    #060d14;
+  --bg-panel:   #0d1b2a;
+  --bg-card:    #111f2e;
+  --bg-hover:   #1a2d40;
+  --bg-input:   #0a1520;
   --gold:       #f4c430;
   --gold-dim:   #c49a24;
   --green:      #1db954;
@@ -69,24 +69,102 @@
   --radius:     10px;
   --radius-sm:  6px;
   --shadow:     0 4px 24px rgba(0,0,0,0.4);
+  --accent:     #e8001c;
 }
 
 html { font-size: 15px; }
+
+/* ── FONDO MUNDIAL ──────────────────────────────────────────────────── */
 body {
-  background: var(--bg-dark);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
   line-height: 1.5;
+  background-color: #060d14;
+  background-image:
+    /* Destellos de estadio arriba */
+    radial-gradient(ellipse 60% 25% at 50% 0%, rgba(244,196,48,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 20% at 15% 0%, rgba(232,0,28,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 20% at 85% 0%, rgba(55,138,221,0.06) 0%, transparent 60%),
+    /* Balón de fondo izquierda */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3Cpolygon points='50,10 61,35 88,35 67,54 75,80 50,63 25,80 33,54 12,35 39,35' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/svg%3E"),
+    /* Balón de fondo derecha */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='none' stroke='rgba(244,196,48,0.04)' stroke-width='1'/%3E%3Cpolygon points='50,10 61,35 88,35 67,54 75,80 50,63 25,80 33,54 12,35 39,35' fill='none' stroke='rgba(244,196,48,0.04)' stroke-width='1'/%3E%3C/svg%3E"),
+    /* Degradado base oscuro */
+    linear-gradient(180deg, #060d14 0%, #060d14 100%);
+  background-size: auto, auto, auto, 260px 260px, 180px 180px, auto;
+  background-position: center top, left top, right top, -80px 120px, calc(100% + 60px) 300px, center;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed;
+}
+
+/* Trofeo decorativo fijo en fondo */
+body::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 280'%3E%3Cg opacity='0.025' fill='%23f4c430'%3E%3C!-- Copa --%3E%3Cellipse cx='100' cy='30' rx='55' ry='12'/%3E%3Cpath d='M45 18 Q20 25 18 55 Q16 85 45 105 Q65 118 100 120 Q135 118 155 105 Q184 85 182 55 Q180 25 155 18 Z'/%3E%3Crect x='88' y='118' width='24' height='70'/%3E%3Cellipse cx='100' cy='188' rx='35' ry='8'/%3E%3Crect x='65' y='196' width='70' height='14' rx='4'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    /* Líneas de cancha sutiles */
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(29,185,84,0.04) 0%, transparent 70%),
+    /* Viñeta oscura bordes */
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 50%, rgba(0,0,0,0.5) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ── HEADER ─────────────────────────────────────────────────────────── */
 .cb-header {
-  background: var(--bg-panel);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0a1520 0%, #0d1b2a 50%, #0a1520 100%);
+  border-bottom: 1px solid rgba(244,196,48,0.2);
   position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.7), 0 1px 0 rgba(244,196,48,0.15);
+  overflow: hidden;
 }
+/* Línea dorada superior */
+.cb-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #f4c430 30%, #e8001c 50%, #f4c430 70%, transparent);
+}
+/* Brillo de estadio en header */
+.cb-header::after {
+  content: '';
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 80px;
+  background: radial-gradient(ellipse, rgba(244,196,48,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+/* ── MUNDIAL BANNER ─────────────────────────────────────────────────── */
+.mundial-banner {
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, rgba(244,196,48,0.08) 0%, rgba(232,0,28,0.06) 100%);
+  border: 1px solid rgba(244,196,48,0.18);
+  border-radius: 10px; padding: 6px 14px 6px 8px;
+  flex-shrink: 0;
+}
+.mundial-trophy { width: 28px; height: auto; filter: drop-shadow(0 0 6px rgba(244,196,48,0.5)); }
+.mundial-text { display: flex; flex-direction: column; line-height: 1.1; }
+.mundial-title { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; color: #f4c430; text-transform: uppercase; }
+.mundial-year  { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: 1px; line-height: 1; }
+.mundial-host  { font-size: 8px; color: var(--text-muted); letter-spacing: .5px; text-transform: uppercase; }
+
 .cb-header-inner {
   max-width: 1300px; margin: 0 auto;
   display: flex; align-items: center; gap: 24px;
@@ -336,14 +414,19 @@ body {
 
 /* ── MATCH CARD ─────────────────────────────────────────────────────── */
 .match-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: linear-gradient(160deg, #141f2e 0%, #111c2a 100%);
+  border: 1px solid rgba(255,255,255,0.07);
   border-radius: var(--radius);
   margin-bottom: 12px;
   overflow: hidden;
-  transition: border-color .15s;
+  transition: border-color .2s, box-shadow .2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  position: relative; z-index: 1;
 }
-.match-card:hover { border-color: rgba(255,255,255,0.14); }
+.match-card:hover {
+  border-color: rgba(244,196,48,0.2);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(244,196,48,0.08);
+}
 .mc-played { border-left: 3px solid var(--text-muted); opacity: 0.92; }
 .mc-live   { border-left: 3px solid #e34; }
 
