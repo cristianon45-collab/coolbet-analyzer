@@ -96,7 +96,10 @@ const fmt = {
   clp:     v => '$ ' + Math.round(v).toLocaleString('es-CL'),
 };
 
-function veClass(ve) {
+function veClass(ve, probReal) {
+  // No mostrar como positivo si la prob real es muy baja (< 20%)
+  // aunque el VE sea levemente positivo — es ruido estadístico
+  if (probReal !== undefined && probReal < 0.20) return 'neg';
   if (ve >  0.03) return 'pos';
   if (ve < -0.03) return 'neg';
   return 'neu';
@@ -257,7 +260,7 @@ function renderMatchCard(m, cat) {
     const i    = mercados.indexOf(mk);
     const key  = `${m.id}-${i}`;
     const isSel = !!selected[key];
-    const vc   = veClass(mk.ve);
+    const vc   = veClass(mk.ve, mk.probReal);
     const pct  = Math.round(mk.probReal * 100);
     const confScore = mk.confianza === 'Alta' ? 85 : mk.confianza === 'Media' ? 55 : mk.confianza === 'Baja' ? 25 : 10;
     const confColor = confScore >= 70 ? '#22c55e' : confScore >= 45 ? '#f59e0b' : '#ef4444';
@@ -382,7 +385,7 @@ function renderJugada(m, mercados) {
   const acagarrHtml = top5.map((mk, rank) => {
     const pct    = Math.round(mk.probReal * 100);
     const isSel  = !!selected[`${m.id}-${mk.idx}`];
-    const vc     = veClass(mk.ve);
+    const vc     = veClass(mk.ve, mk.probReal);
     // Alternativas: las 2 siguientes de la misma categoría con prob >= 50%
     const alts = sorted
       .filter(a => a.idx !== mk.idx && a.categoria === mk.categoria && a.probReal >= 0.50)
@@ -929,7 +932,7 @@ function renderMatchModal(m) {
       <div class="modal-section-title">Análisis de mercados</div>
       <div class="mkt-analysis-grid">
         ${m.mercados.map((mk, i) => {
-          const vc = veClass(mk.ve);
+          const vc = veClass(mk.ve, mk.probReal);
           const probImp = Math.round(mk.probImplicita * 100);
           const probReal = Math.round(mk.probReal * 100);
           const key = `${m.id}-${i}`;
