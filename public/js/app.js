@@ -111,6 +111,7 @@ async function loadMatches(comp = 'all') {
     const r = await fetch(`/api/matches?comp=${comp}`);
     allMatches = await r.json();
     renderMatches();
+    renderSched();
   } catch(e) {
     document.getElementById('matches-list').innerHTML = '<div class="loading">Error al cargar partidos.</div>';
   }
@@ -1115,6 +1116,21 @@ const CH_LABELS = {
   tnts:{ cls:'ch-tnts',label:'TNT' },
 };
 
+function schedGoToMatch(localName) {
+  // Buscar la card en el listado principal por nombre de equipo local
+  const cards = document.querySelectorAll('.match-card');
+  let found = null;
+  for (const card of cards) {
+    const title = card.querySelector('.mc-teams')?.textContent || '';
+    if (title.toLowerCase().includes(localName.toLowerCase())) { found = card; break; }
+  }
+  if (found) {
+    found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    found.classList.add('sched-highlight');
+    setTimeout(() => found.classList.remove('sched-highlight'), 1800);
+  }
+}
+
 function renderSched() {
   const body = document.getElementById('sched-body');
   if (!body) return;
@@ -1122,19 +1138,39 @@ function renderSched() {
     const dayClass = day.today ? 'today' : day.tomorrow ? 'tomorrow' : '';
     const matches = day.matches.map(m => {
       const isLive = m.live;
-      const isFT   = m.ft;
-      const scoreHtml = (isLive && m.res) ? `<span class="sched-score">${m.res}</span>` :
-                        isFT ? `<span class="sched-score">${m.res}</span>` : '';
-      const timeHtml  = isLive
+      const isFT   = m.ft || (m.res && m.res !== '');
+      const resStr = (m.res && m.res !== '') ? m.res : null;
+      // Buscar resultado real en allMatches si está disponible
+      const liveMatch = typeof allMatches !== 'undefined'
+        ? allMatches.find(am => {
+            const al = (am.local||'').toLowerCase(), av = (am.visit||'').toLowerCase();
+            return al.includes(m.local.toLowerCase().slice(0,4)) &&
+                   av.includes(m.visit.toLowerCase().slice(0,4));
+          })
+        : null;
+      const liveRes = liveMatch?.resultado;
+      const showRes = liveRes?.status === 'FT'
+        ? `${liveRes.golesLocal ?? liveRes.scoreLocal ?? 0}-${liveRes.golesVisit ?? liveRes.scoreVisit ?? 0}`
+        : liveRes?.status === 'LIVE'
+        ? `${liveRes.scoreLocal ?? 0}-${liveRes.scoreVisit ?? 0}`
+        : resStr;
+      const scoreHtml = showRes
+        ? `<span class="sched-score">${showRes}</span>`
+        : '';
+      const ftFinal = liveRes?.status === 'FT' || (isFT && resStr);
+      const liveFinal = isLive || liveRes?.status === 'LIVE';
+      const timeHtml = liveFinal
         ? `<span class="sched-live-dot">●</span><span class="sched-time" style="color:#e8001c">EN VIVO</span>`
         : `<span class="sched-time">${m.h} CLT</span>`;
       const chHtml = m.ch.map(c => {
         const ch = CH_LABELS[c]; if (!ch) return '';
         return `<span class="sched-ch ${ch.cls}">${ch.label}</span>`;
       }).join('');
+      const clickable = liveMatch ? `onclick="schedGoToMatch('${m.local.replace(/'/g,"\\'")}')"` : '';
+      const clickCls  = liveMatch ? ' sm-clickable' : '';
       return `
-      <div class="sched-match${isLive?' sm-live':isFT?' sm-ft':''}">
-        <div class="sched-teams">${m.local} ${scoreHtml}${isFT||isLive?'':' vs'} ${m.visit}</div>
+      <div class="sched-match${liveFinal?' sm-live':ftFinal?' sm-ft':''}${clickCls}" ${clickable}>
+        <div class="sched-teams">${m.local} ${scoreHtml}${ftFinal||liveFinal?'':' vs'} ${m.visit}</div>
         <div class="sched-meta">${timeHtml}</div>
         <div class="sched-channels">${chHtml}</div>
       </div>`;
