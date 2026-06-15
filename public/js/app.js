@@ -1061,6 +1061,109 @@ async function pollLive() {
 pollLive();
 setInterval(pollLive, 45000);
 
+// ── SIDEBAR: Agenda semanal Mundial 2026 ────────────────────────────────────
+const WEEK_SCHEDULE = [
+  // ── Jue 12 Jun ─────────────────────────────────────────────────
+  { day:'Jue 12', today:false, tomorrow:false, matches:[
+    { h:'15:00', local:'México',        visit:'Sudáfrica',    res:'2-0', ft:true,  ch:['chv','dsp'] },
+    { h:'15:00', local:'Canadá',        visit:'Bosnia y H.',  res:'2-1', ft:true,  ch:['dsp'] },
+    { h:'21:00', local:'USA',           visit:'Paraguay',     res:'1-0', ft:true,  ch:['dsp','ppl'] },
+    { h:'22:00', local:'Corea del Sur', visit:'Chequia',      res:'2-1', ft:true,  ch:['dsp'] },
+  ]},
+  // ── Vie 13 Jun (HOY) ───────────────────────────────────────────
+  { day:'Vie 13', today:true, tomorrow:false, matches:[
+    { h:'13:00', local:'Brasil',        visit:'Marruecos',    res:'1-1', ft:true,  ch:['chv','dsp'] },
+    { h:'13:00', local:'Escocia',       visit:'Haití',        res:'',    live:true,ch:['dsp'] },
+    { h:'15:00', local:'España',        visit:'Cabo Verde',   res:'',    ch:['chv','dsp'] },
+    { h:'18:00', local:'Bélgica',       visit:'Egipto',       res:'',    ch:['dsp','dp'] },
+    { h:'21:00', local:'Arabia Saudí',  visit:'Uruguay',      res:'',    ch:['dsp'] },
+    { h:'21:00', local:'Irán',          visit:'Nueva Zelanda',res:'',    ch:['dsp','ppl'] },
+  ]},
+  // ── Sáb 14 Jun (MAÑANA) ────────────────────────────────────────
+  { day:'Sáb 14', today:false, tomorrow:true, matches:[
+    { h:'13:00', local:'Alemania',      visit:'Curaçao',      res:'',    ch:['chv','dsp'] },
+    { h:'15:00', local:'Francia',       visit:'Senegal',      res:'',    ch:['chv','dsp'] },
+    { h:'16:00', local:'P. Bajos',      visit:'Japón',        res:'',    ch:['dsp','dp'] },
+    { h:'18:00', local:'Irak',          visit:'Noruega',      res:'',    ch:['dsp'] },
+    { h:'21:00', local:'Argentina',     visit:'Argelia',      res:'',    ch:['chv','dsp'] },
+  ]},
+  // ── Dom 15 Jun ─────────────────────────────────────────────────
+  { day:'Dom 15', today:false, tomorrow:false, matches:[
+    { h:'13:00', local:'Ghana',         visit:'Senegal',      res:'',    ch:['dsp'] },
+    { h:'13:00', local:'Suiza',         visit:'Camerún',      res:'',    ch:['dsp','ppl'] },
+    { h:'16:00', local:'Colombia',      visit:'Grecia',       res:'',    ch:['chv','dsp'] },
+    { h:'18:00', local:'Australia',     visit:'Angola',       res:'',    ch:['dsp'] },
+    { h:'21:00', local:'Turquía',       visit:'Venezuela',    res:'',    ch:['dsp','dp'] },
+    { h:'21:00', local:'Serbia',        visit:'Costa Rica',   res:'',    ch:['dsp'] },
+  ]},
+  // ── Lun 16 Jun ─────────────────────────────────────────────────
+  { day:'Lun 16', today:false, tomorrow:false, matches:[
+    { h:'13:00', local:'Croacia',       visit:'Albania',      res:'',    ch:['dsp'] },
+    { h:'15:00', local:'Chile',         visit:'Ecuador',      res:'',    ch:['chv','c13','dsp'] },
+    { h:'18:00', local:'Polonia',       visit:'Guatemala',    res:'',    ch:['dsp','ppl'] },
+    { h:'21:00', local:'México',        visit:'Canadá',       res:'',    ch:['chv','dsp'] },
+  ]},
+  // ── Mar 17 Jun ─────────────────────────────────────────────────
+  { day:'Mar 17', today:false, tomorrow:false, matches:[
+    { h:'13:00', local:'Portugal',      visit:'Rep. D. Congo',res:'',    ch:['dsp','dp'] },
+    { h:'16:00', local:'Inglaterra',    visit:'Croacia',      res:'',    ch:['c13','dsp'] },
+    { h:'19:00', local:'Dinamarca',     visit:'Túnez',        res:'',    ch:['dsp'] },
+    { h:'22:00', local:'Japón',         visit:'Jamaica',      res:'',    ch:['dsp','ppl'] },
+  ]},
+];
+
+const CH_LABELS = {
+  chv: { cls:'ch-chv', label:'CHV' },
+  c13: { cls:'ch-c13', label:'C13' },
+  dsp: { cls:'ch-dsp', label:'DSports' },
+  ppl: { cls:'ch-ppl', label:'Paramount+' },
+  dp:  { cls:'ch-dp',  label:'Disney+' },
+  tnts:{ cls:'ch-tnts',label:'TNT' },
+};
+
+function renderSched() {
+  const body = document.getElementById('sched-body');
+  if (!body) return;
+  body.innerHTML = WEEK_SCHEDULE.map(day => {
+    const dayClass = day.today ? 'today' : day.tomorrow ? 'tomorrow' : '';
+    const matches = day.matches.map(m => {
+      const isLive = m.live;
+      const isFT   = m.ft;
+      const scoreHtml = (isLive && m.res) ? `<span class="sched-score">${m.res}</span>` :
+                        isFT ? `<span class="sched-score">${m.res}</span>` : '';
+      const timeHtml  = isLive
+        ? `<span class="sched-live-dot">●</span><span class="sched-time" style="color:#e8001c">EN VIVO</span>`
+        : `<span class="sched-time">${m.h} CLT</span>`;
+      const chHtml = m.ch.map(c => {
+        const ch = CH_LABELS[c]; if (!ch) return '';
+        return `<span class="sched-ch ${ch.cls}">${ch.label}</span>`;
+      }).join('');
+      return `
+      <div class="sched-match${isLive?' sm-live':isFT?' sm-ft':''}">
+        <div class="sched-teams">${m.local} ${scoreHtml}${isFT||isLive?'':' vs'} ${m.visit}</div>
+        <div class="sched-meta">${timeHtml}</div>
+        <div class="sched-channels">${chHtml}</div>
+      </div>`;
+    }).join('');
+    return `
+    <div class="sched-day">
+      <div class="sched-day-label ${dayClass}">${day.day}${day.today?' — HOY':day.tomorrow?' — MAÑANA':''}</div>
+      ${matches}
+    </div>`;
+  }).join('');
+}
+
+let schedOpen = true;
+function toggleSched() {
+  schedOpen = !schedOpen;
+  const layout = document.querySelector('.cb-layout');
+  const btn    = document.getElementById('sched-toggle');
+  layout.classList.toggle('sched-collapsed', !schedOpen);
+  btn.textContent = schedOpen ? '‹' : '›';
+}
+
+renderSched();
+
 // ── Nav filtros ──────────────────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {

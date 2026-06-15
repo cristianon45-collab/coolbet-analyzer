@@ -223,12 +223,107 @@ body {
 
 /* ── LAYOUT ─────────────────────────────────────────────────────────── */
 .cb-layout {
-  max-width: 1300px; margin: 0 auto;
+  max-width: 1560px; margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 20px; padding: 20px;
+  grid-template-columns: 240px 1fr 360px;
+  gap: 16px; padding: 20px;
   align-items: start;
 }
+.cb-layout.sched-collapsed {
+  grid-template-columns: 36px 1fr 360px;
+}
+
+/* ── SIDEBAR SEMANA ──────────────────────────────────────────────────── */
+.sched-sidebar {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  position: sticky; top: 12px;
+  max-height: calc(100vh - 80px);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: width .2s;
+}
+.sched-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px; font-weight: 700;
+  color: var(--gold); letter-spacing: .5px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.sched-toggle {
+  background: transparent; border: none; color: var(--text-muted);
+  font-size: 16px; cursor: pointer; padding: 0 2px; line-height: 1;
+  transition: transform .2s;
+}
+.sched-collapsed .sched-toggle { transform: rotate(180deg); }
+.sched-collapsed .sched-body,
+.sched-collapsed .sched-header span { display: none; }
+.sched-collapsed .sched-header {
+  justify-content: center; padding: 10px 6px;
+}
+.sched-body {
+  overflow-y: auto; flex: 1;
+  padding: 8px 6px;
+  scrollbar-width: thin;
+}
+.sched-day {
+  margin-bottom: 10px;
+}
+.sched-day-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 1px;
+  color: var(--gold); text-transform: uppercase;
+  padding: 4px 6px; margin-bottom: 4px;
+  border-left: 2px solid var(--gold);
+}
+.sched-day-label.today { color: #e8001c; border-color: #e8001c; }
+.sched-day-label.tomorrow { color: var(--gold); }
+.sched-match {
+  display: flex; flex-direction: column;
+  padding: 6px 8px; border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  margin-bottom: 4px; cursor: default;
+  transition: border-color .15s;
+}
+.sched-match:hover { border-color: rgba(255,255,255,0.2); }
+.sched-match.sm-live { border-color: rgba(232,0,28,0.5); background: rgba(232,0,28,0.06); }
+.sched-match.sm-ft   { opacity: 0.6; }
+.sched-teams {
+  font-size: 11px; font-weight: 600; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sched-score {
+  font-size: 12px; font-weight: 800; color: var(--gold);
+  display: inline; margin: 0 4px;
+}
+.sched-meta {
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 3px; flex-wrap: wrap;
+}
+.sched-time {
+  font-size: 10px; color: var(--text-muted); flex-shrink: 0;
+}
+.sched-live-dot {
+  font-size: 8px; color: #e8001c;
+  animation: livePulse 1s infinite;
+}
+.sched-channels {
+  display: flex; gap: 3px; flex-wrap: wrap; margin-top: 2px;
+}
+.sched-ch {
+  font-size: 9px; font-weight: 700;
+  padding: 1px 5px; border-radius: 4px;
+  white-space: nowrap;
+}
+.ch-chv  { background: #d4002a; color: #fff; }
+.ch-c13  { background: #e8a000; color: #000; }
+.ch-dsp  { background: #00a3e0; color: #fff; }
+.ch-ppl  { background: #0050c8; color: #fff; }
+.ch-dp   { background: #004f99; color: #fff; }
+.ch-tnts { background: #b20000; color: #fff; }
 
 /* ── SECTION LABEL ─────────────────────────────────────────────────── */
 .section-label {
@@ -914,6 +1009,7 @@ body {
 /* ── TABLET ──────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .cb-layout { grid-template-columns: 1fr; }
+  .sched-sidebar { display: none; }
   .cb-slip    { position: static; max-height: none; }
   .mc-markets { grid-template-columns: repeat(3, 1fr); }
 }
@@ -1273,7 +1369,7 @@ body[data-skin="vidal"] .cb-footer { background: #000; border-top: 2px solid #ff
 
   /* Layout: 2 columnas — partidos | ticket */
   .cb-layout {
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 200px 1fr 300px;
     padding: 5px; gap: 5px;
     height: calc(100dvh - 46px);
     align-items: stretch;

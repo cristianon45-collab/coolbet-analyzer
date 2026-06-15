@@ -186,6 +186,15 @@
 <!-- ── MAIN LAYOUT ────────────────────────────────────────────────────── -->
 <main class="cb-layout">
 
+  <!-- ── BARRA LATERAL SEMANA ──────────────────────────────────────────── -->
+  <aside class="sched-sidebar" id="sched-sidebar">
+    <div class="sched-header">
+      <span>📅 Semana Mundial</span>
+      <button class="sched-toggle" id="sched-toggle" onclick="toggleSched()" title="Colapsar">‹</button>
+    </div>
+    <div class="sched-body" id="sched-body"></div>
+  </aside>
+
   <!-- ── PARTIDOS (columna izq) ─────────────────────────────────────── -->
   <section class="cb-matches">
     <div class="section-label">PARTIDOS DISPONIBLES</div>
