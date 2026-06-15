@@ -197,6 +197,9 @@ function renderMatchCard(m, cat) {
 
   // ── Resultado / Marcador ─────────────────────────────────────────────────
   const res = m.resultado || { status: 'PRE' };
+  // Normalizar campos: golesLocal/golesVisit → scoreLocal/scoreVisit
+  if (res.scoreLocal === undefined && res.golesLocal !== undefined) res.scoreLocal = res.golesLocal;
+  if (res.scoreVisit === undefined && res.golesVisit !== undefined) res.scoreVisit = res.golesVisit;
   let resultadoHtml = '';
   if (res.status === 'FT' || res.status === 'LIVE') {
     const statusLabel = res.status === 'FT'
