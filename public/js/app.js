@@ -1084,21 +1084,21 @@ const WEEK_SCHEDULE = [
     { h:'16:00', local:'Costa de Marfil',visit:'Ecuador',     res:'1-0', ft:true,  ch:['dsp'] },
     { h:'20:00', local:'Suecia',        visit:'Túnez',        res:'5-1', ft:true,  ch:['dsp','ppl'] },
   ]},
-  // ── Dom 15 Jun (HOY) ───────────────────────────────────────────
-  { day:'Dom 15', today:true, tomorrow:false, matches:[
+  // ── Dom 15 Jun ─────────────────────────────────────────────────
+  { day:'Dom 15', today:false, tomorrow:false, matches:[
     { h:'15:00', local:'España',        visit:'Cabo Verde',   res:'',    ch:['chv','dsp'] },
     { h:'18:00', local:'Bélgica',       visit:'Egipto',       res:'',    ch:['dsp','dp'] },
     { h:'21:00', local:'Arabia Saudí',  visit:'Uruguay',      res:'',    ch:['dsp'] },
     { h:'21:00', local:'Irán',          visit:'Nueva Zelanda',res:'',    ch:['dsp','ppl'] },
   ]},
-  // ── Lun 16 Jun (MAÑANA) ────────────────────────────────────────
-  { day:'Lun 16', today:false, tomorrow:true, matches:[
+  // ── Lun 16 Jun (HOY) ───────────────────────────────────────────
+  { day:'Lun 16', today:true, tomorrow:false, matches:[
     { h:'15:00', local:'Francia',       visit:'Senegal',      res:'',    ch:['chv','dsp'] },
     { h:'18:00', local:'Irak',          visit:'Noruega',      res:'',    ch:['dsp'] },
     { h:'21:00', local:'Argentina',     visit:'Argelia',      res:'',    ch:['chv','dsp'] },
   ]},
-  // ── Mar 17 Jun ─────────────────────────────────────────────────
-  { day:'Mar 17', today:false, tomorrow:false, matches:[
+  // ── Mar 17 Jun (MAÑANA) ────────────────────────────────────────
+  { day:'Mar 17', today:false, tomorrow:true, matches:[
     { h:'13:00', local:'Portugal',      visit:'Rep. D. Congo',res:'',    ch:['dsp','dp'] },
     { h:'16:00', local:'Inglaterra',    visit:'Nigeria',      res:'',    ch:['c13','dsp'] },
     { h:'19:00', local:'Dinamarca',     visit:'Ghana',        res:'',    ch:['dsp'] },
