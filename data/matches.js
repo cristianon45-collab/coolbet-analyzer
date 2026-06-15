@@ -510,7 +510,7 @@ const MATCHES = [
     fase: "Fase de Grupos — Grupo I",
     local: "Francia",
     visit: "Senegal",
-    time: "16 Jun 15:00 ET · East Rutherford",
+    time: "14 Jun 15:00 ET · East Rutherford",
     statsLocal: {
       forma: ["V","V","V","G","V"],
       gfProm: 2.3,
@@ -578,7 +578,7 @@ const MATCHES = [
     fase: "Fase de Grupos — Grupo J",
     local: "Argentina",
     visit: "Argelia",
-    time: "16 Jun 21:00 ET · Kansas City",
+    time: "14 Jun 21:00 ET · Kansas City",
     statsLocal: {
       forma: ["V","V","V","V","E"],
       gfProm: 2.2,
@@ -843,6 +843,197 @@ const MATCHES = [
       debut: true,
       altaTension: false
     }
+  },
+
+  // ── HOY 13 JUN ────────────────────────────────────────────────────────────
+  {
+    id: 22,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo H",
+    local: "España", visit: "Cabo Verde",
+    time: "13 Jun · 15:00 ET",
+    statsLocal: {
+      forma: ["V","V","V","E","V"], gfProm: 2.2, gcProm: 0.6,
+      racha: "Campeón de Europa 2024", posLiga: 8,
+      golesUltimos5: [3,2,1,2,3], gcUltimos5: [0,1,0,1,0],
+      localRecord: { v:9, e:2, d:1 }
+    },
+    statsVisit: {
+      forma: ["V","G","E","V","G"], gfProm: 0.9, gcProm: 1.4,
+      racha: "Sorpresa africana", posLiga: 75,
+      golesUltimos5: [1,0,1,2,0], gcUltimos5: [1,2,1,1,2],
+      visitRecord: { v:2, e:2, d:6 }
+    },
+    h2h: { local: 2, empate: 0, visit: 0, golesLocal: [3,4], golesVisit: [0,1], partidos: [
+      { fecha:"2023", res:"3-0", ganador:"local" }, { fecha:"2021", res:"4-1", ganador:"local" }
+    ]},
+    mercados: [
+      { label:"1 España",            odds:1.22, probCasa:0.820, probReal:0.78 },
+      { label:"Empate",              odds:6.50, probCasa:0.154, probReal:0.14 },
+      { label:"2 Cabo Verde",        odds:13.0, probCasa:0.077, probReal:0.08 },
+      { label:"Más de 2.5 goles",    odds:1.45, probCasa:0.690, probReal:0.72 },
+      { label:"Menos de 2.5 goles",  odds:2.80, probCasa:0.357, probReal:0.28 },
+      { label:"España gana 1T",      odds:1.65, probCasa:0.606, probReal:0.62 }
+    ],
+    mercadosBetano: [
+      { label:"1 España",     odds:1.20, probCasa:0.833, probReal:0.78 },
+      { label:"Empate",       odds:6.80, probCasa:0.147, probReal:0.14 },
+      { label:"2 Cabo Verde", odds:13.5, probCasa:0.074, probReal:0.08 }
+    ],
+    resultado: { status: "PRE" },
+    contexto: { jornada:1, favoritoLocal:true, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:false, altaTension:false }
+  },
+  {
+    id: 23,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo I",
+    local: "Bélgica", visit: "Egipto",
+    time: "13 Jun · 18:00 ET",
+    statsLocal: {
+      forma: ["V","V","V","V","E"], gfProm: 2.0, gcProm: 0.8,
+      racha: "Generación dorada en declive pero sólida", posLiga: 3,
+      golesUltimos5: [2,3,1,2,1], gcUltimos5: [0,1,1,0,1],
+      localRecord: { v:8, e:3, d:1 }
+    },
+    statsVisit: {
+      forma: ["V","E","V","G","V"], gfProm: 1.5, gcProm: 1.0,
+      racha: "Con Salah en plenitud", posLiga: 35,
+      golesUltimos5: [2,1,1,0,2], gcUltimos5: [1,1,0,2,1],
+      visitRecord: { v:4, e:3, d:5 }
+    },
+    h2h: { local: 3, empate: 1, visit: 1, golesLocal: [2,1,3,1,2], golesVisit: [0,1,1,2,1], partidos: [
+      { fecha:"2022", res:"2-0", ganador:"local" }, { fecha:"2018", res:"3-1", ganador:"local" },
+      { fecha:"2014", res:"2-1", ganador:"local" }, { fecha:"2010", res:"1-2", ganador:"visit" }
+    ]},
+    mercados: [
+      { label:"1 Bélgica",           odds:1.70, probCasa:0.588, probReal:0.58 },
+      { label:"Empate",              odds:3.60, probCasa:0.278, probReal:0.25 },
+      { label:"2 Egipto",            odds:4.80, probCasa:0.208, probReal:0.17 },
+      { label:"Más de 2.5 goles",    odds:1.95, probCasa:0.513, probReal:0.50 },
+      { label:"Menos de 2.5 goles",  odds:1.85, probCasa:0.541, probReal:0.50 },
+      { label:"Ambos anotan — Sí",   odds:1.85, probCasa:0.541, probReal:0.52 }
+    ],
+    mercadosBetano: [
+      { label:"1 Bélgica", odds:1.67, probCasa:0.599, probReal:0.58 },
+      { label:"Empate",    odds:3.70, probCasa:0.270, probReal:0.25 },
+      { label:"2 Egipto",  odds:4.95, probCasa:0.202, probReal:0.17 }
+    ],
+    resultado: { status: "PRE" },
+    contexto: { jornada:1, favoritoLocal:true, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:false, altaTension:false }
+  },
+  {
+    id: 24,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo J",
+    local: "Arabia Saudí", visit: "Uruguay",
+    time: "13 Jun · 21:00 ET",
+    statsLocal: {
+      forma: ["V","E","G","V","E"], gfProm: 1.3, gcProm: 1.2,
+      racha: "Campeón asiático 2023", posLiga: 55,
+      golesUltimos5: [1,1,2,0,1], gcUltimos5: [0,1,2,1,1],
+      localRecord: { v:5, e:3, d:4 }
+    },
+    statsVisit: {
+      forma: ["V","V","E","V","G"], gfProm: 1.7, gcProm: 0.9,
+      racha: "Experiencia mundialista", posLiga: 14,
+      golesUltimos5: [2,1,1,2,0], gcUltimos5: [1,0,1,1,2],
+      visitRecord: { v:5, e:3, d:4 }
+    },
+    h2h: { local: 0, empate: 1, visit: 2, golesLocal: [0,1,2], golesVisit: [1,2,2], partidos: [
+      { fecha:"2022", res:"2-1", ganador:"local" }, { fecha:"2018", res:"0-0", ganador:"empate" },
+      { fecha:"2010", res:"2-0", ganador:"visit" }
+    ]},
+    mercados: [
+      { label:"1 Arabia Saudí",      odds:3.50, probCasa:0.286, probReal:0.26 },
+      { label:"Empate",              odds:3.20, probCasa:0.313, probReal:0.28 },
+      { label:"2 Uruguay",           odds:2.10, probCasa:0.476, probReal:0.46 },
+      { label:"Más de 2.5 goles",    odds:2.30, probCasa:0.435, probReal:0.42 },
+      { label:"Menos de 2.5 goles",  odds:1.60, probCasa:0.625, probReal:0.58 },
+      { label:"Uruguay no pierde",   odds:1.55, probCasa:0.645, probReal:0.74 }
+    ],
+    mercadosBetano: [
+      { label:"1 Arabia Saudí", odds:3.60, probCasa:0.278, probReal:0.26 },
+      { label:"Empate",         odds:3.30, probCasa:0.303, probReal:0.28 },
+      { label:"2 Uruguay",      odds:2.05, probCasa:0.488, probReal:0.46 }
+    ],
+    resultado: { status: "PRE" },
+    contexto: { jornada:1, favoritoLocal:false, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:false, altaTension:false }
+  },
+  {
+    id: 25,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo K",
+    local: "Irán", visit: "Nueva Zelanda",
+    time: "13 Jun · 21:00 ET",
+    statsLocal: {
+      forma: ["V","E","V","E","V"], gfProm: 1.4, gcProm: 1.0,
+      racha: "Potencia asiática consolidada", posLiga: 25,
+      golesUltimos5: [1,1,2,1,2], gcUltimos5: [0,1,1,2,0],
+      localRecord: { v:6, e:3, d:2 }
+    },
+    statsVisit: {
+      forma: ["G","V","G","G","E"], gfProm: 0.7, gcProm: 1.5,
+      racha: "Debutante con ilusión", posLiga: 95,
+      golesUltimos5: [0,1,0,1,1], gcUltimos5: [2,1,2,2,1],
+      visitRecord: { v:1, e:2, d:7 }
+    },
+    h2h: { local: 1, empate: 0, visit: 0, golesLocal: [2], golesVisit: [0], partidos: [
+      { fecha:"2019", res:"2-0", ganador:"local" }
+    ]},
+    mercados: [
+      { label:"1 Irán",              odds:1.80, probCasa:0.556, probReal:0.56 },
+      { label:"Empate",              odds:3.50, probCasa:0.286, probReal:0.26 },
+      { label:"2 Nueva Zelanda",     odds:4.50, probCasa:0.222, probReal:0.18 },
+      { label:"Más de 2.5 goles",    odds:2.40, probCasa:0.417, probReal:0.38 },
+      { label:"Menos de 2.5 goles",  odds:1.55, probCasa:0.645, probReal:0.62 },
+      { label:"Irán no pierde",      odds:1.40, probCasa:0.714, probReal:0.82 }
+    ],
+    mercadosBetano: [
+      { label:"1 Irán",          odds:1.77, probCasa:0.565, probReal:0.56 },
+      { label:"Empate",          odds:3.60, probCasa:0.278, probReal:0.26 },
+      { label:"2 Nueva Zelanda", odds:4.60, probCasa:0.217, probReal:0.18 }
+    ],
+    resultado: { status: "PRE" },
+    contexto: { jornada:1, favoritoLocal:true, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:true, altaTension:false }
+  },
+
+  // ── MAÑANA 14 JUN ─────────────────────────────────────────────────────────
+  {
+    id: 26,
+    comp: "Mundial 2026", compKey: "mundial",
+    fase: "Fase de Grupos — Grupo C",
+    local: "Irak", visit: "Noruega",
+    time: "14 Jun · 18:00 ET",
+    statsLocal: {
+      forma: ["V","G","E","V","G"], gfProm: 1.2, gcProm: 1.3,
+      racha: "Sorpresa de Asia", posLiga: 65,
+      golesUltimos5: [1,0,2,2,0], gcUltimos5: [1,2,1,1,2],
+      visitRecord: { v:3, e:2, d:6 }
+    },
+    statsVisit: {
+      forma: ["V","V","V","E","V"], gfProm: 2.1, gcProm: 0.9,
+      racha: "Haaland lidera el ataque", posLiga: 20,
+      golesUltimos5: [3,2,2,1,3], gcUltimos5: [1,0,1,1,0],
+      visitRecord: { v:6, e:2, d:3 }
+    },
+    h2h: { local: 0, empate: 0, visit: 1, golesLocal: [0], golesVisit: [2], partidos: [
+      { fecha:"2020", res:"0-2", ganador:"visit" }
+    ]},
+    mercados: [
+      { label:"1 Irak",              odds:5.50, probCasa:0.182, probReal:0.14 },
+      { label:"Empate",              odds:4.00, probCasa:0.250, probReal:0.22 },
+      { label:"2 Noruega",           odds:1.60, probCasa:0.625, probReal:0.64 },
+      { label:"Más de 2.5 goles",    odds:1.75, probCasa:0.571, probReal:0.58 },
+      { label:"Menos de 2.5 goles",  odds:2.05, probCasa:0.488, probReal:0.42 },
+      { label:"Noruega no pierde",   odds:1.32, probCasa:0.758, probReal:0.86 }
+    ],
+    mercadosBetano: [
+      { label:"1 Irak",    odds:5.70, probCasa:0.175, probReal:0.14 },
+      { label:"Empate",    odds:4.10, probCasa:0.244, probReal:0.22 },
+      { label:"2 Noruega", odds:1.57, probCasa:0.637, probReal:0.64 }
+    ],
+    resultado: { status: "PRE" },
+    contexto: { jornada:1, favoritoLocal:false, visitanteVelocistas:false, clasificatorioLocal:null, clasificatorioVisit:null, diasDescansoLocal:null, diasDescansoVisit:null, suspensiones:[], arbitro:null, debut:true, altaTension:false }
   }
 ];
 
