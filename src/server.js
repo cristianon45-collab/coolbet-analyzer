@@ -734,6 +734,105 @@ async function fetchBeSoccer() {
   });
 }
 
+// ── Auto-sync resultados reales del Mundial desde ESPN ────────────────────────
+function normTeam(name) {
+  return (name || '').toLowerCase()
+    .replace(/[áà]/g,'a').replace(/[éè]/g,'e').replace(/[íì]/g,'i')
+    .replace(/[óò]/g,'o').replace(/[úù]/g,'u').replace(/ñ/g,'n')
+    .replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();
+}
+
+const ESPN_TEAM_MAP = {
+  'united states': 'usa', 'usa': 'usa',
+  'korea republic': 'corea', 'south korea': 'corea',
+  'czechia': 'chequia', 'czech republic': 'chequia',
+  'netherlands': 'paises bajos', 'holland': 'paises bajos',
+  'ivory coast': 'costa de marfil', "cote d'ivoire": 'costa de marfil',
+  'saudi arabia': 'arabia saudi',
+  'new zealand': 'nueva zelanda',
+  'bosnia and herzegovina': 'bosnia y h', 'bosnia': 'bosnia y h',
+  'senegal': 'senegal', 'cape verde': 'cabo verde',
+  'curacao': 'curacao',
+  'sweden': 'suecia', 'tunisia': 'tunez',
+  'turkey': 'turquia', 'australia': 'australia',
+  'scotland': 'escocia', 'haiti': 'haiti',
+  'morocco': 'marruecos', 'brazil': 'brasil',
+  'germany': 'alemania', 'mexico': 'mexico',
+  'spain': 'espana', 'belgium': 'belgica',
+  'france': 'francia', 'argentina': 'argentina',
+  'norway': 'noruega', 'iraq': 'irak',
+  'algeria': 'argelia', 'egypt': 'egipto',
+  'switzerland': 'suiza', 'qatar': 'qatar',
+  'iran': 'iran', 'south africa': 'sudafrica',
+  'canada': 'canada', 'paraguay': 'paraguay',
+  'uruguay': 'uruguay',
+};
+
+function espnNameToLocal(name) {
+  const n = normTeam(name);
+  return ESPN_TEAM_MAP[n] || n;
+}
+
+async function fetchESPNDate(dateStr) {
+  try {
+    const raw = await httpsGet(
+      `https://site.api.espn.com/apis/site/v2/sports/soccer/FIFA.WORLD/scoreboard?dates=${dateStr}`
+    );
+    return (raw.events || []).map(ev => {
+      const comp  = ev.competitions?.[0];
+      const home  = comp?.competitors?.find(c => c.homeAway === 'home');
+      const away  = comp?.competitors?.find(c => c.homeAway === 'away');
+      const state = ev.status?.type?.state ?? 'pre';
+      return {
+        homeTeam:  home?.team?.displayName ?? '',
+        awayTeam:  away?.team?.displayName ?? '',
+        scoreHome: parseInt(home?.score ?? 0),
+        scoreAway: parseInt(away?.score ?? 0),
+        status:    state,  // 'pre' | 'in' | 'post'
+      };
+    });
+  } catch(_) { return []; }
+}
+
+async function syncResultsFromESPN() {
+  const now   = new Date();
+  const dates = [];
+  // Revisar los últimos 7 días y hoy
+  for (let i = 7; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    dates.push(d.toISOString().slice(0,10).replace(/-/g,''));
+  }
+
+  for (const dateStr of dates) {
+    const events = await fetchESPNDate(dateStr);
+    events.forEach(ev => {
+      if (ev.status !== 'post') return; // Solo actualizar partidos terminados
+      const homeKey = espnNameToLocal(ev.homeTeam);
+      const awayKey = espnNameToLocal(ev.awayTeam);
+      const match = MATCHES.find(m => {
+        const ml = normTeam(m.local);
+        const mv = normTeam(m.visit);
+        return (ml.includes(homeKey) || homeKey.includes(ml)) &&
+               (mv.includes(awayKey) || awayKey.includes(mv));
+      });
+      if (!match) return;
+      if (match.resultado?.status === 'FT') return; // Ya lo tenemos
+      match.resultado = {
+        status:     'FT',
+        golesLocal: ev.scoreHome,
+        golesVisit: ev.scoreAway,
+      };
+      console.log(`✅ Auto-sync: ${match.local} ${ev.scoreHome}-${ev.scoreAway} ${match.visit}`);
+    });
+  }
+  console.log(`🔄 Sync ESPN completado — ${new Date().toLocaleTimeString()}`);
+}
+
+// Ejecutar al arrancar y cada 5 minutos
+syncResultsFromESPN();
+setInterval(syncResultsFromESPN, 5 * 60 * 1000);
+
 app.get('/api/live', async (req, res) => {
   if (Date.now() - liveCache.ts < 40000 && liveCache.data) {
     return res.json(liveCache.data);
